@@ -272,6 +272,14 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                   <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
                     <span className="text-[#FFD700] font-semibold">${employee.hourly_rate || 0}</span>/hour
                   </span>
+                  {employee.default_start_date && (
+                    <>
+                      <span className="text-[rgba(255,215,0,0.3)]">•</span>
+                      <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
+                        Starts: <span className="text-[#FFD700] font-semibold">{format(new Date(employee.default_start_date), 'MMM d, yyyy')}</span>
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

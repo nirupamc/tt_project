@@ -42,7 +42,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, password, hours_per_day, hourly_rate } = body;
+    const { name, email, password, hours_per_day, hourly_rate, default_start_date } = body;
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -87,6 +87,7 @@ export async function POST(request: Request) {
         role: "employee",
         hours_per_day: hours_per_day ? parseFloat(hours_per_day) : 8.0,
         hourly_rate: hourly_rate ? parseFloat(hourly_rate) : 0.0,
+        default_start_date: default_start_date || null,
       })
       .select()
       .single();

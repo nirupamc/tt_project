@@ -12,6 +12,7 @@ export interface User {
   avatar_url: string | null;
   hours_per_day: number;
   hourly_rate: number;
+  default_start_date: string | null;
   created_at: string;
 }
 

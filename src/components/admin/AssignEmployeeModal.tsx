@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -39,14 +38,12 @@ export function AssignEmployeeModal({
   const [employees, setEmployees] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [startDate, setStartDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (open) {
       fetchEmployees();
       setSelectedIds([]);
-      setStartDate(format(new Date(), 'yyyy-MM-dd'));
     }
   }, [open]);
 
@@ -74,18 +71,22 @@ export function AssignEmployeeModal({
       return;
     }
 
-    if (!startDate) {
-      toast.error("Please select a start date");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
+      // Create enrollments with each employee's default_start_date
+      const enrollmentsToCreate = selectedIds.map(userId => {
+        const employee = employees.find(e => e.id === userId);
+        return {
+          user_id: userId,
+          start_date: employee?.default_start_date || format(new Date(), 'yyyy-MM-dd'),
+        };
+      });
+
       const res = await fetch(`/api/admin/projects/${projectId}/enrollments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_ids: selectedIds, start_date: startDate }),
+        body: JSON.stringify({ enrollments: enrollmentsToCreate }),
       });
 
       if (!res.ok) {
@@ -106,9 +107,9 @@ export function AssignEmployeeModal({
     }
   };
 
-  const toggleEmployee = (id: string) => {
+  const toggleEmployee = (emp: User) => {
     setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+      prev.includes(emp.id) ? prev.filter((i) => i !== emp.id) : [...prev, emp.id]
     );
   };
 
@@ -118,28 +119,11 @@ export function AssignEmployeeModal({
         <DialogHeader className="border-b border-[rgba(255,215,0,0.1)] pb-4">
           <DialogTitle className="font-space text-lg font-semibold text-[#F5F5F0]">Assign Employees</DialogTitle>
           <DialogDescription className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
-            Select employees and set their project start date.
+            Select employees to enroll. Each will use their default start date.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="py-4 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="start_date" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">
-              Project Start Date
-            </Label>
-            <Input
-              id="start_date"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-              className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
-            />
-            <p className="font-space text-xs text-[rgba(245,245,240,0.4)]">
-              Day 1 will unlock at 9:00 AM CT on this date
-            </p>
-          </div>
-
+        <div className="py-4">
           {loading ? (
             <div className="space-y-2">
               {[...Array(5)].map((_, i) => (
@@ -157,12 +141,12 @@ export function AssignEmployeeModal({
                   <div
                     key={emp.id}
                     className="flex items-center gap-3 p-3 bg-[rgba(255,215,0,0.05)] border border-[rgba(255,215,0,0.1)] rounded-lg cursor-pointer hover:bg-[rgba(255,215,0,0.08)] hover:border-[rgba(255,215,0,0.2)] transition-all duration-200"
-                    onClick={() => toggleEmployee(emp.id)}
+                    onClick={() => toggleEmployee(emp)}
                   >
                     <Checkbox
                       id={emp.id}
                       checked={selectedIds.includes(emp.id)}
-                      onCheckedChange={() => toggleEmployee(emp.id)}
+                      onCheckedChange={() => toggleEmployee(emp)}
                     />
                     <Label htmlFor={emp.id} className="cursor-pointer flex-1">
                       <div className="font-space font-medium text-[#F5F5F0]">{emp.name}</div>

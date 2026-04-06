@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { format } from "date-fns";
 
 interface CreateEmployeeModalProps {
   open: boolean;
@@ -32,6 +33,7 @@ export function CreateEmployeeModal({
     password: "",
     hours_per_day: "8",
     hourly_rate: "0",
+    default_start_date: format(new Date(), 'yyyy-MM-dd'),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,7 +54,7 @@ export function CreateEmployeeModal({
 
       toast.success("Employee created successfully");
       onOpenChange(false);
-      setFormData({ name: "", email: "", password: "", hours_per_day: "8", hourly_rate: "0" });
+      setFormData({ name: "", email: "", password: "", hours_per_day: "8", hourly_rate: "0", default_start_date: format(new Date(), 'yyyy-MM-dd') });
       router.refresh();
     } catch (error) {
       toast.error(
@@ -149,6 +151,22 @@ export function CreateEmployeeModal({
                 required
                 className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] placeholder:text-[rgba(245,245,240,0.3)]"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="default_start_date" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Default Start Date</Label>
+              <Input
+                id="default_start_date"
+                type="date"
+                value={formData.default_start_date}
+                onChange={(e) =>
+                  setFormData({ ...formData, default_start_date: e.target.value })
+                }
+                required
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
+              />
+              <p className="font-space text-xs text-[rgba(245,245,240,0.4)]">
+                Used as default when assigning to projects
+              </p>
             </div>
           </div>
           <DialogFooter>
