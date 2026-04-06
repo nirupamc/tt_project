@@ -74,15 +74,13 @@ export function EmployeeNav() {
           </div>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <button className="relative h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFD700]">
-                <Avatar className="h-10 w-10 border-2 border-[#FFD700]">
-                  <AvatarImage src={session?.user?.avatar_url || undefined} />
-                  <AvatarFallback className="bg-[#2A2A2A] text-[#FFD700]">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-              </button>
+            <DropdownMenuTrigger className="relative h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFD700]">
+              <Avatar className="h-10 w-10 border-2 border-[#FFD700]">
+                <AvatarImage src={session?.user?.avatar_url || undefined} />
+                <AvatarFallback className="bg-[#2A2A2A] text-[#FFD700]">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <div className="px-2 py-1.5">

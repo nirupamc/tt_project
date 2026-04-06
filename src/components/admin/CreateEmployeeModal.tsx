@@ -30,6 +30,8 @@ export function CreateEmployeeModal({
     name: "",
     email: "",
     password: "",
+    hours_per_day: "8",
+    hourly_rate: "0",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,7 +52,7 @@ export function CreateEmployeeModal({
 
       toast.success("Employee created successfully");
       onOpenChange(false);
-      setFormData({ name: "", email: "", password: "" });
+      setFormData({ name: "", email: "", password: "", hours_per_day: "8", hourly_rate: "0" });
       router.refresh();
     } catch (error) {
       toast.error(
@@ -112,7 +114,40 @@ export function CreateEmployeeModal({
                 placeholder="••••••••"
                 required
                 minLength={8}
-                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] placeholder:text-[rgba(245,245,240,0.3)]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="hours_per_day" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Hours Per Day</Label>
+              <Input
+                id="hours_per_day"
+                type="number"
+                step="0.5"
+                min="0"
+                max="24"
+                value={formData.hours_per_day}
+                onChange={(e) =>
+                  setFormData({ ...formData, hours_per_day: e.target.value })
+                }
+                placeholder="8"
+                required
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] placeholder:text-[rgba(245,245,240,0.3)]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="hourly_rate" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Hourly Rate ($)</Label>
+              <Input
+                id="hourly_rate"
+                type="number"
+                step="0.01"
+                min="0"
+                value={formData.hourly_rate}
+                onChange={(e) =>
+                  setFormData({ ...formData, hourly_rate: e.target.value })
+                }
+                placeholder="0.00"
+                required
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] placeholder:text-[rgba(245,245,240,0.3)]"
               />
             </div>
           </div>

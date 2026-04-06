@@ -16,10 +16,10 @@ export async function GET(
     const { id: projectId } = await params;
     const supabase = createAdminClient();
 
-    // Check enrollment
+    // Check enrollment and get start_date
     const { data: enrollment } = await supabase
       .from("enrollments")
-      .select("id")
+      .select("id, start_date")
       .eq("user_id", session.user.id)
       .eq("project_id", projectId)
       .single();
@@ -44,6 +44,12 @@ export async function GET(
         { status: 404 },
       );
     }
+
+    // Add enrollment start_date to the response
+    const projectWithEnrollment = {
+      ...project,
+      enrollment_start_date: enrollment.start_date,
+    };
 
     // Get days with tasks
     const { data: days } = await supabase
@@ -85,7 +91,7 @@ export async function GET(
     }
 
     return NextResponse.json({
-      project,
+      project: projectWithEnrollment,
       days: days || [],
       completed_day_numbers: completedDayNumbers,
     });

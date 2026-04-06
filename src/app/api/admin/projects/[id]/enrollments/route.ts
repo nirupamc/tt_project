@@ -35,7 +35,7 @@ export async function POST(
   try {
     const { id: projectId } = await params;
     const body = await request.json();
-    const { user_ids } = body;
+    const { user_ids, start_date } = body;
 
     if (!user_ids || !Array.isArray(user_ids) || user_ids.length === 0) {
       return NextResponse.json(
@@ -44,12 +44,20 @@ export async function POST(
       );
     }
 
+    if (!start_date) {
+      return NextResponse.json(
+        { message: "Start date is required" },
+        { status: 400 },
+      );
+    }
+
     const supabase = createAdminClient();
 
-    // Create enrollment records
+    // Create enrollment records with start_date
     const enrollments = user_ids.map((user_id: string) => ({
       user_id,
       project_id: projectId,
+      start_date,
     }));
 
     const { data, error } = await supabase

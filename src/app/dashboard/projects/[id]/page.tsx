@@ -61,10 +61,13 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
         const projectData = await projectRes.json();
         setProject(projectData.project);
 
-        console.log('[project-page] project.start_date:', projectData.project.start_date);
+        // Use enrollment_start_date instead of project start_date
+        const enrollmentStartDate = projectData.project.enrollment_start_date || projectData.project.start_date;
+        
+        console.log('[project-page] enrollment_start_date:', enrollmentStartDate);
         console.log('[project-page] project.total_days:', projectData.project.total_days);
         console.log('[project-page] isDayUnlocked result for day 1:', 
-          isDayUnlocked(projectData.project.start_date, 1, projectData.project.total_days));
+          isDayUnlocked(enrollmentStartDate, 1, projectData.project.total_days));
 
         // Calculate day statuses
         const completedDayNumbers = new Set<number>(
@@ -75,7 +78,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
           ...day,
           status: calculateDayStatus(
             day.day_number,
-            projectData.project.start_date,
+            enrollmentStartDate,
             projectData.project.total_days,
             completedDayNumbers
           ),
@@ -136,10 +139,10 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
           )}
         </div>
         <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] leading-relaxed">{project.description}</p>
-        {project.start_date && (
+        {(project.enrollment_start_date || project.start_date) && (
           <div className="flex items-center gap-2 mt-3 font-space text-[13px] text-[rgba(10,10,10,0.65)] font-medium">
             <Calendar className="h-4 w-4 text-[rgba(10,10,10,0.5)]" />
-            <span>Started {format(new Date(project.start_date), 'MMMM d, yyyy')}</span>
+            <span>Started {format(new Date(project.enrollment_start_date || project.start_date), 'MMMM d, yyyy')}</span>
           </div>
         )}
       </div>

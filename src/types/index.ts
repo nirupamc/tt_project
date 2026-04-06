@@ -10,6 +10,8 @@ export interface User {
   password_hash: string;
   role: UserRole;
   avatar_url: string | null;
+  hours_per_day: number;
+  hourly_rate: number;
   created_at: string;
 }
 
@@ -20,6 +22,7 @@ export interface Project {
   skill_tag: string | null;
   total_days: number;
   start_date: string | null;
+  enrollment_start_date?: string | null;
   thumbnail_url: string | null;
   is_published: boolean;
   is_active: boolean;
@@ -64,6 +67,7 @@ export interface Enrollment {
   id: string;
   user_id: string;
   project_id: string;
+  start_date: string;
   enrolled_at: string;
 }
 

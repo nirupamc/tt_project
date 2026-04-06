@@ -33,7 +33,6 @@ export function CreateProjectModal({
     description: "",
     skill_tag: "",
     total_days: 30,
-    start_date: "",
     thumbnail_url: "",
     is_published: false,
     is_active: false,
@@ -51,7 +50,6 @@ export function CreateProjectModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          start_date: formData.start_date || null,
           thumbnail_url: formData.thumbnail_url || null,
         }),
       });
@@ -68,7 +66,6 @@ export function CreateProjectModal({
         description: "",
         skill_tag: "",
         total_days: 30,
-        start_date: "",
         thumbnail_url: "",
         is_published: false,
         is_active: false,
@@ -158,33 +155,18 @@ export function CreateProjectModal({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="start_date" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Start Date</Label>
-                <Input
-                  id="start_date"
-                  type="date"
-                  value={formData.start_date}
-                  onChange={(e) =>
-                    setFormData({ ...formData, start_date: e.target.value })
-                  }
-                  className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="thumbnail_url" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Thumbnail URL</Label>
-                <Input
-                  id="thumbnail_url"
-                  type="url"
-                  value={formData.thumbnail_url}
-                  onChange={(e) =>
-                    setFormData({ ...formData, thumbnail_url: e.target.value })
-                  }
-                  placeholder="https://..."
-                  className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="thumbnail_url" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Thumbnail URL</Label>
+              <Input
+                id="thumbnail_url"
+                type="url"
+                value={formData.thumbnail_url}
+                onChange={(e) =>
+                  setFormData({ ...formData, thumbnail_url: e.target.value })
+                }
+                placeholder="https://..."
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
+              />
             </div>
 
             <div className="space-y-4 pt-4 border-t border-[rgba(255,215,0,0.1)]">

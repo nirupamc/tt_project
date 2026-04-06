@@ -256,12 +256,21 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
               <div className="flex-1">
                 <h1 className="font-bebas text-2xl text-[#F5F5F0]">{employee.name}</h1>
                 <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">{employee.email}</p>
-                <div className="flex items-center gap-2 mt-3">
+                <div className="flex items-center gap-4 mt-3">
                   <Badge variant={employee.role === 'admin' ? 'default' : 'secondary'} className={employee.role === 'admin' ? "bg-[rgba(255,215,0,0.15)] text-[#FFD700] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
                     {employee.role}
                   </Badge>
                   <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
                     Joined {format(new Date(employee.created_at), 'MMM yyyy')}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4 mt-2">
+                  <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
+                    <span className="text-[#FFD700] font-semibold">{employee.hours_per_day || 8}</span> hours/day
+                  </span>
+                  <span className="text-[rgba(255,215,0,0.3)]">•</span>
+                  <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
+                    <span className="text-[#FFD700] font-semibold">${employee.hourly_rate || 0}</span>/hour
                   </span>
                 </div>
               </div>

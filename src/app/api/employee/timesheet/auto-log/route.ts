@@ -16,6 +16,17 @@ export async function POST() {
     const today = format(new Date(), "yyyy-MM-dd");
     const supabase = createAdminClient();
 
+    // Fetch user's hours_per_day
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("hours_per_day")
+      .eq("id", userId)
+      .single();
+
+    if (userError) throw userError;
+
+    const hoursToLog = user?.hours_per_day || 8.0;
+
     // Fetch all enrollments for this user
     const { data: enrollments, error: enrollError } = await supabase
       .from("enrollments")
@@ -52,7 +63,7 @@ export async function POST() {
           .insert({
             user_id: userId,
             work_date: today,
-            hours_logged: 5,
+            hours_logged: hoursToLog,
             project_id: enrollment.project_id,
             notes: "Auto-logged on login",
           });
