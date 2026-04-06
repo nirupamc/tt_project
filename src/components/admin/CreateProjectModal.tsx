@@ -87,17 +87,17 @@ export function CreateProjectModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Create New Project</DialogTitle>
-          <DialogDescription className="text-gray-400">
+      <DialogContent className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] rounded-2xl text-[#F5F5F0] max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="border-b border-[rgba(255,215,0,0.1)] pb-4">
+          <DialogTitle className="font-space text-lg font-semibold text-[#F5F5F0]">Create New Project</DialogTitle>
+          <DialogDescription className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
             Set up a new learning project for employees.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Project Title *</Label>
+              <Label htmlFor="title" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Project Title *</Label>
               <Input
                 id="title"
                 value={formData.title}
@@ -106,12 +106,12 @@ export function CreateProjectModal({
                 }
                 placeholder="React Fundamentals"
                 required
-                className="bg-gray-700 border-gray-600"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
@@ -120,13 +120,13 @@ export function CreateProjectModal({
                 }
                 placeholder="A comprehensive introduction to React..."
                 rows={3}
-                className="bg-gray-700 border-gray-600"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="skill_tag">Skill Tag</Label>
+                <Label htmlFor="skill_tag" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Skill Tag</Label>
                 <Input
                   id="skill_tag"
                   value={formData.skill_tag}
@@ -134,12 +134,12 @@ export function CreateProjectModal({
                     setFormData({ ...formData, skill_tag: e.target.value })
                   }
                   placeholder="React"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="total_days">Total Days *</Label>
+                <Label htmlFor="total_days" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Total Days *</Label>
                 <Input
                   id="total_days"
                   type="number"
@@ -153,14 +153,14 @@ export function CreateProjectModal({
                     })
                   }
                   required
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="start_date">Start Date</Label>
+                <Label htmlFor="start_date" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Start Date</Label>
                 <Input
                   id="start_date"
                   type="date"
@@ -168,12 +168,12 @@ export function CreateProjectModal({
                   onChange={(e) =>
                     setFormData({ ...formData, start_date: e.target.value })
                   }
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="thumbnail_url">Thumbnail URL</Label>
+                <Label htmlFor="thumbnail_url" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Thumbnail URL</Label>
                 <Input
                   id="thumbnail_url"
                   type="url"
@@ -182,16 +182,16 @@ export function CreateProjectModal({
                     setFormData({ ...formData, thumbnail_url: e.target.value })
                   }
                   placeholder="https://..."
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
                 />
               </div>
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-gray-700">
+            <div className="space-y-4 pt-4 border-t border-[rgba(255,215,0,0.1)]">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="is_published">Published</Label>
-                  <p className="text-sm text-gray-500">
+                  <Label htmlFor="is_published" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Published</Label>
+                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.4)]">
                     Make visible to employees
                   </p>
                 </div>
@@ -206,8 +206,8 @@ export function CreateProjectModal({
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="is_active">Active</Label>
-                  <p className="text-sm text-gray-500">Currently running</p>
+                  <Label htmlFor="is_active" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Active</Label>
+                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.4)]">Currently running</p>
                 </div>
                 <Switch
                   id="is_active"
@@ -220,8 +220,8 @@ export function CreateProjectModal({
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="weekdays_only">Weekdays Only</Label>
-                  <p className="text-sm text-gray-500">
+                  <Label htmlFor="weekdays_only" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Weekdays Only</Label>
+                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.4)]">
                     Skip weekends in day counting
                   </p>
                 </div>
@@ -236,8 +236,8 @@ export function CreateProjectModal({
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="daily_reminder_emails">Daily Emails</Label>
-                  <p className="text-sm text-gray-500">
+                  <Label htmlFor="daily_reminder_emails" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Daily Emails</Label>
+                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.4)]">
                     Send daily task reminders
                   </p>
                 </div>
@@ -256,10 +256,11 @@ export function CreateProjectModal({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              className="bg-transparent border-2 border-[rgba(255,215,0,0.4)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] hover:border-[#FFD700] font-space text-[13px] font-semibold tracking-wider"
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150">
               {isLoading ? "Creating..." : "Create Project"}
             </Button>
           </DialogFooter>

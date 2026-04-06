@@ -182,8 +182,8 @@ export default function ProjectBuildPage({
   if (loading) {
     return (
       <div className="p-6 lg:p-8">
-        <Skeleton className="h-8 w-64 bg-gray-800 mb-4" />
-        <Skeleton className="h-96 bg-gray-800" />
+        <Skeleton className="h-8 w-64 bg-[#2A2A2A] mb-4" />
+        <Skeleton className="h-96 bg-[#2A2A2A]" />
       </div>
     );
   }
@@ -191,7 +191,7 @@ export default function ProjectBuildPage({
   if (!project) {
     return (
       <div className="p-6 lg:p-8">
-        <p className="text-gray-500">Project not found.</p>
+        <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Project not found.</p>
       </div>
     );
   }
@@ -201,7 +201,7 @@ export default function ProjectBuildPage({
       <div className="mb-6">
         <Link
           href={`/admin/projects/${id}`}
-          className="inline-flex items-center text-gray-400 hover:text-white mb-4"
+          className="inline-flex items-center text-[#FFD700] hover:text-[#FFE44D] font-space mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Project
@@ -210,10 +210,10 @@ export default function ProjectBuildPage({
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="font-bebas text-4xl text-[#F5F5F0]">
             Build: {project.title}
           </h1>
-          <p className="text-gray-400 mt-1">
+          <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">
             Configure days and tasks for this project
           </p>
         </div>
@@ -229,6 +229,7 @@ export default function ProjectBuildPage({
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
+            className="bg-transparent border border-[rgba(255,215,0,0.3)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] hover:border-[#FFD700] font-space text-[13px] font-semibold tracking-wider"
           >
             <Upload className="h-4 w-4 mr-2" />
             {uploading ? "Uploading..." : "Upload JSON"}
@@ -236,9 +237,9 @@ export default function ProjectBuildPage({
         </div>
       </div>
 
-      <Card className="bg-gray-800 border-gray-700 mb-6">
+      <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl mb-6">
         <CardHeader>
-          <CardTitle className="text-white">Add New Day</CardTitle>
+          <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Add New Day</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -247,15 +248,15 @@ export default function ProjectBuildPage({
               placeholder="Day number"
               value={newDayNumber}
               onChange={(e) => setNewDayNumber(e.target.value)}
-              className="bg-gray-700 border-gray-600 w-full sm:w-32"
+              className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] w-full sm:w-32"
             />
             <Input
               placeholder="Day title (optional)"
               value={newDayTitle}
               onChange={(e) => setNewDayTitle(e.target.value)}
-              className="bg-gray-700 border-gray-600 flex-1"
+              className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] flex-1"
             />
-            <Button onClick={handleAddDay}>
+            <Button onClick={handleAddDay} className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150">
               <Plus className="h-4 w-4 mr-2" />
               Add Day
             </Button>
@@ -264,10 +265,10 @@ export default function ProjectBuildPage({
       </Card>
 
       {days.length === 0 ? (
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
           <CardContent className="py-12 text-center">
-            <p className="text-gray-500 mb-4">No days configured yet.</p>
-            <p className="text-gray-400 text-sm">
+            <p className="font-space font-medium text-[#F5F5F0] mb-4">No days configured yet.</p>
+            <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
               Add days manually above or upload a JSON file to bulk import.
             </p>
           </CardContent>
@@ -278,15 +279,15 @@ export default function ProjectBuildPage({
             <AccordionItem
               key={day.id}
               value={day.id}
-              className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden"
+              className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-lg overflow-hidden"
             >
-              <AccordionTrigger className="px-6 py-4 hover:bg-gray-700/50">
+              <AccordionTrigger className="px-6 py-4 hover:bg-[rgba(255,215,0,0.03)]">
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-white">
+                  <span className="font-bebas text-lg text-[#F5F5F0]">
                     Day {day.day_number}
                   </span>
-                  <span className="text-gray-400">{day.title}</span>
-                  <Badge variant="secondary" className="bg-gray-700">
+                  <span className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">{day.title}</span>
+                  <Badge variant="secondary" className="bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1">
                     {day.tasks?.length || 0} tasks
                   </Badge>
                 </div>
@@ -297,7 +298,7 @@ export default function ProjectBuildPage({
                     day.tasks.map((task: Task) => (
                       <div
                         key={task.id}
-                        className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg"
+                        className="flex items-center justify-between p-3 bg-[#1A1A1A] border border-[rgba(255,215,0,0.08)] rounded-lg hover:bg-[rgba(255,215,0,0.03)]"
                       >
                         <div className="flex items-center gap-3">
                           <div
@@ -306,17 +307,17 @@ export default function ProjectBuildPage({
                             {taskTypeIcons[task.task_type]}
                           </div>
                           <div>
-                            <p className="font-medium text-white">
+                            <p className="font-space font-medium text-[#F5F5F0]">
                               {task.title}
                             </p>
-                            <div className="flex items-center gap-2 text-sm text-gray-400">
+                            <div className="flex items-center gap-2 font-space text-[13px] text-[rgba(245,245,240,0.5)]">
                               <span className="capitalize">
                                 {task.task_type}
                               </span>
                               {task.is_required && (
                                 <Badge
                                   variant="outline"
-                                  className="border-yellow-600 text-yellow-500 text-xs"
+                                  className="border-[#FFD700] text-[#FFD700] font-space text-[10px] font-semibold tracking-[1.5px] uppercase"
                                 >
                                   Required
                                 </Badge>
@@ -327,7 +328,7 @@ export default function ProjectBuildPage({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-gray-400 hover:text-red-400"
+                          className="text-[rgba(245,245,240,0.5)] hover:text-red-400"
                           onClick={() => handleDeleteTask(day.id, task.id)}
                         >
                           <Trash2 className="h-4 w-4" />
@@ -335,7 +336,7 @@ export default function ProjectBuildPage({
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-500 text-sm py-2">
+                    <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] py-2">
                       No tasks for this day.
                     </p>
                   )}
@@ -345,6 +346,7 @@ export default function ProjectBuildPage({
                     onClick={() =>
                       setAddTaskModal({ open: true, dayId: day.id })
                     }
+                    className="bg-transparent border border-[rgba(255,215,0,0.3)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] hover:border-[#FFD700] font-space text-[13px] font-semibold tracking-wider"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Task

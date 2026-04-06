@@ -13,10 +13,12 @@ export async function GET(
     // Get all enrollments for this user
     const { data: enrollments, error: enrollError } = await supabase
       .from("enrollments")
-      .select(`
+      .select(
+        `
         *,
         project:projects(*)
-      `)
+      `,
+      )
       .eq("user_id", userId);
 
     if (enrollError) throw enrollError;
@@ -62,10 +64,7 @@ export async function GET(
           .from("task_completions")
           .select("task_id")
           .eq("user_id", userId)
-          .in(
-            "task_id",
-            tasks?.map((t) => t.id) || [],
-          );
+          .in("task_id", tasks?.map((t) => t.id) || []);
 
         const completedTasks = completions?.length || 0;
         const progress =

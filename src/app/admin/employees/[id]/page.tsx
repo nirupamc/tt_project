@@ -211,13 +211,13 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   if (loading) {
     return (
       <div className="p-6 lg:p-8 space-y-6">
-        <Skeleton className="h-32 bg-gray-800" />
+        <Skeleton className="h-32 bg-[#2A2A2A]" />
         <div className="grid gap-4 md:grid-cols-4">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-24 bg-gray-800" />
+            <Skeleton key={i} className="h-24 bg-[#2A2A2A]" />
           ))}
         </div>
-        <Skeleton className="h-96 bg-gray-800" />
+        <Skeleton className="h-96 bg-[#2A2A2A]" />
       </div>
     );
   }
@@ -225,9 +225,9 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   if (!employee) {
     return (
       <div className="p-6 lg:p-8">
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-12 text-center">
-          <p className="text-gray-500">Employee not found</p>
-          <Button onClick={() => router.push('/admin/employees')} className="mt-4">
+        <div className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-lg p-12 text-center">
+          <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Employee not found</p>
+          <Button onClick={() => router.push('/admin/employees')} className="mt-4 bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150">
             Back to Employees
           </Button>
         </div>
@@ -242,11 +242,11 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
       {/* Header Section */}
       <div className="grid gap-6 md:grid-cols-2 mb-8">
         {/* Left: Profile */}
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
               <div className="relative">
-                <Avatar className="h-20 w-20">
+                <Avatar className="h-20 w-20 border-2 border-[#FFD700]">
                   <AvatarImage src={employee.avatar_url || undefined} />
                   <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-2xl">
                     {initials}
@@ -254,13 +254,13 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                 </Avatar>
               </div>
               <div className="flex-1">
-                <h1 className="text-2xl font-bold text-white">{employee.name}</h1>
-                <p className="text-gray-400 mt-1">{employee.email}</p>
+                <h1 className="font-bebas text-2xl text-[#F5F5F0]">{employee.name}</h1>
+                <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">{employee.email}</p>
                 <div className="flex items-center gap-2 mt-3">
-                  <Badge variant={employee.role === 'admin' ? 'default' : 'secondary'}>
+                  <Badge variant={employee.role === 'admin' ? 'default' : 'secondary'} className={employee.role === 'admin' ? "bg-[rgba(255,215,0,0.15)] text-[#FFD700] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
                     {employee.role}
                   </Badge>
-                  <span className="text-sm text-gray-500">
+                  <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
                     Joined {format(new Date(employee.created_at), 'MMM yyyy')}
                   </span>
                 </div>
@@ -270,7 +270,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
         </Card>
 
         {/* Right: Delete Button */}
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
           <CardContent className="pt-6 flex items-center justify-end h-full">
             <Button
               variant="destructive"
@@ -286,106 +286,106 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
 
       {/* KPI Row */}
       <div className="grid gap-4 md:grid-cols-4 mb-8">
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-              <FolderKanban className="h-4 w-4" />
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+              <FolderKanban className="h-5 w-5 text-[#FFD700]" />
               Total Projects
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{totalProjects}</div>
+            <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{totalProjects}</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-              <Clock className="h-4 w-4" />
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+              <Clock className="h-5 w-5 text-[#FFD700]" />
               Total Learning Hours
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{totalHours.toFixed(1)}h</div>
+            <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{totalHours.toFixed(1)}h</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-[#FFD700]" />
               Hours This Week
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{weeklyHours.toFixed(1)}h</div>
+            <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{weeklyHours.toFixed(1)}h</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-              <Flame className="h-4 w-4" />
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+              <Flame className="h-5 w-5 text-[#FFD700]" />
               Days Streak
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{streak}</div>
+            <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{streak}</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Tabbed Layout */}
       <Tabs defaultValue="projects" className="space-y-6">
-        <TabsList className="bg-gray-800 border-gray-700">
-          <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="timesheet">Timesheet</TabsTrigger>
-          <TabsTrigger value="badges">Badges</TabsTrigger>
+        <TabsList className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)]">
+          <TabsTrigger value="projects" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] font-space text-[13px]">Projects</TabsTrigger>
+          <TabsTrigger value="timesheet" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] font-space text-[13px]">Timesheet</TabsTrigger>
+          <TabsTrigger value="badges" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] font-space text-[13px]">Badges</TabsTrigger>
         </TabsList>
 
         {/* Tab 1: Projects */}
         <TabsContent value="projects">
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
             <CardHeader>
-              <CardTitle className="text-white">Enrolled Projects</CardTitle>
+              <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Enrolled Projects</CardTitle>
             </CardHeader>
             <CardContent>
               {projectsWithProgress.length === 0 ? (
-                <div className="py-12 text-center text-gray-500">
-                  No projects enrolled yet
+                <div className="py-12 text-center">
+                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No projects enrolled yet</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-gray-700 hover:bg-transparent">
-                      <TableHead className="text-gray-400">Project</TableHead>
-                      <TableHead className="text-gray-400">Skill</TableHead>
-                      <TableHead className="text-gray-400">Progress</TableHead>
-                      <TableHead className="text-gray-400">Status</TableHead>
+                    <TableRow className="border-[rgba(255,215,0,0.08)] hover:bg-transparent">
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Project</TableHead>
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Skill</TableHead>
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Progress</TableHead>
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {projectsWithProgress.map((item) => (
-                      <TableRow key={item.project_id} className="border-gray-700">
-                        <TableCell className="text-white font-medium">{item.project.title}</TableCell>
+                      <TableRow key={item.project_id} className="border-b border-[rgba(255,215,0,0.06)] hover:bg-[rgba(255,215,0,0.03)]">
+                        <TableCell className="font-space text-[13px] text-[#F5F5F0] font-medium">{item.project.title}</TableCell>
                         <TableCell>
                           {item.project.skill_tag && (
-                            <Badge variant="secondary">{item.project.skill_tag}</Badge>
+                            <Badge variant="secondary" className="bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1">{item.project.skill_tag}</Badge>
                           )}
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <div className="flex-1 h-2 bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-indigo-500 transition-all"
+                                className="h-full bg-[#FFD700] transition-all"
                                 style={{ width: `${item.progress}%` }}
                               />
                             </div>
-                            <span className="text-sm text-gray-400 min-w-[3rem]">{item.progress}%</span>
+                            <span className="font-space text-[13px] text-[rgba(245,245,240,0.5)] min-w-[3rem]">{item.progress}%</span>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={item.status === 'Completed' ? 'default' : 'secondary'}>
+                          <Badge variant={item.status === 'Completed' ? 'default' : 'secondary'} className={item.status === 'Completed' ? "bg-[rgba(34,197,94,0.12)] text-[#4ade80] border border-[rgba(74,222,128,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
                             {item.status}
                           </Badge>
                         </TableCell>
@@ -402,19 +402,19 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
         <TabsContent value="timesheet">
           <div className="space-y-6">
             {/* Controls */}
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <Label className="text-gray-400 flex items-center gap-2">
+                    <Label className="font-space text-[13px] text-[rgba(245,245,240,0.5)] flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       Date Range
                     </Label>
                     <Select value={timeRange} onValueChange={(v) => setTimeRange(v as TimeRange)}>
-                      <SelectTrigger className="w-48 bg-gray-700 border-gray-600 text-white">
+                      <SelectTrigger className="w-48 bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-700 border-gray-600">
+                      <SelectContent className="bg-[#1A1A1A] border-[rgba(255,215,0,0.15)]">
                         <SelectItem value="thisWeek">This Week</SelectItem>
                         <SelectItem value="thisMonth">This Month</SelectItem>
                         <SelectItem value="allTime">All Time</SelectItem>
@@ -424,7 +424,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                   <Button
                     onClick={exportCSV}
                     disabled={filteredTimesheets.length === 0}
-                    className="bg-indigo-600 hover:bg-indigo-700"
+                    className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150"
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Export CSV
@@ -434,31 +434,32 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
             </Card>
 
             {/* Chart */}
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
               <CardHeader>
-                <CardTitle className="text-white">Hours Trend</CardTitle>
+                <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Hours Trend</CardTitle>
               </CardHeader>
               <CardContent>
                 {chartData.length === 0 ? (
-                  <div className="h-[300px] flex items-center justify-center text-gray-500">
-                    No data available for selected range
+                  <div className="h-[300px] flex items-center justify-center">
+                    <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No data available for selected range</p>
                   </div>
                 ) : (
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                      <XAxis dataKey="date" stroke="#9ca3af" />
-                      <YAxis stroke="#9ca3af" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,215,0,0.1)" />
+                      <XAxis dataKey="date" stroke="rgba(245,245,240,0.5)" style={{ fontFamily: 'var(--font-space)', fontSize: 11 }} />
+                      <YAxis stroke="rgba(245,245,240,0.5)" style={{ fontFamily: 'var(--font-space)', fontSize: 11 }} />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: '#1f2937',
-                          border: '1px solid #374151',
+                          backgroundColor: '#1A1A1A',
+                          border: '1px solid rgba(255,215,0,0.15)',
                           borderRadius: '8px',
-                          color: '#fff',
+                          color: '#F5F5F0',
+                          fontFamily: 'var(--font-space)',
                         }}
                         formatter={(value: any) => [`${value}h`, 'Hours']}
                       />
-                      <Bar dataKey="hours" fill="#6366f1" radius={[8, 8, 0, 0]} />
+                      <Bar dataKey="hours" fill="#FFD700" radius={[8, 8, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 )}
@@ -466,36 +467,36 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
             </Card>
 
             {/* Table */}
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
               <CardHeader>
-                <CardTitle className="text-white">Work Sessions</CardTitle>
+                <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Work Sessions</CardTitle>
               </CardHeader>
               <CardContent>
                 {filteredTimesheets.length === 0 ? (
-                  <div className="py-12 text-center text-gray-500">
-                    No timesheet entries for selected range
+                  <div className="py-12 text-center">
+                    <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No timesheet entries for selected range</p>
                   </div>
                 ) : (
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-gray-700 hover:bg-transparent">
-                        <TableHead className="text-gray-400">Date</TableHead>
-                        <TableHead className="text-gray-400">Project</TableHead>
-                        <TableHead className="text-gray-400">Hours</TableHead>
-                        <TableHead className="text-gray-400">Notes</TableHead>
+                      <TableRow className="border-[rgba(255,215,0,0.08)] hover:bg-transparent">
+                        <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Date</TableHead>
+                        <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Project</TableHead>
+                        <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Hours</TableHead>
+                        <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Notes</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredTimesheets.map((ts) => (
-                        <TableRow key={ts.id} className="border-gray-700">
-                          <TableCell className="text-gray-300">
+                        <TableRow key={ts.id} className="border-b border-[rgba(255,215,0,0.06)] hover:bg-[rgba(255,215,0,0.03)]">
+                          <TableCell className="font-space text-[13px] text-[#F5F5F0]">
                             {format(parseISO(ts.work_date as any), 'EEE, MMM d, yyyy')}
                           </TableCell>
-                          <TableCell className="text-gray-300">{ts.project?.title || 'N/A'}</TableCell>
-                          <TableCell className="text-white font-medium">
+                          <TableCell className="font-space text-[13px] text-[#F5F5F0]">{ts.project?.title || 'N/A'}</TableCell>
+                          <TableCell className="font-space text-[13px] text-[#F5F5F0] font-medium">
                             {Number(ts.hours_logged).toFixed(1)}h
                           </TableCell>
-                          <TableCell className="text-gray-400">{ts.notes || '-'}</TableCell>
+                          <TableCell className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">{ts.notes || '-'}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -508,18 +509,18 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
 
         {/* Tab 3: Badges */}
         <TabsContent value="badges">
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Trophy className="h-5 w-5" />
+              <CardTitle className="font-bebas text-2xl text-[#F5F5F0] flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-[#FFD700]" />
                 Achievement Badges
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="py-12 text-center text-gray-500">
-                <Trophy className="h-12 w-12 mx-auto mb-4 text-gray-600" />
-                <p>No badges earned yet</p>
-                <p className="text-sm mt-2">Complete projects and tasks to earn achievement badges</p>
+              <div className="py-12 text-center">
+                <Trophy className="h-12 w-12 mx-auto mb-4 text-[rgba(255,215,0,0.3)]" />
+                <p className="font-space font-medium text-[#F5F5F0]">No badges earned yet</p>
+                <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-2">Complete projects and tasks to earn achievement badges</p>
               </div>
             </CardContent>
           </Card>

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { EmployeeProjectCard } from '@/components/employee/ProjectCard';
-import type { Project } from '@/types';
+import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmployeeProjectCard } from "@/components/employee/ProjectCard";
+import type { Project } from "@/types";
 
 interface ProjectWithProgress extends Project {
   progress?: {
@@ -19,13 +19,13 @@ export default function EmployeeDashboardPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch('/api/employee/projects');
+        const res = await fetch("/api/employee/projects");
         if (res.ok) {
           const data = await res.json();
           setProjects(data);
         }
       } catch (error) {
-        console.error('Failed to fetch projects:', error);
+        console.error("Failed to fetch projects:", error);
       } finally {
         setLoading(false);
       }
@@ -37,8 +37,10 @@ export default function EmployeeDashboardPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Projects</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">
+          MY PROJECTS
+        </h1>
+        <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] mt-1 font-medium">
           Continue your learning journey
         </p>
       </div>
@@ -46,16 +48,17 @@ export default function EmployeeDashboardPage() {
       {loading ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(3)].map((_, i) => (
-            <Skeleton key={i} className="h-80 bg-gray-200 dark:bg-gray-800" />
+            <Skeleton key={i} className="h-80 bg-[rgba(10,10,10,0.05)]" />
           ))}
         </div>
       ) : projects.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-12 text-center">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+        <div className="bg-white border border-[rgba(10,10,10,0.08)] rounded-lg p-12 text-center">
+          <h3 className="font-space text-lg font-medium text-[#0A0A0A] mb-2">
             No projects yet
           </h3>
-          <p className="text-gray-500">
-            You haven&apos;t been assigned to any projects. Contact your administrator to get started.
+          <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
+            You haven&apos;t been assigned to any projects. Contact your
+            administrator to get started.
           </p>
         </div>
       ) : (

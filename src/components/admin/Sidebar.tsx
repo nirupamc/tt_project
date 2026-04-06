@@ -34,9 +34,9 @@ export function Sidebar() {
 
   const NavContent = () => (
     <>
-      <div className="px-6 py-6">
-        <h1 className="text-xl font-bold text-white">TanTech Admin</h1>
-        <p className="text-sm text-gray-400 mt-1">Upskill Platform</p>
+      <div className="px-6 py-6 border-b border-[rgba(255,215,0,0.2)]">
+        <h1 className="font-bebas text-[28px] text-[#FFD700] leading-none">TANTECH</h1>
+        <p className="font-space text-[11px] tracking-[4px] text-[rgba(245,245,240,0.4)] mt-1">UPSKILL</p>
       </div>
       <ScrollArea className="flex-1 px-3">
         <nav className="space-y-1">
@@ -49,10 +49,10 @@ export function Sidebar() {
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "flex items-center gap-3 px-3 py-2 rounded-lg font-space text-[14px] transition-all duration-200",
                   isActive
-                    ? "bg-gray-700 text-white"
-                    : "text-gray-400 hover:text-white hover:bg-gray-700/50",
+                    ? "bg-[rgba(255,215,0,0.08)] border-l-[3px] border-l-[#FFD700] text-[#FFD700]"
+                    : "text-[rgba(245,245,240,0.6)] hover:bg-[rgba(255,215,0,0.05)] hover:text-[#F5F5F0]",
                 )}
               >
                 <Icon className="h-5 w-5" />
@@ -62,10 +62,10 @@ export function Sidebar() {
           })}
         </nav>
       </ScrollArea>
-      <div className="p-4 border-t border-gray-700">
+      <div className="p-4 border-t border-[rgba(255,215,0,0.2)]">
         <Button
           variant="ghost"
-          className="w-full justify-start text-gray-400 hover:text-white hover:bg-gray-700/50"
+          className="w-full justify-start text-[rgba(245,245,240,0.6)] hover:text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.05)] font-space text-[14px]"
           onClick={handleSignOut}
         >
           <LogOut className="h-5 w-5 mr-3" />
@@ -78,12 +78,12 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
-        <h1 className="text-lg font-bold text-white">TanTech Admin</h1>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A] border-b border-[rgba(255,215,0,0.2)] px-4 py-3 flex items-center justify-between">
+        <h1 className="font-bebas text-[22px] text-[#FFD700]">TANTECH</h1>
         <Button
           variant="ghost"
           size="icon"
-          className="text-white"
+          className="text-[#FFD700]"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? (
@@ -105,7 +105,7 @@ export function Sidebar() {
       {/* Mobile sidebar */}
       <aside
         className={cn(
-          "lg:hidden fixed top-0 left-0 z-50 h-full w-64 bg-gray-900 border-r border-gray-700 transform transition-transform duration-200 flex flex-col",
+          "lg:hidden fixed top-0 left-0 z-50 h-full w-64 bg-[#0A0A0A] border-r border-[rgba(255,215,0,0.2)] transform transition-transform duration-200 flex flex-col",
           mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -113,7 +113,7 @@ export function Sidebar() {
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed top-0 left-0 z-40 h-full w-64 bg-gray-900 border-r border-gray-700 flex-col">
+      <aside className="hidden lg:flex fixed top-0 left-0 z-40 h-full w-64 bg-[#0A0A0A] border-r border-[rgba(255,215,0,0.2)] flex-col">
         <NavContent />
       </aside>
     </>

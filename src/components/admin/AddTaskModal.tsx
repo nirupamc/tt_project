@@ -157,35 +157,35 @@ export function AddTaskModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Add New Task</DialogTitle>
-          <DialogDescription className="text-gray-400">
+      <DialogContent className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] rounded-2xl text-[#F5F5F0] max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="border-b border-[rgba(255,215,0,0.1)] pb-4">
+          <DialogTitle className="font-space text-lg font-semibold text-[#F5F5F0]">Add New Task</DialogTitle>
+          <DialogDescription className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">
             Create a task for this day.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="task_type">Task Type</Label>
+              <Label htmlFor="task_type" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Task Type</Label>
               <Select
                 value={taskType}
                 onValueChange={(val) => setTaskType(val as TaskType)}
               >
-                <SelectTrigger className="bg-gray-700 border-gray-600">
+                <SelectTrigger className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-700 border-gray-600">
-                  <SelectItem value="reading">📖 Reading</SelectItem>
-                  <SelectItem value="coding">💻 Coding</SelectItem>
-                  <SelectItem value="quiz">📝 Quiz</SelectItem>
-                  <SelectItem value="video">🎬 Video</SelectItem>
+                <SelectContent className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0]">
+                  <SelectItem value="reading" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">📖 Reading</SelectItem>
+                  <SelectItem value="coding" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">💻 Coding</SelectItem>
+                  <SelectItem value="quiz" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">📝 Quiz</SelectItem>
+                  <SelectItem value="video" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">🎬 Video</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="title">Task Title *</Label>
+              <Label htmlFor="title" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Task Title *</Label>
               <Input
                 id="title"
                 value={formData.title}
@@ -194,12 +194,12 @@ export function AddTaskModal({
                 }
                 placeholder="Introduction to Components"
                 required
-                className="bg-gray-700 border-gray-600"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] placeholder:text-[rgba(245,245,240,0.3)] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
@@ -208,14 +208,14 @@ export function AddTaskModal({
                 }
                 placeholder="A brief overview..."
                 rows={2}
-                className="bg-gray-700 border-gray-600"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] placeholder:text-[rgba(245,245,240,0.3)] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <Label htmlFor="is_required">Required Task</Label>
-                <p className="text-sm text-gray-500">
+                <Label htmlFor="is_required" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Required Task</Label>
+                <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
                   Must complete for day progress
                 </p>
               </div>
@@ -232,7 +232,7 @@ export function AddTaskModal({
             {taskType === "reading" && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="reading_time">Reading Time (minutes)</Label>
+                  <Label htmlFor="reading_time" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Reading Time (minutes)</Label>
                   <Input
                     id="reading_time"
                     type="number"
@@ -244,11 +244,11 @@ export function AddTaskModal({
                         reading_time_minutes: parseInt(e.target.value) || 15,
                       })
                     }
-                    className="bg-gray-700 border-gray-600"
+                    className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="reading_content">Content (Markdown)</Label>
+                  <Label htmlFor="reading_content" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Content (Markdown)</Label>
                   <Textarea
                     id="reading_content"
                     value={formData.reading_content_md}
@@ -260,7 +260,7 @@ export function AddTaskModal({
                     }
                     placeholder="# Heading\n\nYour content here..."
                     rows={8}
-                    className="bg-gray-700 border-gray-600 font-mono text-sm"
+                    className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] placeholder:text-[rgba(245,245,240,0.3)] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] font-mono text-sm"
                   />
                 </div>
               </>
@@ -270,7 +270,7 @@ export function AddTaskModal({
             {taskType === "coding" && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="coding_language">Language</Label>
+                  <Label htmlFor="coding_language" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Language</Label>
                   <Select
                     value={formData.coding_language}
                     onValueChange={(val) =>
@@ -280,22 +280,22 @@ export function AddTaskModal({
                       })
                     }
                   >
-                    <SelectTrigger className="bg-gray-700 border-gray-600">
+                    <SelectTrigger className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="javascript">JavaScript</SelectItem>
-                      <SelectItem value="typescript">TypeScript</SelectItem>
-                      <SelectItem value="jsx">JSX</SelectItem>
-                      <SelectItem value="tsx">TSX</SelectItem>
-                      <SelectItem value="python">Python</SelectItem>
-                      <SelectItem value="html">HTML</SelectItem>
-                      <SelectItem value="css">CSS</SelectItem>
+                    <SelectContent className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0]">
+                      <SelectItem value="javascript" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">JavaScript</SelectItem>
+                      <SelectItem value="typescript" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">TypeScript</SelectItem>
+                      <SelectItem value="jsx" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">JSX</SelectItem>
+                      <SelectItem value="tsx" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">TSX</SelectItem>
+                      <SelectItem value="python" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">Python</SelectItem>
+                      <SelectItem value="html" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">HTML</SelectItem>
+                      <SelectItem value="css" className="text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.1)] hover:text-[#FFD700] cursor-pointer">CSS</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="starter_code">Starter Code</Label>
+                  <Label htmlFor="starter_code" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Starter Code</Label>
                   <Textarea
                     id="starter_code"
                     value={formData.coding_starter_code}
@@ -307,7 +307,7 @@ export function AddTaskModal({
                     }
                     placeholder="function hello() {\n  // your code here\n}"
                     rows={8}
-                    className="bg-gray-700 border-gray-600 font-mono text-sm"
+                    className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] placeholder:text-[rgba(245,245,240,0.3)] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] font-mono text-sm"
                   />
                 </div>
               </>
@@ -316,14 +316,14 @@ export function AddTaskModal({
             {/* Quiz-specific fields */}
             {taskType === "quiz" && (
               <div className="space-y-4">
-                <Label>Quiz Questions</Label>
+                <Label className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Quiz Questions</Label>
                 {formData.quiz_questions.map((q, qIndex) => (
                   <div
                     key={qIndex}
-                    className="p-4 bg-gray-700/50 rounded-lg space-y-3"
+                    className="p-4 bg-[rgba(255,215,0,0.05)] border border-[rgba(255,215,0,0.1)] rounded-lg space-y-3"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">
+                      <span className="font-space text-sm font-medium text-[#F5F5F0]">
                         Question {qIndex + 1}
                       </span>
                       {formData.quiz_questions.length > 1 && (
@@ -344,7 +344,7 @@ export function AddTaskModal({
                         updateQuizQuestion(qIndex, "question", e.target.value)
                       }
                       placeholder="What is React?"
-                      className="bg-gray-700 border-gray-600"
+                      className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] placeholder:text-[rgba(245,245,240,0.3)] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
                     />
                     <div className="space-y-2">
                       {q.options.map((opt, optIndex) => (
@@ -370,7 +370,7 @@ export function AddTaskModal({
                               updateQuizQuestion(qIndex, "options", newOptions);
                             }}
                             placeholder={`Option ${optIndex + 1}`}
-                            className="bg-gray-700 border-gray-600"
+                            className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] placeholder:text-[rgba(245,245,240,0.3)] focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
                           />
                         </div>
                       ))}
@@ -381,6 +381,7 @@ export function AddTaskModal({
                   type="button"
                   variant="outline"
                   onClick={addQuizQuestion}
+                  className="border border-[rgba(255,215,0,0.3)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)]"
                 >
                   Add Question
                 </Button>
@@ -392,10 +393,11 @@ export function AddTaskModal({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              className="border-2 border-[rgba(255,215,0,0.4)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] hover:border-[#FFD700] font-space font-semibold"
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] active:bg-[#C8A800] font-space font-semibold transition-all duration-150">
               {isLoading ? "Creating..." : "Create Task"}
             </Button>
           </DialogFooter>

@@ -222,21 +222,21 @@ export default function AdminTimesheetsPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white">Timesheets</h1>
-        <p className="text-gray-400 mt-1">Track employee work hours across all projects</p>
+        <h1 className="font-bebas text-4xl text-[#F5F5F0]">Timesheets</h1>
+        <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">Track employee work hours across all projects</p>
       </div>
 
       {/* Controls Bar */}
-      <Card className="bg-gray-800 border-gray-700 mb-6">
+      <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl mb-6">
         <CardContent className="pt-6">
           <div className="grid gap-4 md:grid-cols-3">
             <div className="space-y-2">
-              <Label className="text-gray-400">Employee</Label>
+              <Label className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Employee</Label>
               <Select value={selectedUserId} onValueChange={(value) => setSelectedUserId(value || '')}>
-                <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                <SelectTrigger className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
                   <SelectValue placeholder="All Employees" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-700 border-gray-600">
+                <SelectContent className="bg-[#1A1A1A] border-[rgba(255,215,0,0.15)]">
                   <SelectItem value="">All Employees</SelectItem>
                   {users.map((u) => (
                     <SelectItem key={u.id} value={u.id}>
@@ -248,12 +248,12 @@ export default function AdminTimesheetsPage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-gray-400">Date Range</Label>
+              <Label className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Date Range</Label>
               <Select value={dateRange} onValueChange={(v) => setDateRange(v as DateRange)}>
-                <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                <SelectTrigger className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-700 border-gray-600">
+                <SelectContent className="bg-[#1A1A1A] border-[rgba(255,215,0,0.15)]">
                   <SelectItem value="thisWeek">This Week</SelectItem>
                   <SelectItem value="lastWeek">Last Week</SelectItem>
                   <SelectItem value="thisMonth">This Month</SelectItem>
@@ -262,11 +262,11 @@ export default function AdminTimesheetsPage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-gray-400">Actions</Label>
+              <Label className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Actions</Label>
               <Button
                 onClick={exportCSV}
                 disabled={filteredTimesheets.length === 0}
-                className="w-full bg-indigo-600 hover:bg-indigo-700"
+                className="w-full bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Export CSV
@@ -279,7 +279,7 @@ export default function AdminTimesheetsPage() {
       {loading ? (
         <div className="space-y-4">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-32 bg-gray-800" />
+            <Skeleton key={i} className="h-32 bg-[#2A2A2A]" />
           ))}
         </div>
       ) : selectedUserId ? (
@@ -288,95 +288,96 @@ export default function AdminTimesheetsPage() {
           <div className="grid gap-6 md:grid-cols-2 mb-6">
             {/* Left: Summary Stats */}
             <div className="space-y-4">
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
+                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-[#FFD700]" />
                     Total Hours
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-4xl font-bold text-white">{totalHours.toFixed(1)}h</div>
-                  <p className="text-xs text-gray-500 mt-1">of {targetHours}h target</p>
+                  <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{totalHours.toFixed(1)}h</div>
+                  <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)] mt-1">of {targetHours}h target</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4" />
+                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-[#FFD700]" />
                     Daily Average
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-4xl font-bold text-white">{dailyAverage.toFixed(1)}h</div>
-                  <p className="text-xs text-gray-500 mt-1">per day</p>
+                  <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{dailyAverage.toFixed(1)}h</div>
+                  <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)] mt-1">per day</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-                    <Target className="h-4 w-4" />
+                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+                    <Target className="h-5 w-5 text-[#FFD700]" />
                     Target Status
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Badge variant={targetMet ? "default" : "secondary"}>
+                  <Badge variant={targetMet ? "default" : "secondary"} className={targetMet ? "bg-[rgba(34,197,94,0.12)] text-[#4ade80] border border-[rgba(74,222,128,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
                     {targetMet ? '✓ On Track' : 'Behind'}
                   </Badge>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
-                    <Flame className="h-4 w-4" />
+                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
+                    <Flame className="h-5 w-5 text-[#FFD700]" />
                     Streak
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-4xl font-bold text-white">{streak}</div>
-                  <p className="text-xs text-gray-500 mt-1">consecutive days</p>
+                  <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{streak}</div>
+                  <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)] mt-1">consecutive days</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Right: Area Chart */}
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
               <CardHeader>
-                <CardTitle className="text-white text-lg">Hours Trend</CardTitle>
+                <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Hours Trend</CardTitle>
               </CardHeader>
               <CardContent>
                 {chartData.length === 0 ? (
-                  <div className="h-[400px] flex items-center justify-center text-gray-500">
-                    No data available
+                  <div className="h-[400px] flex items-center justify-center">
+                    <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No data available</p>
                   </div>
                 ) : (
                   <ResponsiveContainer width="100%" height={400}>
                     <AreaChart data={chartData}>
                       <defs>
                         <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
-                          <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                          <stop offset="5%" stopColor="#FFD700" stopOpacity={0.3} />
+                          <stop offset="95%" stopColor="#FFD700" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                      <XAxis dataKey="date" stroke="#9ca3af" />
-                      <YAxis stroke="#9ca3af" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,215,0,0.1)" />
+                      <XAxis dataKey="date" stroke="rgba(245,245,240,0.5)" style={{ fontFamily: 'var(--font-space)', fontSize: 11 }} />
+                      <YAxis stroke="rgba(245,245,240,0.5)" style={{ fontFamily: 'var(--font-space)', fontSize: 11 }} />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: '#1f2937',
-                          border: '1px solid #374151',
+                          backgroundColor: '#1A1A1A',
+                          border: '1px solid rgba(255,215,0,0.15)',
                           borderRadius: '8px',
-                          color: '#fff',
+                          color: '#F5F5F0',
+                          fontFamily: 'var(--font-space)',
                         }}
                         formatter={(value: any) => [`${value}h`, 'Hours']}
                       />
                       <Area
                         type="monotone"
                         dataKey="hours"
-                        stroke="#6366f1"
+                        stroke="#FFD700"
                         strokeWidth={2}
                         fillOpacity={1}
                         fill="url(#colorHours)"
@@ -389,31 +390,31 @@ export default function AdminTimesheetsPage() {
           </div>
 
           {/* Sessions Table */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
             <CardHeader>
-              <CardTitle className="text-white">Work Sessions</CardTitle>
+              <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Work Sessions</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow className="border-gray-700 hover:bg-transparent">
-                    <TableHead className="text-gray-400">Date</TableHead>
-                    <TableHead className="text-gray-400">Project</TableHead>
-                    <TableHead className="text-gray-400">Hours</TableHead>
-                    <TableHead className="text-gray-400">Notes</TableHead>
+                  <TableRow className="border-[rgba(255,215,0,0.08)] hover:bg-transparent">
+                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Date</TableHead>
+                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Project</TableHead>
+                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Hours</TableHead>
+                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Notes</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredTimesheets.map((ts) => (
-                    <TableRow key={ts.id} className="border-gray-700">
-                      <TableCell className="text-gray-300">
+                    <TableRow key={ts.id} className="border-b border-[rgba(255,215,0,0.06)] hover:bg-[rgba(255,215,0,0.03)]">
+                      <TableCell className="font-space text-[13px] text-[#F5F5F0]">
                         {format(parseISO(ts.work_date as any), 'EEE, MMM d, yyyy')}
                       </TableCell>
-                      <TableCell className="text-gray-300">{ts.project?.title || 'N/A'}</TableCell>
-                      <TableCell className="text-white font-medium">
+                      <TableCell className="font-space text-[13px] text-[#F5F5F0]">{ts.project?.title || 'N/A'}</TableCell>
+                      <TableCell className="font-space text-[13px] text-[#F5F5F0] font-medium">
                         {Number(ts.hours_logged).toFixed(1)}h
                       </TableCell>
-                      <TableCell className="text-gray-400">{ts.notes || '-'}</TableCell>
+                      <TableCell className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">{ts.notes || '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -424,53 +425,53 @@ export default function AdminTimesheetsPage() {
       ) : (
         <>
           {/* All Employees Table */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Users className="h-5 w-5" />
+              <CardTitle className="font-bebas text-2xl text-[#F5F5F0] flex items-center gap-2">
+                <Users className="h-5 w-5 text-[#FFD700]" />
                 All Employees
               </CardTitle>
             </CardHeader>
             <CardContent>
               {userSummaries.length === 0 ? (
-                <div className="py-12 text-center text-gray-500">
-                  No timesheet data available
+                <div className="py-12 text-center">
+                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No timesheet data available</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-gray-700 hover:bg-transparent">
-                      <TableHead className="text-gray-400">Employee</TableHead>
-                      <TableHead className="text-gray-400">Period Hours</TableHead>
-                      <TableHead className="text-gray-400">Target</TableHead>
-                      <TableHead className="text-gray-400">Streak</TableHead>
-                      <TableHead className="text-gray-400">Status</TableHead>
+                    <TableRow className="border-[rgba(255,215,0,0.08)] hover:bg-transparent">
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Employee</TableHead>
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Period Hours</TableHead>
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Target</TableHead>
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Streak</TableHead>
+                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {userSummaries.map(({ user, hours, target, streak, status }) => {
                       const initials = user.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || '?';
                       return (
-                        <TableRow key={user.id} className="border-gray-700">
+                        <TableRow key={user.id} className="border-b border-[rgba(255,215,0,0.06)] hover:bg-[rgba(255,215,0,0.03)]">
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <Avatar className="h-8 w-8">
+                              <Avatar className="h-8 w-8 border-2 border-[#FFD700]">
                                 <AvatarImage src={user.avatar_url || undefined} />
-                                <AvatarFallback className="bg-gray-600 text-xs">{initials}</AvatarFallback>
+                                <AvatarFallback className="bg-[#1A1A1A] text-[#F5F5F0] font-space text-xs">{initials}</AvatarFallback>
                               </Avatar>
                               <div>
-                                <p className="font-medium text-white">{user.name}</p>
-                                <p className="text-xs text-gray-500">{user.email}</p>
+                                <p className="font-space font-medium text-[#F5F5F0]">{user.name}</p>
+                                <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">{user.email}</p>
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="text-white font-medium">{hours.toFixed(1)}h</TableCell>
-                          <TableCell className="text-gray-300">{target}h</TableCell>
-                          <TableCell className="text-gray-300">
+                          <TableCell className="font-space text-[13px] text-[#F5F5F0] font-medium">{hours.toFixed(1)}h</TableCell>
+                          <TableCell className="font-space text-[13px] text-[#F5F5F0]">{target}h</TableCell>
+                          <TableCell className="font-space text-[13px] text-[#F5F5F0]">
                             {streak >= 3 ? '🔥 ' : ''}{streak} days
                           </TableCell>
                           <TableCell>
-                            <Badge variant={status === 'On Track' ? 'default' : 'secondary'}>
+                            <Badge variant={status === 'On Track' ? 'default' : 'secondary'} className={status === 'On Track' ? "bg-[rgba(34,197,94,0.12)] text-[#4ade80] border border-[rgba(74,222,128,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
                               {status}
                             </Badge>
                           </TableCell>

@@ -9,7 +9,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Project, ProjectDayWithTasks, DayStatus } from '@/types';
 import { ArrowLeft, Lock, CheckCircle, PlayCircle, Calendar } from 'lucide-react';
-import { differenceInDays, isWeekend, addDays, format } from 'date-fns';
+import { format } from 'date-fns';
+import { isDayUnlocked } from '@/lib/day-unlock';
 
 interface ProjectDayWithStatus extends ProjectDayWithTasks {
   status: DayStatus;
@@ -19,35 +20,25 @@ interface ProjectDayWithStatus extends ProjectDayWithTasks {
 function calculateDayStatus(
   dayNumber: number,
   startDate: string | null,
-  weekdaysOnly: boolean,
+  totalDays: number,
   completedDayNumbers: Set<number>
 ): DayStatus {
+  // Priority 1: If all required tasks completed, show as completed
   if (completedDayNumbers.has(dayNumber)) {
     return 'completed';
   }
 
+  // Priority 2: If no start date, only Day 1 is available
   if (!startDate) {
     return dayNumber === 1 ? 'available' : 'locked';
   }
 
-  const start = new Date(startDate);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  let currentDay = 0;
-  let date = new Date(start);
-
-  while (date <= today) {
-    if (!weekdaysOnly || !isWeekend(date)) {
-      currentDay++;
-    }
-    date = addDays(date, 1);
-  }
-
-  if (dayNumber <= currentDay) {
+  // Priority 3: Check if day is unlocked based on CT timezone logic
+  if (isDayUnlocked(startDate, dayNumber, totalDays)) {
     return 'available';
   }
 
+  // Default: locked
   return 'locked';
 }
 
@@ -70,6 +61,11 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
         const projectData = await projectRes.json();
         setProject(projectData.project);
 
+        console.log('[project-page] project.start_date:', projectData.project.start_date);
+        console.log('[project-page] project.total_days:', projectData.project.total_days);
+        console.log('[project-page] isDayUnlocked result for day 1:', 
+          isDayUnlocked(projectData.project.start_date, 1, projectData.project.total_days));
+
         // Calculate day statuses
         const completedDayNumbers = new Set<number>(
           projectData.completed_day_numbers || []
@@ -80,7 +76,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
           status: calculateDayStatus(
             day.day_number,
             projectData.project.start_date,
-            projectData.project.weekdays_only,
+            projectData.project.total_days,
             completedDayNumbers
           ),
           is_completed: completedDayNumbers.has(day.day_number),
@@ -100,8 +96,8 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
   if (loading) {
     return (
       <div>
-        <Skeleton className="h-8 w-64 bg-gray-200 dark:bg-gray-800 mb-4" />
-        <Skeleton className="h-64 bg-gray-200 dark:bg-gray-800" />
+        <Skeleton className="h-8 w-64 bg-[rgba(10,10,10,0.05)] mb-4" />
+        <Skeleton className="h-64 bg-[rgba(10,10,10,0.05)]" />
       </div>
     );
   }
@@ -109,21 +105,15 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
   if (!project) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Project not found or you don&apos;t have access.</p>
+        <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">Project not found or you don&apos;t have access.</p>
       </div>
     );
   }
 
   const statusIcons = {
-    locked: <Lock className="h-5 w-5 text-gray-400" />,
-    available: <PlayCircle className="h-5 w-5 text-blue-500" />,
-    completed: <CheckCircle className="h-5 w-5 text-green-500" />,
-  };
-
-  const statusColors = {
-    locked: 'bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700',
-    available: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
-    completed: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+    locked: <Lock className="h-5 w-5 text-[rgba(10,10,10,0.4)]" />,
+    available: <PlayCircle className="h-5 w-5 text-[#FFD700]" />,
+    completed: <CheckCircle className="h-5 w-5 text-[#FFD700]" />,
   };
 
   return (
@@ -131,7 +121,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
       <div className="mb-6">
         <Link
           href="/dashboard"
-          className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
+          className="inline-flex items-center font-space text-[13px] text-[rgba(10,10,10,0.6)] hover:text-[#0A0A0A] mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Projects
@@ -140,15 +130,15 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
 
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{project.title}</h1>
+          <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">{project.title.toUpperCase()}</h1>
           {project.skill_tag && (
-            <Badge variant="secondary">{project.skill_tag}</Badge>
+            <Badge variant="secondary" className="bg-[rgba(255,215,0,0.12)] text-[#C8A800] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase">{project.skill_tag}</Badge>
           )}
         </div>
-        <p className="text-gray-600 dark:text-gray-400">{project.description}</p>
+        <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] leading-relaxed">{project.description}</p>
         {project.start_date && (
-          <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
-            <Calendar className="h-4 w-4" />
+          <div className="flex items-center gap-2 mt-3 font-space text-[13px] text-[rgba(10,10,10,0.65)] font-medium">
+            <Calendar className="h-4 w-4 text-[rgba(10,10,10,0.5)]" />
             <span>Started {format(new Date(project.start_date), 'MMMM d, yyyy')}</span>
           </div>
         )}
@@ -156,42 +146,48 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
 
       <div className="space-y-3">
         {days.length === 0 ? (
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white border border-[rgba(10,10,10,0.08)]">
             <CardContent className="py-12 text-center">
-              <p className="text-gray-500">No content available yet.</p>
+              <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">No content available yet.</p>
             </CardContent>
           </Card>
         ) : (
           days.map((day) => (
             <Card
               key={day.id}
-              className={`border ${statusColors[day.status]} transition-colors`}
+              className={`border transition-all duration-200 ${
+                day.status === 'completed'
+                  ? 'bg-[rgba(255,215,0,0.06)] border border-[rgba(255,215,0,0.25)] border-l-[3px] border-l-[#FFD700]'
+                  : day.status === 'available'
+                  ? 'bg-white border border-[rgba(10,10,10,0.1)] hover:border-[#FFD700] hover:shadow-[0_4px_16px_rgba(255,215,0,0.1)]'
+                  : 'bg-[#F5F5F3] border border-[rgba(10,10,10,0.06)] opacity-60'
+              }`}
             >
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     {statusIcons[day.status]}
                     <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
-                        Day {day.day_number}: {day.title || 'Untitled'}
+                      <h3 className="font-bebas text-[20px] text-[#0A0A0A] tracking-wide">
+                        DAY {day.day_number}: {day.title?.toUpperCase() || 'UNTITLED'}
                       </h3>
-                      <p className="text-sm text-gray-500">
-                        {day.tasks?.length || 0} tasks
+                      <p className="font-space text-[13px] font-medium text-[rgba(10,10,10,0.65)]">
+                        {day.tasks?.length || 0} task{(day.tasks?.length || 0) !== 1 ? 's' : ''}
                       </p>
                     </div>
                   </div>
                   {day.status === 'available' && (
                     <Link href={`/dashboard/projects/${id}/day/${day.day_number}`}>
-                      <Button>Start</Button>
+                      <Button className="bg-[#0A0A0A] text-[#FFD700] hover:bg-[#1A1A1A] font-space text-[13px] font-semibold tracking-wider">Start</Button>
                     </Link>
                   )}
                   {day.status === 'completed' && (
                     <Link href={`/dashboard/projects/${id}/day/${day.day_number}`}>
-                      <Button variant="outline">Review</Button>
+                      <Button variant="outline" className="border border-[rgba(255,215,0,0.3)] text-[#C8A800] hover:bg-[rgba(255,215,0,0.08)] font-space text-[13px] font-semibold tracking-wider">Review</Button>
                     </Link>
                   )}
                   {day.status === 'locked' && (
-                    <Badge variant="secondary">Locked</Badge>
+                    <Badge variant="secondary" className="bg-[rgba(10,10,10,0.08)] text-[rgba(10,10,10,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase border border-[rgba(10,10,10,0.15)]">Locked</Badge>
                   )}
                 </div>
               </CardContent>

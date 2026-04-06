@@ -84,8 +84,8 @@ export default function ProjectDetailPage({
   if (loading) {
     return (
       <div className="p-6 lg:p-8">
-        <Skeleton className="h-8 w-64 bg-gray-800 mb-4" />
-        <Skeleton className="h-64 bg-gray-800" />
+        <Skeleton className="h-8 w-64 bg-[#2A2A2A] mb-4" />
+        <Skeleton className="h-64 bg-[#2A2A2A]" />
       </div>
     );
   }
@@ -93,7 +93,7 @@ export default function ProjectDetailPage({
   if (!project) {
     return (
       <div className="p-6 lg:p-8">
-        <p className="text-gray-500">Project not found.</p>
+        <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Project not found.</p>
       </div>
     );
   }
@@ -105,7 +105,7 @@ export default function ProjectDetailPage({
       <div className="mb-6">
         <Link
           href="/admin/projects"
-          className="inline-flex items-center text-gray-400 hover:text-white mb-4"
+          className="inline-flex items-center text-[#FFD700] hover:text-[#FFE44D] font-space mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Projects
@@ -115,24 +115,24 @@ export default function ProjectDetailPage({
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold text-white">{project.title}</h1>
+            <h1 className="font-bebas text-4xl text-[#F5F5F0]">{project.title}</h1>
             <Badge
-              className={project.is_published ? "bg-green-600" : "bg-gray-600"}
+              className={project.is_published ? "bg-[rgba(255,215,0,0.15)] text-[#FFD700] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}
             >
               {project.is_published ? "Published" : "Draft"}
             </Badge>
-            {project.is_active && <Badge className="bg-blue-600">Active</Badge>}
+            {project.is_active && <Badge className="bg-[rgba(34,197,94,0.12)] text-[#4ade80] border border-[rgba(74,222,128,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1">Active</Badge>}
           </div>
           {project.skill_tag && (
-            <Badge variant="outline" className="border-gray-600 text-gray-400">
+            <Badge variant="outline" className="border-[rgba(255,215,0,0.3)] text-[#FFD700] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1">
               {project.skill_tag}
             </Badge>
           )}
-          <p className="text-gray-400 mt-2 max-w-2xl">{project.description}</p>
+          <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-2 max-w-2xl">{project.description}</p>
         </div>
         <div className="flex gap-2">
           <Link href={`/admin/projects/${id}/build`}>
-            <Button variant="outline">
+            <Button variant="outline" className="bg-transparent border border-[rgba(255,215,0,0.3)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] hover:border-[#FFD700] font-space text-[13px] font-semibold tracking-wider">
               <Pencil className="h-4 w-4 mr-2" />
               Build Days
             </Button>
@@ -141,28 +141,28 @@ export default function ProjectDetailPage({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3 mb-8">
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
           <CardContent className="p-6 flex items-center gap-4">
-            <div className="p-3 rounded-lg bg-blue-400/10">
-              <Clock className="h-6 w-6 text-blue-400" />
+            <div>
+              <Clock className="h-5 w-5 text-[#FFD700]" />
             </div>
             <div>
-              <p className="text-sm text-gray-400">Duration</p>
-              <p className="text-2xl font-bold text-white">
-                {project.total_days} days
+              <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)]">Duration</p>
+              <p className="font-bebas text-[42px] text-[#F5F5F0] leading-none">
+                {project.total_days}
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
           <CardContent className="p-6 flex items-center gap-4">
-            <div className="p-3 rounded-lg bg-green-400/10">
-              <Calendar className="h-6 w-6 text-green-400" />
+            <div>
+              <Calendar className="h-5 w-5 text-[#FFD700]" />
             </div>
             <div>
-              <p className="text-sm text-gray-400">Start Date</p>
-              <p className="text-2xl font-bold text-white">
+              <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)]">Start Date</p>
+              <p className="font-space text-[13px] text-[#F5F5F0]">
                 {project.start_date
                   ? format(new Date(project.start_date), "MMM d, yyyy")
                   : "Not set"}
@@ -171,35 +171,35 @@ export default function ProjectDetailPage({
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
           <CardContent className="p-6 flex items-center gap-4">
-            <div className="p-3 rounded-lg bg-purple-400/10">
-              <Users className="h-6 w-6 text-purple-400" />
+            <div>
+              <Users className="h-5 w-5 text-[#FFD700]" />
             </div>
             <div>
-              <p className="text-sm text-gray-400">Enrolled</p>
-              <p className="text-2xl font-bold text-white">
-                {project.enrollments.length} employees
+              <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)]">Enrolled</p>
+              <p className="font-bebas text-[42px] text-[#F5F5F0] leading-none">
+                {project.enrollments.length}
               </p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Separator className="bg-gray-700 mb-8" />
+      <Separator className="border-[rgba(255,215,0,0.1)] mb-8" />
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-white">Enrolled Employees</CardTitle>
-            <Button size="sm" onClick={() => setAssignModalOpen(true)}>
+            <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Enrolled Employees</CardTitle>
+            <Button size="sm" onClick={() => setAssignModalOpen(true)} className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150">
               <UserPlus className="h-4 w-4 mr-2" />
               Add
             </Button>
           </CardHeader>
           <CardContent>
             {project.enrollments.length === 0 ? (
-              <p className="text-gray-500 text-sm">
+              <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
                 No employees enrolled yet.
               </p>
             ) : (
@@ -217,24 +217,24 @@ export default function ProjectDetailPage({
                   return (
                     <div
                       key={enrollment.id}
-                      className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-[#1A1A1A] border border-[rgba(255,215,0,0.08)] rounded-lg hover:bg-[rgba(255,215,0,0.03)]"
                     >
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
+                        <Avatar className="h-10 w-10 border-2 border-[#FFD700]">
                           <AvatarImage src={user.avatar_url || undefined} />
-                          <AvatarFallback className="bg-gray-600">
+                          <AvatarFallback className="bg-[#1A1A1A] text-[#F5F5F0]">
                             {initials}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium text-white">{user.name}</p>
-                          <p className="text-sm text-gray-400">{user.email}</p>
+                          <p className="font-space font-medium text-[#F5F5F0]">{user.name}</p>
+                          <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">{user.email}</p>
                         </div>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="text-gray-400 hover:text-red-400"
+                        className="text-[rgba(245,245,240,0.5)] hover:text-red-400"
                         onClick={() => handleRemoveEnrollment(user.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -247,18 +247,18 @@ export default function ProjectDetailPage({
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
           <CardHeader>
-            <CardTitle className="text-white">Project Days Overview</CardTitle>
+            <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Project Days Overview</CardTitle>
           </CardHeader>
           <CardContent>
             {project.days.length === 0 ? (
-              <div className="text-center py-6">
-                <p className="text-gray-500 text-sm mb-4">
+              <div className="text-center py-6 bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-lg">
+                <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mb-4">
                   No days configured yet.
                 </p>
                 <Link href={`/admin/projects/${id}/build`}>
-                  <Button>Build Days</Button>
+                  <Button className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150">Build Days</Button>
                 </Link>
               </div>
             ) : (
@@ -266,23 +266,23 @@ export default function ProjectDetailPage({
                 {project.days.slice(0, 10).map((day) => (
                   <div
                     key={day.id}
-                    className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-[#1A1A1A] border border-[rgba(255,215,0,0.08)] rounded-lg hover:bg-[rgba(255,215,0,0.03)]"
                   >
                     <div>
-                      <p className="font-medium text-white">
+                      <p className="font-space font-medium text-[#F5F5F0]">
                         Day {day.day_number}
                       </p>
-                      <p className="text-sm text-gray-400">
+                      <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
                         {day.title || "Untitled"}
                       </p>
                     </div>
-                    <Badge variant="secondary" className="bg-gray-600">
+                    <Badge variant="secondary" className="bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1">
                       {day.tasks?.length || 0} tasks
                     </Badge>
                   </div>
                 ))}
                 {project.days.length > 10 && (
-                  <p className="text-gray-500 text-sm text-center pt-2">
+                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] text-center pt-2">
                     +{project.days.length - 10} more days
                   </p>
                 )}

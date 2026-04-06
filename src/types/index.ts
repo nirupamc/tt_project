@@ -1,7 +1,7 @@
 // Database types for TanTech Upskill
 
-export type UserRole = 'admin' | 'employee';
-export type TaskType = 'reading' | 'coding' | 'quiz' | 'video';
+export type UserRole = "admin" | "employee";
+export type TaskType = "reading" | "coding" | "quiz" | "video";
 
 export interface User {
   id: string;
@@ -128,7 +128,7 @@ export interface DayUploadData {
 }
 
 // Day status for employee view
-export type DayStatus = 'locked' | 'available' | 'completed';
+export type DayStatus = "locked" | "available" | "completed";
 
 export interface ProjectDayWithStatus extends ProjectDay {
   status: DayStatus;

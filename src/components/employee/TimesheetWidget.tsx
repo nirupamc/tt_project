@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Flame, TrendingUp } from 'lucide-react';
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Clock, Flame, TrendingUp } from "lucide-react";
 
 interface TimesheetWidgetProps {
   weeklyHours: number;
@@ -22,10 +22,10 @@ export function TimesheetWidget({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <Card className="bg-white">
+    <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl">
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-gray-700 flex items-center gap-2">
-          <Clock className="h-4 w-4" />
+        <CardTitle className="font-space text-sm font-medium text-[rgba(10,10,10,0.6)] flex items-center gap-2">
+          <Clock className="h-4 w-4 text-[#FFD700]" />
           Weekly Timesheet
         </CardTitle>
       </CardHeader>
@@ -38,7 +38,7 @@ export function TimesheetWidget({
               cx="80"
               cy="80"
               r={radius}
-              stroke="#e5e7eb"
+              stroke="rgba(255,215,0,0.15)"
               strokeWidth="12"
               fill="none"
             />
@@ -47,14 +47,14 @@ export function TimesheetWidget({
               cx="80"
               cy="80"
               r={radius}
-              stroke="#6366f1"
+              stroke="#FFD700"
               strokeWidth="12"
               fill="none"
               strokeLinecap="round"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 1, ease: "easeOut" }}
             />
           </svg>
           {/* Center text */}
@@ -62,38 +62,40 @@ export function TimesheetWidget({
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: 'spring' }}
-              className="text-4xl font-bold text-gray-900"
+              transition={{ delay: 0.3, type: "spring" }}
+              className="font-bebas text-4xl text-[#0A0A0A]"
             >
               {percentage.toFixed(0)}%
             </motion.div>
-            <div className="text-xs text-gray-500 mt-1">of target</div>
+            <div className="font-space text-xs text-[rgba(10,10,10,0.5)] mt-1">of target</div>
           </div>
         </div>
 
         {/* Stats */}
         <div className="w-full space-y-2 mb-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Current Hours</span>
-            <span className="font-semibold text-gray-900">{weeklyHours.toFixed(1)}h</span>
+          <div className="flex items-center justify-between font-space text-sm">
+            <span className="text-[rgba(10,10,10,0.6)]">Current Hours</span>
+            <span className="font-semibold text-[#0A0A0A]">
+              {weeklyHours.toFixed(1)}h
+            </span>
           </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Target Hours</span>
-            <span className="font-semibold text-gray-900">{targetHours}h</span>
+          <div className="flex items-center justify-between font-space text-sm">
+            <span className="text-[rgba(10,10,10,0.6)]">Target Hours</span>
+            <span className="font-semibold text-[#0A0A0A]">{targetHours}h</span>
           </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600 flex items-center gap-1">
-              <Flame className="h-3 w-3 text-orange-500" />
+          <div className="flex items-center justify-between font-space text-sm">
+            <span className="text-[rgba(10,10,10,0.6)] flex items-center gap-1">
+              <Flame className="h-3 w-3 text-[#FFD700]" />
               Streak
             </span>
-            <span className="font-semibold text-gray-900">{streak} days</span>
+            <span className="font-semibold text-[#0A0A0A]">{streak} days</span>
           </div>
         </div>
 
         {/* View Link */}
         <Link
           href="/dashboard/timesheet"
-          className="w-full text-center text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center justify-center gap-1"
+          className="w-full text-center font-space text-sm text-[#C8A800] hover:text-[#FFD700] font-medium flex items-center justify-center gap-1"
         >
           <TrendingUp className="h-4 w-4" />
           View full timesheet

@@ -1,7 +1,10 @@
 import { inngest } from "./inngest";
 
 export const dailyReminder = inngest.createFunction(
-  { id: "daily-reminder", cron: "0 8 * * *" }, // 8 AM every day
+  { 
+    id: "daily-reminder",
+    // Removed cron - this is managed via Inngest dashboard trigger configuration
+  },
   async ({
     step,
   }: {

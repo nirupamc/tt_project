@@ -63,10 +63,10 @@ export function CreateEmployeeModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-gray-800 border-gray-700 text-white">
-        <DialogHeader>
-          <DialogTitle>Create New Employee</DialogTitle>
-          <DialogDescription className="text-gray-400">
+      <DialogContent className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] rounded-2xl text-[#F5F5F0]">
+        <DialogHeader className="border-b border-[rgba(255,215,0,0.1)] pb-4">
+          <DialogTitle className="font-space text-lg font-semibold text-[#F5F5F0]">Create New Employee</DialogTitle>
+          <DialogDescription className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
             Add a new employee to the platform. They will receive login
             credentials.
           </DialogDescription>
@@ -74,7 +74,7 @@ export function CreateEmployeeModal({
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Full Name</Label>
               <Input
                 id="name"
                 value={formData.name}
@@ -83,11 +83,11 @@ export function CreateEmployeeModal({
                 }
                 placeholder="John Doe"
                 required
-                className="bg-gray-700 border-gray-600"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -97,11 +97,11 @@ export function CreateEmployeeModal({
                 }
                 placeholder="john@company.com"
                 required
-                className="bg-gray-700 border-gray-600"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -112,7 +112,7 @@ export function CreateEmployeeModal({
                 placeholder="••••••••"
                 required
                 minLength={8}
-                className="bg-gray-700 border-gray-600"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
             </div>
           </div>
@@ -121,10 +121,11 @@ export function CreateEmployeeModal({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              className="bg-transparent border-2 border-[rgba(255,215,0,0.4)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] hover:border-[#FFD700] font-space text-[13px] font-semibold tracking-wider"
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150">
               {isLoading ? "Creating..." : "Create Employee"}
             </Button>
           </DialogFooter>

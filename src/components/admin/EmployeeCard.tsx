@@ -18,27 +18,27 @@ export function EmployeeCard({ employee, onClick }: EmployeeCardProps) {
 
   return (
     <Card
-      className="bg-gray-800 border-gray-700 hover:border-gray-600 transition-colors cursor-pointer"
+      className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.25)] hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(255,215,0,0.08)] transition-all duration-200 cursor-pointer"
       onClick={onClick}
     >
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          <Avatar className="h-12 w-12">
+          <Avatar className="h-12 w-12 border-2 border-[#FFD700]">
             <AvatarImage
               src={employee.avatar_url || undefined}
               alt={employee.name}
             />
-            <AvatarFallback className="bg-gray-700 text-white">
+            <AvatarFallback className="bg-[#2A2A2A] text-[#FFD700]">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-white truncate">
+            <h3 className="font-space text-base font-semibold text-[#F5F5F0] truncate">
               {employee.name}
             </h3>
-            <p className="text-sm text-gray-400 truncate">{employee.email}</p>
+            <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] truncate">{employee.email}</p>
             <div className="flex items-center gap-2 mt-2">
-              <Badge variant="secondary" className="bg-gray-700 text-gray-300">
+              <Badge variant="secondary" className="bg-[rgba(255,215,0,0.08)] text-[#FFD700] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase">
                 {employee.enrollment_count || 0} projects
               </Badge>
             </div>

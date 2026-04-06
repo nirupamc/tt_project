@@ -105,10 +105,10 @@ export function AssignEmployeeModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-md">
-        <DialogHeader>
-          <DialogTitle>Assign Employees</DialogTitle>
-          <DialogDescription className="text-gray-400">
+      <DialogContent className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] rounded-2xl text-[#F5F5F0] max-w-md">
+        <DialogHeader className="border-b border-[rgba(255,215,0,0.1)] pb-4">
+          <DialogTitle className="font-space text-lg font-semibold text-[#F5F5F0]">Assign Employees</DialogTitle>
+          <DialogDescription className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
             Select employees to enroll in this project.
           </DialogDescription>
         </DialogHeader>
@@ -116,11 +116,11 @@ export function AssignEmployeeModal({
         {loading ? (
           <div className="space-y-2 py-4">
             {[...Array(5)].map((_, i) => (
-              <Skeleton key={i} className="h-10 bg-gray-700" />
+              <Skeleton key={i} className="h-10 bg-[#2A2A2A]" />
             ))}
           </div>
         ) : employees.length === 0 ? (
-          <p className="text-gray-500 py-4 text-center">
+          <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] py-4 text-center">
             All employees are already enrolled in this project.
           </p>
         ) : (
@@ -129,7 +129,7 @@ export function AssignEmployeeModal({
               {employees.map((emp) => (
                 <div
                   key={emp.id}
-                  className="flex items-center gap-3 p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700"
+                  className="flex items-center gap-3 p-3 bg-[rgba(255,215,0,0.05)] border border-[rgba(255,215,0,0.1)] rounded-lg cursor-pointer hover:bg-[rgba(255,215,0,0.08)] hover:border-[rgba(255,215,0,0.2)] transition-all duration-200"
                   onClick={() => toggleEmployee(emp.id)}
                 >
                   <Checkbox
@@ -138,8 +138,8 @@ export function AssignEmployeeModal({
                     onCheckedChange={() => toggleEmployee(emp.id)}
                   />
                   <Label htmlFor={emp.id} className="cursor-pointer flex-1">
-                    <div className="font-medium">{emp.name}</div>
-                    <div className="text-sm text-gray-400">{emp.email}</div>
+                    <div className="font-space font-medium text-[#F5F5F0]">{emp.name}</div>
+                    <div className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">{emp.email}</div>
                   </Label>
                 </div>
               ))}
@@ -152,12 +152,14 @@ export function AssignEmployeeModal({
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
+            className="bg-transparent border-2 border-[rgba(255,215,0,0.4)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] hover:border-[#FFD700] font-space text-[13px] font-semibold tracking-wider"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting || selectedIds.length === 0}
+            className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150"
           >
             {isSubmitting
               ? "Assigning..."
