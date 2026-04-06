@@ -1,0 +1,2995 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "title": "Project Alpha Kickoff & Data Inventory",
+      "tasks": [
+        {
+          "title": "The Solaris Grid Landscape",
+          "type": "reading",
+          "description": "Introduction to the 29-member team structure and the four primary raw data sources.",
+          "reading_content_md": "# Welcome to Project Alpha\n\n## The Mission\nWe are building an end-to-end Data Intelligence Platform for **Solaris Grid Optimization**. Our goal is to ingest telemetry from millions of solar sensors to provide real-time insights.\n\n## Team Structure\nWith 29 members—including 11 Data Engineers and 5 Data Analysts—consistency is our primary challenge. Every team member will complete these foundation modules to ensure a shared technical vocabulary.\n\n## Data Inventory\n1. **IoT Inverters**: Real-time JSON streams via APIs.\n2. **Historical Logs**: Legacy CSV files in regional storage.\n3. **Weather Data**: External REST APIs for cloud-cover correlation.\n4. **Metadata**: SQL databases containing sensor locations.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Data Source Mapping Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of the Project Alpha data ecosystem.",
+          "quiz_questions": [
+            {
+              "question": "How many total team members are collaborating on Project Alpha?",
+              "options": ["11", "22", "29", "15"],
+              "correct_index": 2
+            },
+            {
+              "question": "Which data source provides the real-time telemetry for the grid?",
+              "options": ["Historical CSV logs", "IoT Inverters via APIs", "Weather Forecasts", "Metadata SQL"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "title": "Introduction to ETL and Data Ingestion",
+      "tasks": [
+        {
+          "title": "Understanding ETL Pipelines",
+          "type": "reading",
+          "description": "Learn the fundamentals of Extract, Transform, Load processes for Solaris Grid.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Implement Sensor Data Parser",
+          "type": "coding",
+          "description": "Write a Python script to parse and validate incoming sensor data for Solaris Grid.",
+          "coding_language": "python",
+          "coding_starter_code": "# sensor_parser.py — Solaris Grid Optimization\n\nimport datetime\n\n# TODO 1: Create a class named 'GridReading' to store sensor data\n# TODO 2: Implement an __init__ method that accepts sensor_id, voltage, and timestamp\n# TODO 3: Add a method 'is_valid' that returns True if voltage is between 210 and 250\n# TODO 4: Define a list called 'raw_data' with at least 3 dummy sensor dictionaries\n# TODO 5: Create a function 'process_readings' that iterates through raw_data\n# TODO 6: Inside the function, instantiate GridReading objects\n# TODO 7: Filter out invalid readings using the is_valid method\n# TODO 8: Print the count of valid vs invalid readings for Solaris Grid reporting\n\ndef run():\n    print(\"Starting Solaris Grid sensor data validation...\")\n\nif __name__ == '__main__':\n    run()"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "title": "Functional Programming for Data Transformation",
+      "tasks": [
+        {
+          "title": "Applying Lambdas and Map/Filter to Grid Data",
+          "type": "reading",
+          "description": "Utilize functional programming paradigms to transform solar output data efficiently.",
+          "reading_content_md": "# Functional Python in Solaris Grid\n\n## Why Functional Programming?\nWhen building ETL pipelines for **Solaris Grid Optimization**, we often need to apply the same transformation to a large dataset. Python’s functional tools (`map`, `filter`, and `lambda`) provide a concise way to do this without writing verbose `for` loops.\n\n### Transformations Examples\nConverting raw energy output from Watts (W) to Kilowatts (kW):\n`kw = map(lambda x: x / 1000, watt_list)`\n\nUsing these functions makes our code more readable for the **Data Analysts** who need to review the logic in our EDA notebooks.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Functional Logic Quiz",
+          "type": "quiz",
+          "description": "Test your ability to apply functional programming concepts to grid data scenarios.",
+          "quiz_questions": [
+            {
+              "question": "Which Python function is best used to remove '0' values from a list of solar power readings?",
+              "options": ["map()", "filter()", "reduce()", "split()"],
+              "correct_index": 1
+            },
+            {
+              "question": "Which teammate is most likely to review your transformation logic in an EDA notebook?",
+              "options": ["Data Analyst", "Hardware Engineer", "HR Representative", "Sales Lead"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "title": "Advanced Exception Handling in ETL",
+      "tasks": [
+        {
+          "title": "Building Resilient Pipelines",
+          "type": "reading",
+          "description": "Learn to manage network timeouts and malformed data from Solaris sensors using try-except blocks.",
+          "reading_content_md": "# Error Resilience in Solaris Grid\n\n## Strategic Exception Handling\nWe use specific exception handling to differentiate between 'Expected Errors' and 'Critical Failures'.\n\n### Common Scenarios\n1. **ValueError**: Sensor sends a string like \"NULL\" instead of an integer.\n2. **KeyError**: Telemetry packet is missing a required field like `timestamp`.\n3. **ConnectionError**: Snowflake staging area is unreachable.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Resilient Data Ingestion Script",
+          "type": "coding",
+          "description": "Implement robust error handling for the Solaris ingestion service.",
+          "coding_language": "python",
+          "coding_starter_code": "# resilient_ingest.py — Solaris Grid Optimization\nimport logging\n\n# TODO 1: Configure logging for timestamps\n# TODO 2: Wrap polling logic in a try-except block\n# TODO 3: Catch 'ValueError' specifically and log it as a warning\n# TODO 4: Ensure the loop continues even if one sensor fails"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "title": "Working with Time-Series Data",
+      "tasks": [
+        {
+          "title": "Temporal Logic in Energy Systems",
+          "type": "reading",
+          "description": "Master Python's datetime module to handle time-zone conversions across different solar farm locations.",
+          "reading_content_md": "# Time-Series Management\n\n## The Importance of UTC\nThe **Solaris Grid Optimization** project spans multiple time zones. To ensure we can compare energy output accurately, all data must be stored in **UTC** (Coordinated Universal Time).",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Time-Series Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of UTC and time-series aggregation.",
+          "quiz_questions": [
+            {
+              "question": "Why does Solaris Grid standardize all data to UTC?",
+              "options": ["Snowflake requirement", "Enable accurate comparisons across time zones", "Sensors only use UTC", "Faster processing"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "title": "File I/O and JSON Handling",
+      "tasks": [
+        {
+          "title": "Managing Ingestion Files",
+          "type": "reading",
+          "description": "Learn to read and write the JSON and CSV formats used by grid sensors.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "JSON to CSV Converter",
+          "type": "coding",
+          "description": "Build a utility to convert raw sensor JSON into flat CSV files for the Data Analysts.",
+          "coding_language": "python",
+          "coding_starter_code": "# json_to_csv.py — Solaris Grid\nimport json\nimport csv\n\n# TODO 1: Define 'raw_json' string\n# TODO 2: Parse 'raw_json' into a list of dictionaries\n# TODO 3: Use csv.DictWriter to save to 'solar_export.csv'"
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "title": "SQL Basics for Solaris Data Engineers",
+      "tasks": [
+        {
+          "title": "Querying the Grid Warehouse",
+          "type": "reading",
+          "description": "Transition from Python to SQL to interact with the Solaris Grid data stored in Snowflake.",
+          "reading_time_minutes": 8
+        },
+        {
+          "title": "SQL Fundamentals Quiz",
+          "type": "quiz",
+          "description": "Test your ability to query grid data using SQL.",
+          "quiz_questions": [
+            {
+              "question": "Which SQL keyword is used to combine energy outputs by sensor ID?",
+              "options": ["COMBINE", "GROUP BY", "ORDER BY", "COLLECT"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "title": "Database Schema & Normalization",
+      "tasks": [
+        {
+          "title": "Designing the Solaris Grid Schema",
+          "type": "reading",
+          "description": "Learn the difference between Fact and Dimension tables in the context of energy data.",
+          "reading_content_md": "# Schema Design\n\n### Fact Tables\nOur primary fact table is `fact_telemetry`. It contains quantitative data that is constantly updated.\n\n### Dimension Tables\n`dim_sensors`: Sensor type, installation date, manufacturer.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Generate DDL for Solaris Tables",
+          "type": "coding",
+          "description": "Write SQL DDL (Data Definition Language) to create the core Solaris Grid tables.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- schema_setup.sql\n-- TODO 1: Create table 'dim_sensors' (sensor_id, model_name)\n-- TODO 2: Create table 'fact_readings' (reading_id, voltage)"
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "title": "API Fundamentals for Data Retrieval",
+      "tasks": [
+        {
+          "title": "Interfacing with External Weather APIs",
+          "type": "reading",
+          "description": "Learn how to fetch weather data to correlate cloud cover with solar energy production.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "API Integration Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge on fetching and securing API data.",
+          "quiz_questions": [
+            {
+              "question": "How should API keys be handled in the Solaris Grid codebase?",
+              "options": ["Hard-coded", "Environment variables", "Global variables", "Public README"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "title": "Modular Python: Packages and Modules",
+      "tasks": [
+        {
+          "title": "Organizing the Solaris Codebase",
+          "type": "reading",
+          "description": "Learn to structure Python code into reusable modules.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Create a Grid Utility Module",
+          "type": "coding",
+          "description": "Refactor energy conversion logic into a reusable Python module.",
+          "coding_language": "python",
+          "coding_starter_code": "# energy_utils.py\n# TODO 1: Define 'to_kilowatts(watts)'\n# TODO 2: Import this function in 'main_app.py' and process a list"
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "title": "Data Validation with Great Expectations",
+      "tasks": [
+        {
+          "title": "Defining Quality Standards",
+          "type": "reading",
+          "description": "Learn why data quality is essential for the Solaris Grid.",
+          "reading_content_md": "# Data Quality\nWe use **Great Expectations** to ensure `voltage` stays between 200V and 260V. This prevents sensor glitches from skewing our analytics.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Data Quality Quiz",
+          "type": "quiz",
+          "description": "Test your understanding of validation rules.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary tool for data validation in Project Alpha?",
+              "options": ["PyTest", "Great Expectations", "Snowflake Monitor", "Airflow"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "title": "Git for Collaborative Engineering",
+      "tasks": [
+        {
+          "title": "Version Control for Solaris Pipelines",
+          "type": "reading",
+          "description": "Master branching and merging in a team environment.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Git Workflow Scripting",
+          "type": "coding",
+          "description": "Simulate a Git workflow using Python logic for branch naming.",
+          "coding_language": "python",
+          "coding_starter_code": "# git_workflow.py\n# TODO 1: Loop through feature names and print 'git checkout -b feature/<name>'"
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "title": "Introduction to Airflow Concepts",
+      "tasks": [
+        {
+          "title": "Orchestrating Grid Tasks",
+          "type": "reading",
+          "description": "Understand Directed Acyclic Graphs (DAGs).",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Airflow Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of DAGs and dependencies.",
+          "quiz_questions": [
+            {
+              "question": "What does DAG stand for?",
+              "options": ["Data Group", "Directed Acyclic Graph", "Digital Gateway", "Direct Analysis"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "title": "Airflow Operators and PythonOperator",
+      "tasks": [
+        {
+          "title": "Executing Python Logic in DAGs",
+          "type": "reading",
+          "description": "Learn how to wrap scripts into Airflow operators.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Define a Solaris Airflow Task",
+          "type": "coding",
+          "description": "Write a script that structures a function for an Airflow PythonOperator.",
+          "coding_language": "python",
+          "coding_starter_code": "# airflow_prep.py\n# TODO 1: Define 'extract_sensor_data' and 'transform_sensor_data' functions"
+        }
+      ]
+    },
+    {
+      "day": 15,
+      "title": "Intermediate SQL: Joins and Aggregations",
+      "tasks": [
+        {
+          "title": "Analyzing Grid Performance",
+          "type": "reading",
+          "description": "Combine telemetry and sensor metadata to identify efficient energy sectors.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Grid Analytics Quiz",
+          "type": "quiz",
+          "description": "Test ability to write complex SQL for the grid.",
+          "quiz_questions": [
+            {
+              "question": "Which SQL join returns only rows where there is a match in both tables?",
+              "options": ["LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "OUTER JOIN"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 16,
+      "title": "Data Governance & Data Dictionary",
+      "tasks": [
+        {
+          "title": "Defining Data Standards",
+          "type": "reading",
+          "description": "Create a shared data dictionary for all 29 team members.",
+          "reading_content_md": "# Data Governance\nA **Data Dictionary** defines that `voltage` is in Volts and `timestamp` is always UTC. This prevents the **Power BI Developers** from misinterpreting raw data.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Governance Quiz",
+          "type": "quiz",
+          "description": "Verify understanding of documentation standards.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Data Dictionary'?",
+              "options": ["Employee list", "Document defining table columns and meanings", "SQL script repository", "Python dictionary"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 17,
+      "title": "Infrastructure Audit & Runbooks",
+      "tasks": [
+        {
+          "title": "Managing Cloud Infrastructure",
+          "type": "reading",
+          "description": "Documenting the Snowflake and S3 setup in an infrastructure runbook.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Runbook Template Generation",
+          "type": "coding",
+          "description": "Generate a markdown-based runbook template for the dev environment.",
+          "coding_language": "python",
+          "coding_starter_code": "# gen_runbook.py\n# TODO 1: Dictionary of infra specs; write to 'infra_runbook.md'"
+        }
+      ]
+    },
+    {
+      "day": 18,
+      "title": "Automated Testing for Pipelines",
+      "tasks": [
+        {
+          "title": "Unit Testing Grid Logic",
+          "type": "reading",
+          "description": "Use PyTest to ensure energy conversion accuracy.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Write a Grid Unit Test",
+          "type": "coding",
+          "description": "Create unit tests for Solaris utility functions.",
+          "coding_language": "python",
+          "coding_starter_code": "# test_energy.py\n# TODO 1: Use pytest to assert that 1000W conversion equals 1.0kW"
+        }
+      ]
+    },
+    {
+      "day": 19,
+      "title": "Domain Ownership & Analysts Sub-teams",
+      "tasks": [
+        {
+          "title": "Assigning Responsibility",
+          "type": "reading",
+          "description": "How the 5 Data Analysts divide ownership of Solaris domains.",
+          "reading_content_md": "# Domain Ownership\nAnalysts are assigned to: Yield Analysis, Grid Stability, and Maintenance tracking.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Domain Assignment Quiz",
+          "type": "quiz",
+          "description": "Match the analyst task to the correct domain.",
+          "quiz_questions": [
+            {
+              "question": "Which domain tracks hardware health?",
+              "options": ["Yield Analysis", "Maintenance", "Stability", "Weather"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 20,
+      "title": "CI/CD Pipeline Setup",
+      "tasks": [
+        {
+          "title": "Automating Deployments",
+          "type": "reading",
+          "description": "Introduction to GitHub Actions for Project Alpha.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "CI/CD Config Scripting",
+          "type": "coding",
+          "description": "Simulate a YAML configuration for a CI/CD pipeline.",
+          "coding_language": "python",
+          "coding_starter_code": "# ci_gen.py\n# TODO 1: Print a string representing a YAML workflow with pytest steps"
+        }
+      ]
+    },
+    {
+      "day": 21,
+      "title": "Phase 2 Preparation & Handover",
+      "tasks": [
+        {
+          "title": "Transitioning to Scale",
+          "type": "reading",
+          "description": "Prepare for the shift to PySpark in Phase 2.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Scaling Readiness Quiz",
+          "type": "quiz",
+          "description": "Test knowledge on why we move to distributed computing.",
+          "quiz_questions": [
+            {
+              "question": "Which tool will be introduced in Month 2?",
+              "options": ["Excel", "PySpark", "Notepad++", "Postman"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 22,
+      "title": "Phase 1 Comprehensive Final Assessment",
+      "tasks": [
+        {
+          "title": "Month 1: Foundation Mastery Review",
+          "type": "reading",
+          "description": "Review of the 22-day journey from kickoff to infrastructure setup.",
+          "reading_content_md": "# Month 1 Complete\nYou have established the core foundation. Next month: Scaling the ingestion layer.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 1 Final Exam",
+          "type": "quiz",
+          "description": "The final exam covering all foundation topics.",
+          "quiz_questions": [
+            {
+              "question": "What is the team size of Project Alpha?",
+              "options": ["11", "22", "29", "5"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+{
+  "days": [
+    {
+      "day": 23,
+      "title": "Transitioning to Big Data: The Spark Philosophy",
+      "tasks": [
+        {
+          "title": "Why Python Isn't Enough for Solaris Grid",
+          "type": "reading",
+          "description": "Understanding the limitations of vertical scaling and the move to PySpark for Phase 1 Ingestion.",
+          "reading_content_md": "# Scaling Project Alpha\n\n## The Bottleneck\nIn Month 1, we processed thousands of rows. However, the full **Solaris Grid** produces billions of events. A single server's RAM cannot hold this much data.\n\n## Enter PySpark\nPySpark allows us to distribute data across a cluster of machines. Instead of one CPU doing all the work, we use a **Driver** to coordinate multiple **Workers**.\n\n### Key Concept: Lazy Evaluation\nSpark doesn't execute transformations immediately. It builds a **DAG (Directed Acyclic Graph)** of instructions and only runs them when an 'Action' (like `.count()` or `.save()`) is called.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Spark Architecture Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of distributed computing components.",
+          "quiz_questions": [
+            {
+              "question": "Which component in a Spark cluster coordinates the work across nodes?",
+              "options": ["The Worker", "The Executor", "The Driver", "The Storage Bucket"],
+              "correct_index": 2
+            },
+            {
+              "question": "What is 'Lazy Evaluation' in Spark?",
+              "options": ["Waiting until the last minute to write code", "Executing commands immediately", "Building a plan of transformations but only executing upon an action", "A bug in the Spark engine"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 24,
+      "title": "PySpark DataFrames for Sensor Data",
+      "tasks": [
+        {
+          "title": "Reading Large-Scale Telemetry",
+          "type": "reading",
+          "description": "Learn to load CSV and JSON files from cloud storage into Spark DataFrames.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Basic Spark Transformation",
+          "type": "coding",
+          "description": "Write a PySpark script to filter high-voltage readings from a large dataset.",
+          "coding_language": "python",
+          "coding_starter_code": "# spark_filter.py — Solaris Grid Scaling\nfrom pyspark.sql import SparkSession\nfrom pyspark.sql.functions import col\n\n# TODO 1: Initialize a SparkSession named 'SolarisScaling'\n# TODO 2: Load a dummy CSV (sensor_data.csv) into a DataFrame\n# TODO 3: Filter rows where 'voltage' > 250\n# TODO 4: Select only 'sensor_id' and 'timestamp'\n# TODO 5: Show the first 10 results\n\ndef run():\n    print(\"Running distributed filter for Solaris Grid...\")\n\nif __name__ == '__main__':\n    run()"
+        }
+      ]
+    },
+    {
+      "day": 25,
+      "title": "Schema Enforcement at Scale",
+      "tasks": [
+        {
+          "title": "StructType and StructField",
+          "type": "reading",
+          "description": "Why we must explicitly define schemas when ingesting millions of IoT records.",
+          "reading_content_md": "# Schema Strategy\nInferring schemas is expensive and risky. For **Project Alpha**, we define our schemas using `StructType`. This ensures that if a sensor sends a string where a float should be, the record is flagged immediately during ingestion.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Schema Definition Quiz",
+          "type": "quiz",
+          "description": "Validate your understanding of Spark data types.",
+          "quiz_questions": [
+            {
+              "question": "Why do we avoid 'inferSchema=True' in production pipelines?",
+              "options": ["It is too fast", "It requires an extra pass over the data and can be inaccurate", "It is not supported by AWS", "It makes the code too long"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 26,
+      "title": "Streaming Ingestion: The Kafka Pipeline",
+      "tasks": [
+        {
+          "title": "Real-Time Telemetry with Kafka",
+          "type": "reading",
+          "description": "Introduction to message brokers and how Solaris handles live sensor streams.",
+          "reading_content_md": "# The Streaming Layer\nNot all data comes in files. **IoT Inverters** send data every second. We use **Apache Kafka** as a buffer between producers (sensors) and consumers (Spark).",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Kafka Workflow Simulation",
+          "type": "coding",
+          "description": "Simulate a Kafka producer that sends sensor readings to a topic.",
+          "coding_language": "python",
+          "coding_starter_code": "# kafka_sim.py — Solaris Grid Stream\nimport time\nimport json\nimport random\n\n# TODO 1: Create a dictionary representing a real-time sensor reading\n# TODO 2: Implement a loop that 'sends' (prints) a message every 1 second\n# TODO 3: Include a random 'voltage' generator"
+        }
+      ]
+    },
+    {
+      "day": 27,
+      "title": "Cleaning and Normalization in Spark",
+      "tasks": [
+        {
+          "title": "Handling Missing Data in Large Sets",
+          "type": "reading",
+          "description": "Using Spark functions to drop or fill null values in telemetry logs.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Data Cleaning Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of handling corrupt IoT data.",
+          "quiz_questions": [
+            {
+              "question": "Which Spark method is used to remove rows with null values?",
+              "options": [".drop_nulls()", ".dropna()", ".remove_missing()", ".clean()"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 28,
+      "title": "Complex Transformations: Window Functions",
+      "tasks": [
+        {
+          "title": "Calculating Moving Averages for Grid Stability",
+          "type": "reading",
+          "description": "Using Spark Windows to analyze voltage trends over time.",
+          "reading_content_md": "# Temporal Analysis\nTo detect grid instability, we use **Window Functions**. This allows us to calculate averages or find peaks within a specific 'frame' of data (e.g., last 5 minutes) without aggregating the entire table.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Spark Windowing Logic",
+          "type": "coding",
+          "description": "Implement a 3-reading moving average for sensor voltage.",
+          "coding_language": "python",
+          "coding_starter_code": "# window_agg.py — Solaris Analysis\nfrom pyspark.sql.window import Window\nfrom pyspark.sql.functions import avg\n\n# TODO 1: Define a window partitioned by 'sensor_id' and ordered by 'timestamp'\n# TODO 2: Calculate the moving average of 'voltage' over the last 3 rows"
+        }
+      ]
+    },
+    {
+      "day": 29,
+      "title": "Loading Data into Snowflake Staging",
+      "tasks": [
+        {
+          "title": "The COPY INTO Command",
+          "type": "reading",
+          "description": "How to move large-scale data from cloud storage into Snowflake tables efficiently.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Snowflake Ingestion Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of Snowflake storage integration.",
+          "quiz_questions": [
+            {
+              "question": "What is the most efficient way to load bulk data into Snowflake?",
+              "options": ["INSERT INTO", "COPY INTO", "UPSERT", "BULK_ADD"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 30,
+      "title": "Introduction to Airflow DAGs",
+      "tasks": [
+        {
+          "title": "Orchestrating the Month 2 Pipeline",
+          "type": "reading",
+          "description": "How to schedule Spark and Snowflake tasks in a sequence.",
+          "reading_content_md": "# Orchestration with Airflow\nOur pipeline must run every morning at 2 AM. Tasks include weather API fetching, Spark processing, and Snowflake loading.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Define an Airflow Pipeline",
+          "type": "coding",
+          "description": "Create a Python file that defines task dependencies for the Solaris Ingestion DAG.",
+          "coding_language": "python",
+          "coding_starter_code": "# solaris_dag_v1.py\n# TODO 1: Define four tasks as DummyOperators\n# TODO 2: Set dependencies so Task 1 & 2 run in parallel"
+        }
+      ]
+    },
+    {
+      "day": 31,
+      "title": "Advanced Airflow: Sensors and Hooks",
+      "tasks": [
+        {
+          "title": "Waiting for External Events",
+          "type": "reading",
+          "description": "Using S3KeySensor to wait for daily telemetry logs to arrive.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Airflow Components Quiz",
+          "type": "quiz",
+          "description": "Test knowledge of Airflow's specialized operators.",
+          "quiz_questions": [
+            {
+              "question": "Which operator waits for a file to appear in a folder?",
+              "options": ["PythonOperator", "BashOperator", "Sensor", "Trigger"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 32,
+      "title": "Data Quality SLAs: Defining Accuracy",
+      "tasks": [
+        {
+          "title": "SLA vs. SLO in Project Alpha",
+          "type": "reading",
+          "description": "Setting expectations for data freshness and accuracy.",
+          "reading_content_md": "# Service Level Agreements\nOur analysts expect data to be no more than 15 minutes old (Freshness SLA). If breached, Airflow alerts the Engineering team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "SLA Logic Script",
+          "type": "coding",
+          "description": "Write a script that checks if data is within the 15-minute SLA.",
+          "coding_language": "python",
+          "coding_starter_code": "# sla_check.py\n# TODO 1: Calculate difference between 'now' and max_timestamp\n# TODO 2: Print 'SLA BREACHED' if > 15 mins"
+        }
+      ]
+    },
+    {
+      "day": 33,
+      "title": "Exploratory Data Analysis (EDA) Fundamentals",
+      "tasks": [
+        {
+          "title": "Visualizing Solaris Trends",
+          "type": "reading",
+          "description": "Using Pandas to find patterns in the ingested data.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "EDA Concepts Quiz",
+          "type": "quiz",
+          "description": "Test understanding of anomalies in sensor data.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of EDA?",
+              "options": ["Understand data patterns and anomalies", "Build production models", "Delete database", "Write SQL"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 34,
+      "title": "Automated Alerting with Airflow",
+      "tasks": [
+        {
+          "title": "Slack and Email Integrations",
+          "type": "reading",
+          "description": "Configure Airflow to notify the team of pipeline failures.",
+          "reading_content_md": "# Alerting\nWith 29 people, we use `on_failure_callback` to push errors directly to our project alerts channel.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Alerting Setup Script",
+          "type": "coding",
+          "description": "Simulate a failure callback function in Python.",
+          "coding_language": "python",
+          "coding_starter_code": "# airflow_alerts.py\n# TODO 1: Create 'notify_team(context)' function\n# TODO 2: Print task_id and exception from context"
+        }
+      ]
+    },
+    {
+      "day": 35,
+      "title": "Spark Partitioning and Performance",
+      "tasks": [
+        {
+          "title": "Optimizing the Data Layout",
+          "type": "reading",
+          "description": "How Partitioning by Date speeds up Solaris Grid queries.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Spark Optimization Quiz",
+          "type": "quiz",
+          "description": "Test knowledge of data shuffling.",
+          "quiz_questions": [
+            {
+              "question": "What happens when data is moved between executors in Spark?",
+              "options": ["Caching", "Shuffling", "Normalizing", "Broadcasting"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 36,
+      "title": "Incremental vs. Full Loading",
+      "tasks": [
+        {
+          "title": "Saving Costs in Snowflake",
+          "type": "reading",
+          "description": "Only processing 'new' data to reduce cloud compute bills.",
+          "reading_content_md": "# Incremental Strategy\nWe use **Watermarking** to track the last record processed. Pipelines only ingest data where `created_at > last_processed_timestamp`.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Incremental Logic",
+          "type": "coding",
+          "description": "Write a filter that identifies new records based on a checkpoint.",
+          "coding_language": "python",
+          "coding_starter_code": "# incremental_filter.py\n# TODO 1: Filter a list of sensor dicts to include records after checkpoint"
+        }
+      ]
+    },
+    {
+      "day": 37,
+      "title": "CI/CD for Big Data Pipelines",
+      "tasks": [
+        {
+          "title": "Testing Spark Code in CI",
+          "type": "reading",
+          "description": "Running unit tests for distributed code within GitHub Actions.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "CI/CD Pipeline Quiz",
+          "type": "quiz",
+          "description": "Verify understanding of staging environments.",
+          "quiz_questions": [
+            {
+              "question": "What is the purpose of a Staging environment?",
+              "options": ["Test code with production-like data", "Store old data", "Save money", "Hide code"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 38,
+      "title": "Pipeline Architecture Documentation",
+      "tasks": [
+        {
+          "title": "Visualizing the Data Flow",
+          "type": "reading",
+          "description": "Creating diagrams from Sensors to Snowflake.",
+          "reading_content_md": "# Mapping the Pipes\nArchitecture diagrams help trace errors. We document source systems, transformation engines, and destinations.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Documentation Quiz",
+          "type": "quiz",
+          "description": "Test understanding of data lineage.",
+          "quiz_questions": [
+            {
+              "question": "What does Data Lineage track?",
+              "options": ["Origin and movement of data", "Employee count", "Server cost", "Internet speed"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 39,
+      "title": "Introduction to Delta Lake Concepts",
+      "tasks": [
+        {
+          "title": "ACID Transactions for Data Lakes",
+          "type": "reading",
+          "description": "Why we need Delta Lake for storage updates.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Delta Lake Mock",
+          "type": "coding",
+          "description": "Simulate Delta 'Time Travel' using versioning logic.",
+          "coding_language": "python",
+          "coding_starter_code": "# delta_mock.py\n# TODO 1: Create 'get_data(version)' function"
+        }
+      ]
+    },
+    {
+      "day": 40,
+      "title": "Resource Management in Spark",
+      "tasks": [
+        {
+          "title": "Memory, Cores, and Executors",
+          "type": "reading",
+          "description": "Tuning Spark jobs to avoid Out of Memory (OOM) errors.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Resource Tuning Quiz",
+          "type": "quiz",
+          "description": "Test knowledge of Spark resource allocation.",
+          "quiz_questions": [
+            {
+              "question": "What is the common error when a node runs out of RAM?",
+              "options": ["OOM", "NullPointer", "Timeout", "Overflow"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 41,
+      "title": "Final Integration: The End-to-End Pipeline",
+      "tasks": [
+        {
+          "title": "Connecting the Month 2 Milestone",
+          "type": "reading",
+          "description": "Reviewing the automated Ingestion Layer.",
+          "reading_content_md": "# Pipeline Live\nData now flows from sensors to Snowflake. Analysts have fresh raw datasets for Month 3 modeling.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Pipeline Validation",
+          "type": "coding",
+          "description": "Final check script: source vs. destination counts.",
+          "coding_language": "python",
+          "coding_starter_code": "# final_audit.py\n# TODO 1: Print report of ingestion success %"
+        }
+      ]
+    },
+    {
+      "day": 42,
+      "title": "Month 2 Data Quality Checkpoint",
+      "tasks": [
+        {
+          "title": "Auditing Ingestion Performance",
+          "type": "reading",
+          "description": "Reviewing the first real-world quality reports.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "DQ Checkpoint Quiz",
+          "type": "quiz",
+          "description": "Final assessment for the Ingestion Phase.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary deliverable for Month 2?",
+              "options": ["Working ETL pipelines and DQ dashboard", "Power BI Dashboard", "Marketing plan", "New hardware"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 43,
+      "title": "Phase 1 Retrospective & Transition",
+      "tasks": [
+        {
+          "title": "Closing the Setup Phase",
+          "type": "reading",
+          "description": "Prepare for Phase 2: Modeling & Analytics.",
+          "reading_content_md": "# Transition\nMonth 1 was Setup, Month 2 Ingestion. We have completed Phase 1.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 2 Comprehensive Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for Ingestion and Big Data fundamentals.",
+          "quiz_questions": [
+            {
+              "question": "Which tool orchestrated the Month 2 pipeline?",
+              "options": ["Airflow", "PySpark", "Snowflake", "GitHub"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 44,
+      "title": "Handover to Modeling Phase",
+      "tasks": [
+        {
+          "title": "Handover Documentation",
+          "type": "reading",
+          "description": "Documenting the ingestion layer for the Analytics team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Write a final README summary for the Ingestion repository.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Alpha — Ingestion Readme\n## Status: \n## Key DAGs: \n## SLA Targets:"
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 45,
+      "title": "Transition to Dimensional Modeling",
+      "tasks": [
+        {
+          "title": "Moving from Bronze to Silver Layers",
+          "type": "reading",
+          "description": "Understanding why we transform raw 'Bronze' data into modeled 'Silver' tables for Project Alpha.",
+          "reading_content_md": "# Phase 2: The Build\n\n## The Architectural Shift\nIn Month 2, we successfully built the 'Bronze' layer—raw, immutable data stored exactly as it arrived from the Solaris sensors. Now, in Month 3, we move to the **Silver Layer**. \n\n## Why Dimensional Modeling?\nRaw data is difficult for **Data Analysts** and **Power BI Developers** to query efficiently. We use **Dimensional Modeling** (Star Schemas) to:\n1. **Increase Performance**: Reduce complex joins for large-scale telemetry.\n2. **Ensure Consistency**: Define a 'Single Source of Truth' for energy metrics.\n3. **Ease of Use**: Make the data intuitive for business stakeholders.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Modeling Strategy Quiz",
+          "type": "quiz",
+          "description": "Test your understanding of the transition to modeled data layers.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of the 'Silver' layer in Project Alpha?",
+              "options": ["To store raw sensor JSON", "To provide cleaned, filtered, and modeled data", "To delete old data", "To backup the database"],
+              "correct_index": 1
+            },
+            {
+              "question": "Which teammate benefits most from an intuitive Star Schema?",
+              "options": ["Power BI Developer", "Hardware Technician", "Security Officer", "HR Manager"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 46,
+      "title": "Designing the Star Schema for Solaris",
+      "tasks": [
+        {
+          "title": "Facts vs. Dimensions Deep Dive",
+          "type": "reading",
+          "description": "Defining the core tables for the Solaris Grid optimization platform.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Star Schema Design Task",
+          "type": "coding",
+          "description": "Draft a SQL schema that separates sensor metadata from energy readings.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- star_schema_design.sql\n-- TODO 1: Design 'dim_location' (site_id, region, state, lat, long)\n-- TODO 2: Design 'dim_date' (date_key, day, month, quarter, year, is_holiday)\n-- TODO 3: Design 'fact_grid_yield' (yield_id, date_key, site_id, sensor_id, kwh_produced)"
+        }
+      ]
+    },
+    {
+      "day": 47,
+      "title": "Introduction to dbt (Data Build Tool)",
+      "tasks": [
+        {
+          "title": "dbt: The Standard for Modern Modeling",
+          "type": "reading",
+          "description": "Why Project Alpha uses dbt instead of manual SQL scripts for transformations.",
+          "reading_content_md": "# The dbt Workflow\n\nIn Month 1, we wrote manual DDL scripts. In Month 3, we use **dbt**. dbt allows us to write modular SQL `SELECT` statements and handles the creation of tables and views in Snowflake automatically.\n\n### Key Benefits:\n- **Version Control**: Every model is a file in Git.\n- **Testing**: Built-in data quality tests (unique, not_null).\n- **Documentation**: Automatically generates a data lineage graph.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "dbt Fundamentals Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the dbt ecosystem.",
+          "quiz_questions": [
+            {
+              "question": "What language do we use to write models in dbt?",
+              "options": ["Python", "SQL", "Java", "C++"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 48,
+      "title": "Building Your First dbt Model",
+      "tasks": [
+        {
+          "title": "Staging Models in dbt",
+          "type": "reading",
+          "description": "Learning to 'Stage' raw Solaris data by cleaning and renaming columns.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Create a Staging Model",
+          "type": "coding",
+          "description": "Write a dbt model to standardize sensor status codes.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- stg_sensors.sql\n-- TODO 1: Select all columns from the raw sensor table\n-- TODO 2: Use a CASE statement to rename status '1' to 'Active' and '0' to 'Offline'\n-- TODO 3: Standardize column naming to snake_case (e.g., SensorID to sensor_id)"
+        }
+      ]
+    },
+    {
+      "day": 49,
+      "title": "Data Marts for Business Domains",
+      "tasks": [
+        {
+          "title": "The Yield Analytics Mart",
+          "type": "reading",
+          "description": "How we organize data specifically for the Yield Analysis sub-team.",
+          "reading_content_md": "# Domain-Specific Marts\n\nProject Alpha has 5 Data Analysts assigned to specific domains. We build **Data Marts** (Gold Layer) to give them exactly the data they need.\n\n### The Yield Mart\nThis mart joins `fact_grid_yield` with `dim_sensors` and `dim_weather` to allow analysts to see how cloud cover affects specific sensor models.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Data Mart Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge on data partitioning for business units.",
+          "quiz_questions": [
+            {
+              "question": "Why do we create separate Data Marts?",
+              "options": ["To make the database slower", "To simplify data access for specific business domains", "To store redundant data", "To hide data from engineers"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 50,
+      "title": "Defining Core Business KPIs",
+      "tasks": [
+        {
+          "title": "Standardizing Metric Logic",
+          "type": "reading",
+          "description": "Documenting 20+ core business KPIs for the Solaris platform.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "KPI Logic Implementation",
+          "type": "coding",
+          "description": "Write a SQL snippet to calculate 'Performance Ratio' (Actual vs. Expected Yield).",
+          "coding_language": "sql",
+          "coding_starter_code": "-- kpi_calculations.sql\n-- TODO 1: Calculate Total Energy (kWh) per Sensor per Day\n-- TODO 2: Calculate the Performance Ratio: (Actual_kWh / Expected_kWh) * 100\n-- TODO 3: Filter for sensors with a Ratio < 75% for maintenance alerting"
+        }
+      ]
+    },
+    {
+      "day": 51,
+      "title": "dbt Tests and Data Integrity",
+      "tasks": [
+        {
+          "title": "Automated Quality Guardrails",
+          "type": "reading",
+          "description": "Using dbt's built-in testing to ensure dimensional integrity.",
+          "reading_content_md": "# Integrity Testing\n\nIn the Silver layer, we must ensure that every `sensor_id` in our Fact table actually exists in our `dim_sensors` table. We use **Relationships Tests** in dbt to automate this check every time the model runs.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "dbt Testing Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of dbt schema tests.",
+          "quiz_questions": [
+            {
+              "question": "Which dbt test ensures a column does not contain null values?",
+              "options": ["unique", "not_null", "accepted_values", "relationships"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 52,
+      "title": "Advanced SQL: CTEs and Modular Logic",
+      "tasks": [
+        {
+          "title": "Writing Maintainable SQL",
+          "type": "reading",
+          "description": "Using Common Table Expressions (CTEs) to break down complex Solaris logic.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Refactor SQL with CTEs",
+          "type": "coding",
+          "description": "Refactor a nested subquery into a clean, readable CTE structure.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- modular_refactor.sql\n-- TODO 1: Create a CTE named 'daily_readings' to aggregate hourly data\n-- TODO 2: Create a CTE named 'site_metadata' to fetch location names\n-- TODO 3: Join the CTEs in a final SELECT statement"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "title": "Snowflake Performance: Clustering & Micro-partitions",
+      "tasks": [
+        {
+          "title": "Optimizing Query Speed for Analysts",
+          "type": "reading",
+          "description": "Understanding how Snowflake stores data and how to speed up large scans.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Snowflake Performance Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of Snowflake's storage architecture.",
+          "quiz_questions": [
+            {
+              "question": "What does Snowflake use to automatically manage data distribution and pruning?",
+              "options": ["Indexes", "Micro-partitions", "Stored Procedures", "Physical Disks"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 54,
+      "title": "Power BI Desktop: Connecting to the Marts",
+      "tasks": [
+        {
+          "title": "Power BI & Snowflake Integration",
+          "type": "reading",
+          "description": "How the Power BI Developer connects to the curated Silver layer.",
+          "reading_content_md": "# The Visualization Layer\n\nNow that our Silver layer is modeled, the **Power BI Developer** connects via **DirectQuery**. This ensures that as soon as our Airflow pipelines finish loading data into Snowflake, the dashboards reflect the latest grid status.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Data Connection Task",
+          "type": "coding",
+          "description": "Simulate a connection string and M-Query parameter for Snowflake.",
+          "coding_language": "powerbi",
+          "coding_starter_code": "// powerbi_connection.pq\n// TODO 1: Define Server Name and Warehouse Name\n// TODO 2: Create a parameter for the 'Environment' (Dev/Prod)"
+        }
+      ]
+    },
+    {
+      "day": 55,
+      "title": "Prototyping Dashboards: Layout & Design",
+      "tasks": [
+        {
+          "title": "UI/UX for Data Intelligence",
+          "type": "reading",
+          "description": "Designing effective layouts for energy grid monitoring.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Dashboard Design Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of dashboard best practices.",
+          "quiz_questions": [
+            {
+              "question": "Where should the most important high-level KPI be placed on a dashboard?",
+              "options": ["Bottom Right", "Top Left", "Middle of the page", "In a separate tab"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 56,
+      "title": "Calculated Measures in DAX",
+      "tasks": [
+        {
+          "title": "DAX: The Power BI Formula Language",
+          "type": "reading",
+          "description": "Creating custom measures like 'Year-over-Year Yield Growth'.",
+          "reading_content_md": "# Mastering DAX\n\nWhile we do most heavy lifting in dbt/Snowflake, some dynamic logic (like user-selected date ranges) must be handled in Power BI using **DAX**. This allows stakeholders to slice data by 'This Month vs Last Month' instantly.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "DAX Implementation Task",
+          "type": "coding",
+          "description": "Write a DAX formula to calculate a rolling 7-day average of grid voltage.",
+          "coding_language": "dax",
+          "coding_starter_code": "// Rolling_Avg_Voltage = \n// TODO 1: Use CALCULATE and AVERAGE\n// TODO 2: Define the DATESINPERIOD filter for the last 7 days"
+        }
+      ]
+    },
+    {
+      "day": 57,
+      "title": "Data Modeling for Machine Learning",
+      "tasks": [
+        {
+          "title": "Preparing Datasets for Data Scientists",
+          "type": "reading",
+          "description": "How the Silver layer supports the 2 Data Scientists on the team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "ML Prep Quiz",
+          "type": "quiz",
+          "description": "Check understanding of features vs. labels in grid data.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Energy Output' usually considered in a predictive model?",
+              "options": ["A Feature", "A Label (Target)", "An Index", "A Null value"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 58,
+      "title": "Feature Analysis: Identifying Predictors",
+      "tasks": [
+        {
+          "title": "Correlation Analysis",
+          "type": "reading",
+          "description": "Using SQL to find which factors (Temperature, Humidity) most influence solar yield.",
+          "reading_content_md": "# Analyzing Influence\n\nThe **Data Scientists** look for 'Predictors'. By joining our weather and telemetry marts, we can see if a 10% increase in cloud cover leads to a predictable 15% drop in energy yield across different sensor models.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Feature Correlation Task",
+          "type": "coding",
+          "description": "Write a query to aggregate average yield alongside average cloud cover per day.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- feature_discovery.sql\n-- TODO 1: Join stg_weather and stg_readings on date\n-- TODO 2: Calculate daily averages for temperature and kwh_produced"
+        }
+      ]
+    },
+    {
+      "day": 59,
+      "title": "Mid-Project Stakeholder Review",
+      "tasks": [
+        {
+          "title": "Communicating Technical Progress",
+          "type": "reading",
+          "description": "How to present the data marts and dashboard prototypes to business leads.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Stakeholder Feedback Quiz",
+          "type": "quiz",
+          "description": "Verify understanding of technical vs. business requirements.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of the stakeholder review session?",
+              "options": ["To write more code", "To align the technical build with business expectations", "To hire more engineers", "To change the cloud provider"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 60,
+      "title": "Refining Pipelines Based on Feedback",
+      "tasks": [
+        {
+          "title": "The Iterative Build Cycle",
+          "type": "reading",
+          "description": "Adjusting our dbt models based on stakeholder feedback on KPI definitions.",
+          "reading_content_md": "# Iteration in Project Alpha\n\nStakeholders might decide 'Yield' should exclude maintenance windows. We don't delete data; we update our dbt transformation logic. This is why modular SQL is essential—we change the logic once, and it propagates to all downstream reports.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Refactoring Task",
+          "type": "coding",
+          "description": "Update a dbt model to include a 'maintenance_flag' filter.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- refined_yield_mart.sql\n-- TODO 1: Join with a 'maintenance_logs' table\n-- TODO 2: Filter out readings where sensor_status = 'In_Maintenance'"
+        }
+      ]
+    },
+    {
+      "day": 61,
+      "title": "Incremental Models in dbt",
+      "tasks": [
+        {
+          "title": "Optimizing Transformation Costs",
+          "type": "reading",
+          "description": "How to only transform 'new' data using dbt's incremental strategy.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Incremental Strategy Quiz",
+          "type": "quiz",
+          "description": "Test understanding of incremental logic.",
+          "quiz_questions": [
+            {
+              "question": "What is the main benefit of dbt incremental models?",
+              "options": ["Faster development", "Reduced Snowflake compute costs and execution time", "Better data quality", "Simpler SQL code"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 62,
+      "title": "dbt Documentation & Lineage",
+      "tasks": [
+        {
+          "title": "Generating the Data Map",
+          "type": "reading",
+          "description": "Automating technical documentation for the 29-member team.",
+          "reading_content_md": "# Automated Lineage\n\nBy running `dbt docs generate`, we create a visual map of every table and view. This allows the **Data Quality Analyst** to see exactly which raw sensors feed into which Power BI KPI.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Lineage Quiz",
+          "type": "quiz",
+          "description": "Test your ability to trace data flow.",
+          "quiz_questions": [
+            {
+              "question": "What does a data lineage graph show?",
+              "options": ["The cost of data", "The flow of data from source to destination", "The names of database users", "The physical location of servers"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 63,
+      "title": "CI/CD for dbt Models",
+      "tasks": [
+        {
+          "title": "Protecting the Silver Layer",
+          "type": "reading",
+          "description": "Running 'dbt test' automatically before merging new models.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "CI/CD Scripting Task",
+          "type": "coding",
+          "description": "Draft a shell script that runs dbt compile and dbt test.",
+          "coding_language": "bash",
+          "coding_starter_code": "# dbt_ci_check.sh\n# TODO 1: Run dbt deps to fetch packages\n# TODO 2: Run dbt compile to verify SQL syntax\n# TODO 3: Run dbt test to check data integrity"
+        }
+      ]
+    },
+    {
+      "day": 64,
+      "title": "Month 3 Comprehensive Milestone Review",
+      "tasks": [
+        {
+          "title": "Project Alpha: Silver Layer Completion",
+          "type": "reading",
+          "description": "Reviewing the completed data marts and prototypes for Phase 2.",
+          "reading_content_md": "# Milestone Achieved\n\nWe have successfully transformed 'Raw Telemetry' into 'Actionable Insights'. We now have standardized KPIs, automated dbt models, and dashboard prototypes. We are ready to hand off these datasets to the **Data Science** team for Month 4.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 3 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Modeling and Analytics phase.",
+          "quiz_questions": [
+            {
+              "question": "What tool replaced raw SQL for transformations in Month 3?",
+              "options": ["Airflow", "dbt", "Snowflake", "Power BI"],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the primary table type in a Star Schema that contains quantitative metrics?",
+              "options": ["Dimension Table", "Fact Table", "Look-up Table", "Metadata Table"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 65,
+      "title": "Handover to ML Development",
+      "tasks": [
+        {
+          "title": "Final Documentation of the Marts",
+          "type": "reading",
+          "description": "Ensuring the feature store is ready for the Data Scientists.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Write a final README for the 'Gold' layer repository.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Alpha — Analytics Gold Layer\n## Curated Marts:\n## Key KPI Definitions:\n## Downstream Dashboards:"
+        }
+      ]
+    },
+    {
+      "day": 66,
+      "title": "Phase 2 Mid-Point Retrospective",
+      "tasks": [
+        {
+          "title": "Reflecting on Modeling Challenges",
+          "type": "reading",
+          "description": "What worked in Month 3 and what can be improved for ML integration.",
+          "reading_content_md": "# Modeling Retrospective\n\nMonth 3 focused on structure and business logic. As we move to Month 4, we will introduce **Machine Learning** and **Gen AI** components. The quality of our Silver layer modeled this month will determine the accuracy of our predictions next month.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Retrospective Quiz",
+          "type": "quiz",
+          "description": "Final check on project progression milestones.",
+          "quiz_questions": [
+            {
+              "question": "Which phase begins in Month 4?",
+              "options": ["Setup", "Build (ML & Gen AI)", "Integration", "Launch"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 67,
+      "title": "Transition to Machine Learning Intelligence",
+      "tasks": [
+        {
+          "title": "The Data Science Pipeline in Project Alpha",
+          "type": "reading",
+          "description": "Understanding how the Silver/Gold layers feed into ML models for grid optimization.",
+          "reading_content_md": "# Month 4: The Intelligence Layer\n\n## From Analytics to Prediction\nIn Month 3, we built the foundation to describe *what happened* (Yield Analytics). In Month 4, the **Data Scientists** and **ML Engineers** focus on *what will happen* (Predictive Modeling).\n\n## The Core Objective\nWe aim to build models that predict solar yield based on weather forecasts and identify potential hardware failures before they occur. This requires shifting our mindset from static reporting to dynamic inference.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "ML Objective Quiz",
+          "type": "quiz",
+          "description": "Test your understanding of the ML goals for Project Alpha.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary predictive goal for the Solaris platform this month?",
+              "options": ["To count the number of sensors", "To predict future solar yield and hardware failure", "To delete old data marts", "To design new hardware"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 68,
+      "title": "Feature Engineering: Transforming Data for Models",
+      "tasks": [
+        {
+          "title": "Creating Predictive Signals",
+          "type": "reading",
+          "description": "Learning to turn raw telemetry into 'Features' like rolling averages and lag variables.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Feature Engineering Task",
+          "type": "coding",
+          "description": "Write a Python script using Pandas to create 'Lag' features for sensor voltage.",
+          "coding_language": "python",
+          "coding_starter_code": "# feature_engineering.py\nimport pandas as pd\n\n# TODO 1: Load sample sensor data\n# TODO 2: Create a 'voltage_lag_1h' column (previous hour's reading)\n# TODO 3: Create a 'temp_rolling_3h' column using a rolling mean\n# TODO 4: Handle the resulting NaN values appropriately"
+        }
+      ]
+    },
+    {
+      "day": 69,
+      "title": "Building the Feature Store",
+      "tasks": [
+        {
+          "title": "Centralizing Features for the Team",
+          "type": "reading",
+          "description": "Why we use a Feature Store to maintain consistency between 29 team members.",
+          "reading_content_md": "# The Feature Store\n\nTo prevent 'training-serving skew,' we centralize our engineered features. This ensures that the **Data Scientist** training the model and the **ML Engineer** deploying it are using the exact same logic for variables like 'Normalized Yield'.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Feature Store Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of feature consistency.",
+          "quiz_questions": [
+            {
+              "question": "What is 'training-serving skew'?",
+              "options": ["A data visualization error", "A discrepancy between features used in training vs. production", "A bug in the SQL code", "A hardware failure in the sensor"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 70,
+      "title": "Selecting the Right Model: Regression vs. Classification",
+      "tasks": [
+        {
+          "title": "Choosing the Solaris Model Architecture",
+          "type": "reading",
+          "description": "Deciding which algorithms fit our solar yield and failure detection use cases.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Model Selection Task",
+          "type": "coding",
+          "description": "Draft a Python logic to split data into training and testing sets using Scikit-Learn.",
+          "coding_language": "python",
+          "coding_starter_code": "# model_split.py\nfrom sklearn.model_selection import train_test_split\n\n# TODO 1: Define your Features (X) and Target (y - yield_kwh)\n# TODO 2: Split data 80/20 for training and testing\n# TODO 3: Print the shapes of the resulting datasets"
+        }
+      ]
+    },
+    {
+      "day": 71,
+      "title": "Training Baseline ML Models",
+      "tasks": [
+        {
+          "title": "Starting Simple: Linear Regression & Random Forests",
+          "type": "reading",
+          "description": "Training initial models to establish a baseline performance for Project Alpha.",
+          "reading_content_md": "# The Baseline\n\nBefore using complex deep learning, we establish a baseline. We train a simple **Random Forest** model to predict kWh based on temperature and cloud cover. This gives us a benchmark to measure all future improvements against.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Baseline Training Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of model baselines.",
+          "quiz_questions": [
+            {
+              "question": "Why do we start with a baseline model?",
+              "options": ["Because it's the fastest to write", "To establish a benchmark for performance comparison", "Because stakeholders don't like complex models", "To save money on cloud compute"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 72,
+      "title": "Model Evaluation Metrics",
+      "tasks": [
+        {
+          "title": "Measuring Success: RMSE, MAE, and AUC",
+          "type": "reading",
+          "description": "How we mathematically determine if our Solaris predictions are accurate.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Evaluation Implementation Task",
+          "type": "coding",
+          "description": "Write a script to calculate Mean Absolute Error (MAE) for yield predictions.",
+          "coding_language": "python",
+          "coding_starter_code": "# eval_metrics.py\nfrom sklearn.metrics import mean_absolute_error\n\n# TODO 1: Define 'y_true' and 'y_pred' dummy lists\n# TODO 2: Calculate and print the MAE\n# TODO 3: Explain in a comment what a high MAE means for the grid"
+        }
+      ]
+    },
+    {
+      "day": 73,
+      "title": "Introduction to Gen AI and LLMs",
+      "tasks": [
+        {
+          "title": "Generative AI in Data Platforms",
+          "type": "reading",
+          "description": "Exploring how Large Language Models (LLMs) can improve data accessibility for Project Alpha.",
+          "reading_content_md": "# The Gen AI Component\n\nWe aren't just predicting yield; we're making data interactive. We will integrate **LLM APIs** to allow users to ask questions like 'Which sector had the most downtime last week?' in plain English.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Gen AI Concepts Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of LLM integration.",
+          "quiz_questions": [
+            {
+              "question": "What does LLM stand for?",
+              "options": ["Large Logic Machine", "Large Language Model", "Linear Logging Method", "Linked List Module"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 74,
+      "title": "Retrieval-Augmented Generation (RAG) Basics",
+      "tasks": [
+        {
+          "title": "Building the Solaris Knowledge Base",
+          "type": "reading",
+          "description": "Understanding how RAG allows LLMs to use our internal documentation and data dictionaries.",
+          "reading_content_md": "# RAG Pipelines\n\nStandard LLMs don't know about 'Solaris Grid.' **RAG** allows us to retrieve relevant parts of our technical manuals and data dictionaries and feed them to the LLM so it provides accurate, context-aware answers.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "RAG Implementation Task",
+          "type": "coding",
+          "description": "Simulate a vector search query for the Solaris Knowledge Base.",
+          "coding_language": "python",
+          "coding_starter_code": "# rag_sim.py\n# TODO 1: Create a list of 'documents' (technical specs)\n# TODO 2: Implement a simple keyword search to simulate retrieval\n# TODO 3: Print the 'context' that would be sent to the LLM"
+        }
+      ]
+    },
+    {
+      "day": 75,
+      "title": "Integrating LLM APIs (OpenAI/Anthropic)",
+      "tasks": [
+        {
+          "title": "Connecting to the Brain",
+          "type": "reading",
+          "description": "How to securely call LLM APIs from our Python backend.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "LLM API Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of API security for Gen AI.",
+          "quiz_questions": [
+            {
+              "question": "Which header is typically used to send an API key for an LLM request?",
+              "options": ["User-Agent", "Authorization", "Content-Type", "Accept"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 76,
+      "title": "ML Experiment Tracking with MLflow",
+      "tasks": [
+        {
+          "title": "Versioning Models and Parameters",
+          "type": "reading",
+          "description": "Using MLflow to track which model version performed best.",
+          "reading_content_md": "# Reproducibility\n\nWith **2 Data Scientists** and multiple **ML Engineers**, we must track every experiment. We use **MLflow** to log parameters (like learning rate) and metrics (like accuracy) so we can always revert to the best-performing model.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "MLflow Tracking Task",
+          "type": "coding",
+          "description": "Write a script to log a dummy parameter and metric to MLflow.",
+          "coding_language": "python",
+          "coding_starter_code": "# mlflow_log.py\nimport mlflow\n\n# TODO 1: Start an MLflow run\n# TODO 2: Log a parameter named 'model_type' as 'RandomForest'\n# TODO 3: Log a metric named 'accuracy' as 0.85"
+        }
+      ]
+    },
+    {
+      "day": 77,
+      "title": "Data Privacy & Security in AI",
+      "tasks": [
+        {
+          "title": "Protecting Sensitive Grid Data",
+          "type": "reading",
+          "description": "Ensuring our LLM and ML outputs don't leak PII or proprietary infrastructure details.",
+          "reading_content_md": "# AI Security\n\nWe must ensure that when an **End User** asks the LLM a question, the model doesn't reveal sensitive data like private encryption keys or PII from our customer databases. We implement strict output filtering and PII masking.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "AI Security Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of PII masking.",
+          "quiz_questions": [
+            {
+              "question": "What is 'PII'?",
+              "options": ["Private Intelligence Interface", "Personally Identifiable Information", "Project Infrastructure Index", "Public Image Integration"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 78,
+      "title": "Hyperparameter Tuning",
+      "tasks": [
+        {
+          "title": "Squeezing Performance from Models",
+          "type": "reading",
+          "description": "Using GridSearch and RandomSearch to find the optimal settings for our models.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Tuning Implementation Task",
+          "type": "coding",
+          "description": "Write a snippet to define a parameter grid for a Random Forest classifier.",
+          "coding_language": "python",
+          "coding_starter_code": "# hyperparameter_grid.py\n# TODO 1: Create a dictionary 'param_grid'\n# TODO 2: Include 'n_estimators' and 'max_depth' with multiple values\n# TODO 3: Print the grid"
+        }
+      ]
+    },
+    {
+      "day": 79,
+      "title": "Finalizing Power BI Dashboards",
+      "tasks": [
+        {
+          "title": "Adding Predictive Views",
+          "type": "reading",
+          "description": "Integrating ML predictions (Forecasted vs Actual) into the Power BI workspace.",
+          "reading_content_md": "# Visualizing the Future\n\nThe **Power BI Developer** now adds a 'Forecast' tab. We import our model predictions from Snowflake so stakeholders can see the predicted yield for the next 7 days alongside the historical data.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Power BI Integration Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of importing ML outputs into BI tools.",
+          "quiz_questions": [
+            {
+              "question": "How does Power BI usually consume ML predictions in this project?",
+              "options": ["By running Python code directly", "By reading from the curated Snowflake tables", "By calling an API for every user click", "By importing CSV files manually"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 80,
+      "title": "Gen AI Prototype: Natural Language to SQL",
+      "tasks": [
+        {
+          "title": "Empowering Non-Technical Users",
+          "type": "reading",
+          "description": "Building a tool that converts user questions into Snowflake queries.",
+          "reading_content_md": "# Text-to-SQL\n\nPart of Project Alpha is a Gen AI prototype that converts a user's question—'Show me yesterday's yield for New York'—into a valid SQL SELECT statement. This removes the SQL barrier for business stakeholders.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Text-to-SQL Logic Task",
+          "type": "coding",
+          "description": "Draft a prompt template that guides an LLM to generate SQL for our Solaris schema.",
+          "coding_language": "python",
+          "coding_starter_code": "# prompt_template.py\n# TODO 1: Create a string 'system_prompt' defining the Solaris schema\n# TODO 2: Include a 'user_query' variable\n# TODO 3: Print the final combined prompt"
+        }
+      ]
+    },
+    {
+      "day": 81,
+      "title": "Handling Model Drift",
+      "tasks": [
+        {
+          "title": "When Models Go Stale",
+          "type": "reading",
+          "description": "Understanding why a model trained in Summer might fail in Winter (Data Drift).",
+          "reading_content_md": "# Monitoring Drift\n\nSolar patterns change with seasons. If we don't monitor for 'Data Drift,' our yield predictions will become inaccurate. We implement checks to compare the distribution of incoming sensor data vs. the data used for training.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Drift Concepts Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of concept drift.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Concept Drift'?",
+              "options": ["When the relationship between features and labels changes over time", "When the server physical location moves", "When the developer changes the code", "When the sensor ID changes"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 82,
+      "title": "CI/CD for Machine Learning (MLOps)",
+      "tasks": [
+        {
+          "title": "Automating Model Retraining",
+          "type": "reading",
+          "description": "Setting up pipelines to retrain models when performance drops.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "MLOps Pipeline Task",
+          "type": "coding",
+          "description": "Draft a pseudocode loop that triggers retraining if MAE > Threshold.",
+          "coding_language": "python",
+          "coding_starter_code": "# retraining_trigger.py\n# TODO 1: Define 'current_mae' and 'threshold'\n# TODO 2: Write an if-statement to print 'Retraining Triggered' if exceeded"
+        }
+      ]
+    },
+    {
+      "day": 83,
+      "title": "Optimizing LLM Costs: Prompt Engineering",
+      "tasks": [
+        {
+          "title": "Efficiency in Gen AI",
+          "type": "reading",
+          "description": "Learning to get better results from LLMs using fewer 'tokens' to save budget.",
+          "reading_content_md": "# Prompt Optimization\n\nEvery token costs money. We refine our Gen AI prompts to be concise yet effective. We use **Few-Shot Prompting** (providing examples) to ensure the LLM understands the specific terminology of Solaris Grid without lengthy explanations.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Prompt Engineering Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of few-shot prompting.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Few-Shot Prompting'?",
+              "options": ["Sending only a few tokens", "Providing a few examples within the prompt", "Training a model on a few datasets", "Running a model for only a few seconds"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 84,
+      "title": "Month 4 Comprehensive Milestone Review",
+      "tasks": [
+        {
+          "title": "Intelligence Layer: Completion Check",
+          "type": "reading",
+          "description": "Reviewing the trained models and Gen AI prototypes developed this month.",
+          "reading_content_md": "# Milestone Achieved\n\nProject Alpha is now 'Intelligent.' We have models that predict energy and an LLM that understands our data. This marks the end of the **Build Phase**. Next month, we move to **Integration**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 4 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the ML and Gen AI development phase.",
+          "quiz_questions": [
+            {
+              "question": "What tool do we use for experiment tracking?",
+              "options": ["dbt", "MLflow", "Airflow", "Snowflake"],
+              "correct_index": 1
+            },
+            {
+              "question": "Which component allows LLMs to access our internal Solaris docs?",
+              "options": ["Regression", "RAG", "SQL", "CI/CD"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 85,
+      "title": "Handover to Integration Phase",
+      "tasks": [
+        {
+          "title": "Documenting Model Endpoints",
+          "type": "reading",
+          "description": "Ensuring the full team knows how to interact with the new ML models.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Write a summary of the 'Model Registry' for the handover document.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Alpha — Intelligence Layer Handover\n## Production Models:\n## Gen AI Endpoints:\n## Known Limitations:"
+        }
+      ]
+    },
+    {
+      "day": 86,
+      "title": "End-to-End Build Review",
+      "tasks": [
+        {
+          "title": "Validating the Intelligence Pipeline",
+          "type": "reading",
+          "description": "Ensuring data flows correctly from the Feature Store into the models and then to the dashboards.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Build Review Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of the end-to-end build logic.",
+          "quiz_questions": [
+            {
+              "question": "What is the source of data for our ML training models?",
+              "options": ["Raw IoT Sensors", "Curated Feature Store", "External APIs directly", "Power BI Dashboards"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 87,
+      "title": "Scaling AI Infrastructure",
+      "tasks": [
+        {
+          "title": "Preparing for Concurrent Users",
+          "type": "reading",
+          "description": "Understanding how to scale our Gen AI and ML services for the full platform launch.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Scaling Logic Task",
+          "type": "coding",
+          "description": "Draft a logic for 'Batch Inference' vs 'Real-time Inference' for yield predictions.",
+          "coding_language": "python",
+          "coding_starter_code": "# inference_strategy.py\n# TODO 1: Define a function 'get_batch_predictions()'\n# TODO 2: Define a function 'get_realtime_prediction()'\n# TODO 3: Print which one is used for daily reporting"
+        }
+      ]
+    },
+    {
+      "day": 88,
+      "title": "Month 4 Retrospective & Future Roadmap",
+      "tasks": [
+        {
+          "title": "Reflecting on the AI Build",
+          "type": "reading",
+          "description": "What worked in Month 4 and what challenges remain for full integration.",
+          "reading_content_md": "# Retrospective\n\nMonth 4 was our most technically diverse month. We combined statistics, software engineering, and the latest in Gen AI. As we move to Month 5, the challenge will be **Stability**—ensuring these complex pieces work together under load.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Phase 2 Final Quiz",
+          "type": "quiz",
+          "description": "Check on the completion status of the Build phase.",
+          "quiz_questions": [
+            {
+              "question": "Which phase begins in Month 5?",
+              "options": ["Setup", "Build", "Integrate", "Launch"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 89,
+      "title": "Phase 3 Transition: The Integration Roadmap",
+      "tasks": [
+        {
+          "title": "Connecting the Intelligence Dots",
+          "type": "reading",
+          "description": "Understanding the end-to-end flow from raw sensor data to a live ML-powered dashboard.",
+          "reading_content_md": "# Phase 3: Integration\n\n## The Goal\nIn Months 1–4, we built the engine, the fuel, and the dashboard. Month 5 is about putting it all into the chassis. We are moving from 'isolated development' to 'system integration'.\n\n## The Workflow\n1. **ML Serving**: Deploying models as live APIs.\n2. **Dashboard Binding**: Connecting Power BI to real-time Snowflake views.\n3. **End-to-End Testing**: Ensuring a voltage spike in a sensor triggers a prediction and an alert in under 5 minutes.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Integration Strategy Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the integration phase objectives.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary focus of Month 5?",
+              "options": ["Writing new ML algorithms", "Connecting all platform components and testing them as one system", "Designing the company logo", "Hiring more data scientists"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 90,
+      "title": "Deploying ML Models as REST APIs",
+      "tasks": [
+        {
+          "title": "Model Serving with FastAPI",
+          "type": "reading",
+          "description": "How to wrap your trained Solaris models into a web service that other apps can call.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "API Deployment Task",
+          "type": "coding",
+          "description": "Write a simple FastAPI endpoint that accepts sensor data and returns a yield prediction.",
+          "coding_language": "python",
+          "coding_starter_code": "# model_api.py\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n# TODO 1: Create a POST endpoint '/predict'\n# TODO 2: Accept a JSON body with 'voltage' and 'temp'\n# TODO 3: Return a dummy prediction value '15.5 kWh'"
+        }
+      ]
+    },
+    {
+      "day": 91,
+      "title": "Containerization with Docker",
+      "tasks": [
+        {
+          "title": "Packaging the Solaris Environment",
+          "type": "reading",
+          "description": "Using Docker to ensure our integration code runs the same on every server.",
+          "reading_content_md": "# Docker for Project Alpha\n\nTo avoid 'it works on my machine,' we use Docker. We package our Python environment, ML models, and API code into a **Container**. This container can then be deployed to the cloud (AWS/Azure) consistently by the **ML Engineers**.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Docker Fundamentals Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of containerization.",
+          "quiz_questions": [
+            {
+              "question": "What is a Docker Image?",
+              "options": ["A screenshot of the code", "A read-only template containing the environment and code", "A hardware component", "A type of database"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 92,
+      "title": "Connecting Dashboards to Live Data",
+      "tasks": [
+        {
+          "title": "Snowflake DirectQuery Optimization",
+          "type": "reading",
+          "description": "Setting up Power BI to query Snowflake in real-time without manual refreshes.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Live Connection Task",
+          "type": "coding",
+          "description": "Configure a Snowflake View specifically optimized for Power BI aggregation.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- pbi_optimized_view.sql\n-- TODO 1: Create a SECURE VIEW for the Power BI service\n-- TODO 2: Aggregate yield by hour and region\n-- TODO 3: Include the latest ML 'predicted_yield' column"
+        }
+      ]
+    },
+    {
+      "day": 93,
+      "title": "End-to-End Integration Testing",
+      "tasks": [
+        {
+          "title": "Tracing the Data Thread",
+          "type": "reading",
+          "description": "How to verify that data moving through Airflow, Spark, and Snowflake remains accurate.",
+          "reading_content_md": "# Data Lineage Testing\n\nWe perform 'Smoke Tests.' We inject a known test record at the start of the pipeline (Sensor API) and verify that it appears correctly in the final Power BI dashboard with the expected ML prediction attached.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Integration Test Quiz",
+          "type": "quiz",
+          "description": "Test your ability to troubleshoot a broken integration link.",
+          "quiz_questions": [
+            {
+              "question": "If data is in Snowflake but not on the Dashboard, where is the most likely failure?",
+              "options": ["The Sensor API", "The Airflow DAG", "The Power BI Connection/Credentials", "The Spark cluster"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 94,
+      "title": "User Acceptance Testing (UAT) - Round 1",
+      "tasks": [
+        {
+          "title": "The Stakeholder Feedback Loop",
+          "type": "reading",
+          "description": "Conducting the first round of UAT with the 5 Data Analysts and business leads.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "UAT Feedback Task",
+          "type": "coding",
+          "description": "Create a Python dictionary to categorize and prioritize UAT 'Bug' reports.",
+          "coding_language": "python",
+          "coding_starter_code": "# uat_tracker.py\n# TODO 1: Create a list of bug dicts (id, description, severity)\n# TODO 2: Sort the list by 'severity' (High/Medium/Low)\n# TODO 3: Print a report for the Lead Engineer"
+        }
+      ]
+    },
+    {
+      "day": 95,
+      "title": "Query Optimization & Pruning",
+      "tasks": [
+        {
+          "title": "Speeding Up the Warehouse",
+          "type": "reading",
+          "description": "Learning to use Snowflake's Query Profile to find and fix slow transformations.",
+          "reading_content_md": "# Warehouse Performance\n\nAs more people join the platform, our queries must be efficient. We use **Pruning**—ensuring Snowflake only reads the partitions it needs (e.g., filtering by `date` first) to keep costs low and speeds high.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Optimization Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of partition pruning.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Pruning' in a data warehouse?",
+              "options": ["Deleting old records", "Skipping irrelevant data files during a query", "Renaming columns", "Compressing files"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 96,
+      "title": "Load Testing: Simulating Peak Load",
+      "tasks": [
+        {
+          "title": "Breaking the System on Purpose",
+          "type": "reading",
+          "description": "Using tools like Locust to simulate 1,000 concurrent users on the platform.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Load Testing Script",
+          "type": "coding",
+          "description": "Draft a basic logic to simulate multiple API requests to the ML endpoint.",
+          "coding_language": "python",
+          "coding_starter_code": "# load_test_sim.py\n# TODO 1: Use a loop to simulate 100 requests to the predict endpoint\n# TODO 2: Track how many requests returned a 200 OK vs 500 Error\n# TODO 3: Print the 'Success Rate'"
+        }
+      ]
+    },
+    {
+      "day": 97,
+      "title": "Schema Corrections & Migration",
+      "tasks": [
+        {
+          "title": "Updating the Database in Production",
+          "type": "reading",
+          "description": "How to safely change a Snowflake table structure without losing data.",
+          "reading_content_md": "# Schema Evolution\n\nIf UAT requires a new column, we use **Migrations**. Instead of dropping the table, we use `ALTER TABLE`. This ensures the **Data Quality Analyst** can maintain lineage even as the platform evolves.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Migration Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of DDL commands.",
+          "quiz_questions": [
+            {
+              "question": "Which SQL command adds a new column to an existing table?",
+              "options": ["UPDATE TABLE", "CHANGE TABLE", "ALTER TABLE", "INSERT INTO"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 98,
+      "title": "Integrating Gen AI into the UI",
+      "tasks": [
+        {
+          "title": "The 'Ask Solaris' Interface",
+          "type": "reading",
+          "description": "Connecting the LLM backend to a chat interface for stakeholders.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Gen AI Integration Task",
+          "type": "coding",
+          "description": "Write a Python function that routes a user question to the LLM and formats the answer.",
+          "coding_language": "python",
+          "coding_starter_code": "# solaris_chat_logic.py\n# TODO 1: Accept user_input string\n# TODO 2: Pre-pend the Solaris System Prompt\n# TODO 3: Simulate returning a 'Chatbot' response"
+        }
+      ]
+    },
+    {
+      "day": 99,
+      "title": "Handling API Authentication & Security",
+      "tasks": [
+        {
+          "title": "Securing the Intelligence Platform",
+          "type": "reading",
+          "description": "Implementing OAuth or API Keys to ensure only the 29-member team can access the backend.",
+          "reading_content_md": "# Platform Security\n\nWe cannot leave our ML endpoints public. We implement **Bearer Tokens**. Every request from the dashboard to the ML API must include a valid security token generated by our identity provider.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Security Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of API tokens.",
+          "quiz_questions": [
+            {
+              "question": "What is the purpose of an Authorization token?",
+              "options": ["To encrypt the data", "To verify the identity and permissions of the requester", "To make the API faster", "To store user preferences"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 100,
+      "title": "UAT Round 2: Bug Squashing",
+      "tasks": [
+        {
+          "title": "Final Feedback Integration",
+          "type": "reading",
+          "description": "Addressing the 'High' and 'Medium' priority bugs found in the first round of UAT.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Bug Fix Logic Task",
+          "type": "coding",
+          "description": "Update an existing data cleaning function to handle a newly discovered 'edge case' (e.g., negative voltage).",
+          "coding_language": "python",
+          "coding_starter_code": "# edge_case_fix.py\n# TODO 1: Define a list of readings including a negative value\n# TODO 2: Write a filter that converts negative values to 0\n# TODO 3: Log a warning whenever this happens"
+        }
+      ]
+    },
+    {
+      "day": 101,
+      "title": "Performance Tuning: Spark & dbt",
+      "tasks": [
+        {
+          "title": "Optimizing the Transformation Layer",
+          "type": "reading",
+          "description": "Using dbt's 'Incremental' materialization to speed up daily updates.",
+          "reading_content_md": "# Transformation Efficiency\n\nWe review our dbt models. Any model taking longer than 10 minutes to run in Snowflake is flagged for refactoring. We ensure we are using **Join Optimization** and avoiding large 'Cartesian Products'.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Tuning Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of SQL join performance.",
+          "quiz_questions": [
+            {
+              "question": "Which of these usually results in the worst query performance?",
+              "options": ["Inner Join", "Left Join", "Cross Join (Cartesian Product)", "Union All"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 102,
+      "title": "Finalizing Infrastructure Runbooks",
+      "tasks": [
+        {
+          "title": "Preparing for Handover",
+          "type": "reading",
+          "description": "Documenting the 'Disaster Recovery' steps for the Project Alpha infrastructure.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Runbook Automation Task",
+          "type": "coding",
+          "description": "Write a script that prints out the 'Service Status' of all platform components (API, DB, Spark).",
+          "coding_language": "python",
+          "coding_starter_code": "# health_check.py\n# TODO 1: Create a list of services\n# TODO 2: Loop and print '{Service} Status: OK'"
+        }
+      ]
+    },
+    {
+      "day": 103,
+      "title": "Integration Testing: Error Propagation",
+      "tasks": [
+        {
+          "title": "What Happens When Things Break?",
+          "type": "reading",
+          "description": "Ensuring that if the Weather API fails, the ML model defaults to a 'Safe' baseline instead of crashing.",
+          "reading_content_md": "# Graceful Degradation\n\nProject Alpha must be resilient. If an external dependency fails, we implement **Fallbacks**. For example, if real-time weather is missing, our model uses the 'Average Historical Temperature' to provide an estimate.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Fallback Logic Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of resilient design.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Fallback'?",
+              "options": ["A bug in the code", "A backup plan/value used when a primary source is unavailable", "A way to delete data", "A type of SQL join"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 104,
+      "title": "Connecting Airflow to Production Snowflake",
+      "tasks": [
+        {
+          "title": "Promoting DAGs to Prod",
+          "type": "reading",
+          "description": "Changing connection IDs and schedules to move from Dev to Production environment.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Environment Variable Task",
+          "type": "coding",
+          "description": "Write a Python script that loads different database credentials based on an 'ENV' variable.",
+          "coding_language": "python",
+          "coding_starter_code": "# env_selector.py\nimport os\n\n# TODO 1: Get 'ENV' from environment variables\n# TODO 2: If 'PROD', set user to 'ALPHA_ADMIN'\n# TODO 3: Print 'Connecting to {user} database'"
+        }
+      ]
+    },
+    {
+      "day": 105,
+      "title": "Dashboard Sign-off",
+      "tasks": [
+        {
+          "title": "Final UI Polish",
+          "type": "reading",
+          "description": "Ensuring the Power BI reports meet the specific needs of the 5 Analyst sub-teams.",
+          "reading_content_md": "# The Finish Line (UI)\n\nWe present the final dashboards. The **Power BI Developer** ensures that the filters, tooltips, and ML-forecast lines are all functioning perfectly. We obtain a formal 'Sign-off' from the lead Data Analyst.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Sign-off Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of project milestones.",
+          "quiz_questions": [
+            {
+              "question": "What does a 'Sign-off' represent?",
+              "options": ["The start of a project", "Formal approval that a component meets requirements", "The deletion of code", "A meeting with HR"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 106,
+      "title": "Platform Stress Test Review",
+      "tasks": [
+        {
+          "title": "Analyzing Load Test Results",
+          "type": "reading",
+          "description": "Reviewing the 'Response Time' graphs and identifying any final bottlenecks.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Performance Analysis Task",
+          "type": "coding",
+          "description": "Write a script to calculate the average response time from a list of simulated millisecond results.",
+          "coding_language": "python",
+          "coding_starter_code": "# latency_calc.py\nlatencies = [120, 450, 800, 150, 200]\n\n# TODO 1: Calculate the mean latency\n# TODO 2: If mean > 300, print 'OPTIMIZATION REQUIRED'"
+        }
+      ]
+    },
+    {
+      "day": 107,
+      "title": "Month 5 Integration Milestone Review",
+      "tasks": [
+        {
+          "title": "Project Alpha: System Integrated",
+          "type": "reading",
+          "description": "Comprehensive review of the end-to-end integration and UAT results.",
+          "reading_content_md": "# Milestone Achieved\n\nThe platform is no longer just parts; it is a whole. We have a live, secured, and load-tested system. We have business sign-off on the dashboards and models. We are ready for **Month 6: Launch**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 5 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Integration and UAT phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used to containerize the ML API?",
+              "options": ["Snowflake", "Docker", "Power BI", "dbt"],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the main goal of UAT?",
+              "options": ["To write more code", "To ensure the platform meets user needs and is bug-free", "To save money", "To train the ML models"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 108,
+      "title": "Production Deployment Checklist",
+      "tasks": [
+        {
+          "title": "The Go-Live Script",
+          "type": "reading",
+          "description": "Preparing the final set of steps for the 'Big Launch' in Month 6.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Checklist Implementation Task",
+          "type": "coding",
+          "description": "Create a Python script that iterates through a 'Pre-Launch' list and checks for completion.",
+          "coding_language": "python",
+          "coding_starter_code": "# launch_prep.py\nsteps = ['DB_Migrated', 'API_Deployed', 'Docs_Updated']\n# TODO 1: Loop and print 'Verifying: {step}'"
+        }
+      ]
+    },
+    {
+      "day": 109,
+      "title": "Reviewing Automated Alerts",
+      "tasks": [
+        {
+          "title": "Final Monitoring Check",
+          "type": "reading",
+          "description": "Ensuring the Slack/Email alerts correctly trigger for production failures.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Alerting Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of production monitoring.",
+          "quiz_questions": [
+            {
+              "question": "Why is alerting crucial for the launch phase?",
+              "options": ["To annoy the engineers", "To ensure immediate response to system failures in a live environment", "To track employee hours", "To update the dashboard"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 110,
+      "title": "Security & Compliance Final Audit",
+      "tasks": [
+        {
+          "title": "Zero-Trust Architecture Review",
+          "type": "reading",
+          "description": "One final review of encryption and access controls before the public launch.",
+          "reading_content_md": "# Final Security Review\n\nWe verify that all data 'at rest' (in Snowflake) and 'in transit' (API calls) is encrypted. We ensure that our 'Zero-Trust' policy is enforced—no service has more permissions than it absolutely needs to function.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Security Logic Task",
+          "type": "coding",
+          "description": "Write a mock script that masks the first 12 digits of an API key for logging purposes.",
+          "coding_language": "python",
+          "coding_starter_code": "# key_masker.py\nraw_key = \"API-1234-5678-9012-ABCD\"\n# TODO 1: Return '****-****-****-ABCD'\n# TODO 2: Print the masked key"
+        }
+      ]
+    },
+    {
+      "day": 111,
+      "title": "Month 5 Retrospective: Ready for Launch",
+      "tasks": [
+        {
+          "title": "Reflecting on the Integration Phase",
+          "type": "reading",
+          "description": "Final thoughts on the stability and performance of Project Alpha.",
+          "reading_content_md": "# Retrospective\n\nMonth 5 was about endurance. We moved through bugs, load failures, and stakeholder critiques. We are now standing in front of a production-ready platform. Month 6 is the finish line.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Phase 3 Final Quiz",
+          "type": "quiz",
+          "description": "Check on the completion status of the Integration phase.",
+          "quiz_questions": [
+            {
+              "question": "Which phase begins in Month 6?",
+              "options": ["Setup", "Build", "Integrate", "Launch"],
+              "correct_index": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 112,
+      "title": "Production Deployment: The Green Light",
+      "tasks": [
+        {
+          "title": "Executing the Launch Runbook",
+          "type": "reading",
+          "description": "Moving the finalized code, models, and dashboards into the live production environment.",
+          "reading_content_md": "# Go-Live: Production Deployment\n\n## The Final Push\nToday we execute the 'Production Launch'. This involves a coordinated deployment of our Spark pipelines, Snowflake schemas, and FastAPI model endpoints into the production VPC. \n\n## Zero-Downtime Strategy\nWe utilize 'Blue-Green' deployment patterns to ensure that the **Solaris Grid** monitoring remains active even as we swap to the new Project Alpha intelligence layer.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Deployment Logic Task",
+          "type": "coding",
+          "description": "Write a script to verify that all production API endpoints are returning a 200 OK status.",
+          "coding_language": "python",
+          "coding_starter_code": "# prod_verify.py\nimport requests\n\nendpoints = ['https://api.solaris-grid.com/v1/predict', 'https://api.solaris-grid.com/v1/health']\n# TODO: Loop through endpoints and print status\n# TODO: Raise an alert if any endpoint is unreachable"
+        }
+      ]
+    },
+    {
+      "day": 113,
+      "title": "Setting Up Production Monitoring",
+      "tasks": [
+        {
+          "title": "Observability with Prometheus and Grafana",
+          "type": "reading",
+          "description": "Implementing a full monitoring stack to track pipeline health and model performance in real-time.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Monitoring Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of production observability.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of production monitoring?",
+              "options": ["To write more code", "To detect and alert on system failures before users notice", "To save storage", "To train models"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 114,
+      "title": "Alerting Configuration: Pipeline Failures",
+      "tasks": [
+        {
+          "title": "Automated Fail-Safes",
+          "type": "reading",
+          "description": "Configuring Airflow to trigger high-priority alerts for data SLA breaches.",
+          "reading_content_md": "# Critical Alerting\n\nIf a **Spark Ingestion** job fails or data is delayed beyond 15 minutes, a 'Critical' alert is sent to the 29-member team via Slack and PagerDuty. This ensures 24/7 grid reliability.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Alerting Logic Task",
+          "type": "coding",
+          "description": "Define an Airflow 'on_failure_callback' that sends a payload to a webhook.",
+          "coding_language": "python",
+          "coding_starter_code": "# alert_callback.py\ndef send_critical_alert(context):\n    # TODO: Extract task_id and execution_date from context\n    # TODO: Print a formatted JSON alert for the operations team"
+        }
+      ]
+    },
+    {
+      "day": 115,
+      "title": "Model Drift Monitoring",
+      "tasks": [
+        {
+          "title": "Detecting Intelligence Decay",
+          "type": "reading",
+          "description": "Setting up automated checks to ensure ML predictions stay accurate over time.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Drift Monitoring Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of model performance tracking.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Model Drift'?",
+              "options": ["The server moving physical locations", "The degradation of model predictive power over time", "The code getting longer", "A hardware sensor breaking"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 116,
+      "title": "User Training Workshop - Session 1",
+      "tasks": [
+        {
+          "title": "Empowering the Data Analysts",
+          "type": "reading",
+          "description": "Conducting the first of three training sessions for the 5 analyst sub-teams.",
+          "reading_content_md": "# Training: Yield Analysis\n\nToday we train the Analysts on the 'Yield' and 'Stability' dashboards. We demonstrate how to use the 'Ask Solaris' Gen AI interface to query the Snowflake Gold layer.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "User Training Task",
+          "type": "coding",
+          "description": "Create a 'Cheat Sheet' script that prints common SQL queries for the analysts to use as a backup.",
+          "coding_language": "python",
+          "coding_starter_code": "# analyst_helper.py\nqueries = {'total_yield': 'SELECT SUM(kwh) FROM fact_yield', 'active_sensors': 'SELECT COUNT(*) FROM dim_sensors'}\n# TODO: Loop and print query names and logic"
+        }
+      ]
+    },
+    {
+      "day": 117,
+      "title": "Technical Documentation: Architecture Deep Dive",
+      "tasks": [
+        {
+          "title": "Finalizing the System Blueprint",
+          "type": "reading",
+          "description": "Completing the architecture, API, and model documentation for the full team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Architecture Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the Project Alpha tech stack.",
+          "quiz_questions": [
+            {
+              "question": "Which tool handles the transformation layer in our Snowflake warehouse?",
+              "options": ["Airflow", "dbt", "FastAPI", "Docker"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 118,
+      "title": "User Training Workshop - Session 2",
+      "tasks": [
+        {
+          "title": "Empowering Maintenance & Operations",
+          "type": "reading",
+          "description": "Training the hardware and operations teams on failure prediction alerts.",
+          "reading_content_md": "# Training: Predictive Maintenance\n\nWe show the operations team how to interpret 'Failure Probability' scores generated by our ML models. This session focuses on the automated ticketing system integrated with the dashboard.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Maintenance Logic Task",
+          "type": "coding",
+          "description": "Write a script that filters for sensors with a failure probability > 85% for the workshop demo.",
+          "coding_language": "python",
+          "coding_starter_code": "# failure_demo.py\nsensors = [{'id': 101, 'prob': 0.92}, {'id': 102, 'prob': 0.45}]\n# TODO: Print sensor IDs that require immediate attention"
+        }
+      ]
+    },
+    {
+      "day": 119,
+      "title": "Data SLA Audit & Reporting",
+      "tasks": [
+        {
+          "title": "Verifying Reliability Post-Launch",
+          "type": "reading",
+          "description": "Auditing the first week of production data to ensure completeness and freshness.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "SLA Audit Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of data freshness targets.",
+          "quiz_questions": [
+            {
+              "question": "What is our target data freshness SLA?",
+              "options": ["1 hour", "15 minutes", "1 second", "1 day"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 120,
+      "title": "User Training Workshop - Session 3",
+      "tasks": [
+        {
+          "title": "Executive Reporting & Gen AI",
+          "type": "reading",
+          "description": "Final training session for business stakeholders on high-level reporting and LLM features.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Gen AI Feedback Task",
+          "type": "coding",
+          "description": "Simulate a 'Log' for user questions to the Gen AI tool to identify common queries.",
+          "coding_language": "python",
+          "coding_starter_code": "# query_log.py\nuser_queries = ['Total yield NY?', 'Sensor 5 status?', 'Predicted sun for Friday?']\n# TODO: Count occurrences of keywords like 'yield' or 'status'"
+        }
+      ]
+    },
+    {
+      "day": 121,
+      "title": "System Handover: Operations & Support",
+      "tasks": [
+        {
+          "title": "Transferring Ownership",
+          "type": "reading",
+          "description": "Formal handover of the platform architecture to the operations and business teams.",
+          "reading_content_md": "# The Handover\n\nThe 29-member team transitions the platform to 'Business as Usual' (BAU) mode. We provide the final **Infrastructure Runbook** and **Support Contact List**.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the handover process.",
+          "quiz_questions": [
+            {
+              "question": "What document is essential for the operations team to maintain the platform?",
+              "options": ["A marketing plan", "An Infrastructure Runbook", "A list of employee names", "A blank dbt model"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 122,
+      "title": "Project Alpha Retrospective",
+      "tasks": [
+        {
+          "title": "What Worked & What to Improve",
+          "type": "reading",
+          "description": "Conducting a post-mortem with the full team of 29 to document lessons learned.",
+          "reading_content_md": "# Retrospective\n\nWe review the 6-month journey. Key wins included the UTC standardization and dbt testing. Areas for improvement involve the initial data discovery speed in Month 1.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Retrospective Task",
+          "type": "coding",
+          "description": "Generate a 'Lessons Learned' summary file in Markdown.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Alpha Retrospective\n## Wins:\n## Challenges:\n## Improvements:"
+        }
+      ]
+    },
+    {
+      "day": 123,
+      "title": "Phase 2 Roadmap: Advanced ML",
+      "tasks": [
+        {
+          "title": "Looking Beyond Project Alpha",
+          "type": "reading",
+          "description": "Drafting the roadmap for real-time analytics and advanced ML features.",
+          "reading_content_md": "# Future Vision\n\nProject Alpha is the foundation. Phase 2 will introduce **Real-Time Edge Inference** and **Automated Grid Load Balancing** using Reinforcement Learning.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Roadmap Quiz",
+          "type": "quiz",
+          "description": "Verify your knowledge of future project directions.",
+          "quiz_questions": [
+            {
+              "question": "What is a primary goal for the next phase (Phase 2)?",
+              "options": ["Re-build the foundation", "Advanced ML and Real-time analytics", "Moving back to CSV files", "Reducing the team size"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 124,
+      "title": "Hypercare Support - Day 1",
+      "tasks": [
+        {
+          "title": "The 30-Day Support Plan",
+          "type": "reading",
+          "description": "Commencing the 'Hypercare' period to support stakeholders immediately after launch.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Support Ticket Task",
+          "type": "coding",
+          "description": "Write a script that categorizes incoming hypercare support emails by keyword.",
+          "coding_language": "python",
+          "coding_starter_code": "# hypercare_triage.py\n# TODO: Identify tickets containing 'Dashboard' or 'Login'\n# TODO: Assign priority based on keywords"
+        }
+      ]
+    },
+    {
+      "day": 125,
+      "title": "Hypercare Support - Day 2",
+      "tasks": [
+        {
+          "title": "Platform Stability Check",
+          "type": "reading",
+          "description": "Monitoring Snowflake compute costs and API latency under real production usage.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Stability Quiz",
+          "type": "quiz",
+          "description": "Verify understanding of production performance metrics.",
+          "quiz_questions": [
+            {
+              "question": "Which metric tracks the cost of our analytics?",
+              "options": ["API Latency", "Snowflake Credit Usage", "GitHub Commits", "Email Count"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 126,
+      "title": "Hypercare Support - Day 3",
+      "tasks": [
+        {
+          "title": "Gathering Live User Feedback",
+          "type": "reading",
+          "description": "Interviewing analysts on their experience with the production data marts.",
+          "reading_content_md": "# Feedback Collection\n\nWe track how many analysts are successfully using the **Gold layer** for their daily reports. This informs any 'quick-fix' modeling changes needed during hypercare.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Feedback Task",
+          "type": "coding",
+          "description": "Write a Python script to aggregate user 'Satisfaction Scores' from a survey list.",
+          "coding_language": "python",
+          "coding_starter_code": "# survey_agg.py\nscores = [5, 4, 5, 3, 5]\n# TODO: Calculate average satisfaction\n# TODO: Print 'Success' if average > 4.0"
+        }
+      ]
+    },
+    {
+      "day": 127,
+      "title": "Final Documentation Audit",
+      "tasks": [
+        {
+          "title": "Ensuring the Wiki is Complete",
+          "type": "reading",
+          "description": "Checking that every dbt model and API endpoint is fully documented in the internal wiki.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Audit Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of documentation importance.",
+          "quiz_questions": [
+            {
+              "question": "What does documentation reduce in a team environment?",
+              "options": ["Code speed", "The 'Bus Factor' and project risk", "Storage space", "The number of meetings"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 128,
+      "title": "Platform Health Report - Week 1",
+      "tasks": [
+        {
+          "title": "Performance Benchmarking",
+          "type": "reading",
+          "description": "Generating a report on system performance for the Project Steering Committee.",
+          "reading_content_md": "# Performance Review\n\nWe report on **Uptime**, **SLA Compliance**, and **User Adoption**. This data proves that the 6-month investment has successfully created a scalable data intelligence platform.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Report Task",
+          "type": "coding",
+          "description": "Write a script that formats a performance summary as a clean text table.",
+          "coding_language": "python",
+          "coding_starter_code": "# health_report.py\nmetrics = {'Uptime': '99.9%', 'SLA': 'Met'}\n# TODO: Print as a formatted table"
+        }
+      ]
+    },
+    {
+      "day": 129,
+      "title": "Security & Compliance Checkoff",
+      "tasks": [
+        {
+          "title": "Final Security Sign-Off",
+          "type": "reading",
+          "description": "Confirming all PII masking and access controls are functioning in the production environment.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Security Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of data protection.",
+          "quiz_questions": [
+            {
+              "question": "Which layer ensures that only authorized users see sensitive data?",
+              "options": ["API layer", "Role-Based Access Control (RBAC)", "The power cables", "The CSV files"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 130,
+      "title": "Project Alpha: Knowledge Transfer",
+      "tasks": [
+        {
+          "title": "Closing the Skills Gap",
+          "type": "reading",
+          "description": "Ensuring the full team can replicate the pipelines and models built during Project Alpha.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Knowledge Transfer Task",
+          "type": "coding",
+          "description": "Write a 'ReadMe' snippet explaining how to refresh the dbt models locally.",
+          "coding_language": "markdown",
+          "coding_starter_code": "### Local dbt Refresh\n1. Run `dbt deps`\n2. Run `dbt seed`\n3. Run `dbt run --select tag:nightly`"
+        }
+      ]
+    },
+    {
+      "day": 131,
+      "title": "Final Platform Celebration & Recognition",
+      "tasks": [
+        {
+          "title": "Celebrating Success",
+          "type": "reading",
+          "description": "Recognizing the efforts of the 29-member team in delivering the 6-month roadmap.",
+          "reading_content_md": "# 132 Days of Project Alpha\n\nFrom the first JSON parser in Month 1 to the Gen AI text-to-SQL interface in Month 5, the team has built a world-class analytics ecosystem for the **Solaris Grid**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Recognition Quiz",
+          "type": "quiz",
+          "description": "A fun final quiz on project milestones.",
+          "quiz_questions": [
+            {
+              "question": "What was the final team size?",
+              "options": ["11", "29", "15", "5"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 132,
+      "title": "Official Project Handover & Closure",
+      "tasks": [
+        {
+          "title": "Project Alpha: Final Sign-Off",
+          "type": "reading",
+          "description": "The official closure and final stakeholder sign-off of Project Alpha.",
+          "reading_content_md": "# Project Alpha: CLOSED\n\nThe mission is complete. The **Data Intelligence Platform** is live, documented, and fully integrated. The team is now prepared for Phase 2 scaling and advanced real-time features.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Final Mastery Quiz",
+          "type": "quiz",
+          "description": "The ultimate final exam for the Project Alpha curriculum.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used to orchestrate the final production DAGs?",
+              "options": ["Snowflake", "Airflow", "Python", "Power BI"],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the primary deliverable of the Launch phase?",
+              "options": ["A prototype", "A live production platform and training materials", "A new model", "A research paper"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

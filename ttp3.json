@@ -1,0 +1,3322 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "title": "Project Gamma Kickoff: The DevOps Mindset",
+      "tasks": [
+        {
+          "title": "Introduction to Cloud Transformation",
+          "type": "reading",
+          "description": "Understanding the Project Gamma mission: Moving from 'Click-Ops' to Automation.",
+          "reading_content_md": "# Welcome to Project Gamma\n\n## The Mission\nWe are transforming a legacy on-premise environment into a modern **Cloud-Native** platform. As part of the 29-member transformation team, your role is to ensure the infrastructure is scalable, secure, and fully automated.\n\n## Core Pillars\n1. **Infrastructure as Code (IaC)**: No more manual server setup.\n2. **CI/CD**: Automating the path from code commit to production.\n3. **Observability**: If it moves, we monitor it.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "DevOps Principles Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of DevOps and Cloud goals.",
+          "quiz_questions": [
+            {
+              "question": "What does the term 'Infrastructure as Code' mean?",
+              "options": [
+                "Writing documentation for servers",
+                "Managing and provisioning infrastructure through machine-readable definition files",
+                "Writing code in the terminal",
+                "Building hardware using software"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "Which of these is a core pillar of Project Gamma?",
+              "options": [
+                "Manual Data Entry",
+                "Observability",
+                "Single Server Deployments",
+                "Deleting Git History"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "title": "Linux Internals: The Engineer's Workbench",
+      "tasks": [
+        {
+          "title": "Navigating the Filesystem Hierarchy",
+          "type": "reading",
+          "description": "Mastering the Linux directory structure (/etc, /var, /bin) and basic shell commands.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Shell Navigation Task",
+          "type": "coding",
+          "description": "Write a script to create a project directory structure and set appropriate permissions.",
+          "coding_language": "bash",
+          "coding_starter_code": "# setup_env.sh\n# TODO 1: Create a directory named 'gamma-logs' in your home folder\n# TODO 2: Create a file inside named 'system_check.txt'\n# TODO 3: Change the permissions so only the owner can read/write the file"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "title": "User and Group Management",
+      "tasks": [
+        {
+          "title": "The Principle of Least Privilege",
+          "type": "reading",
+          "description": "Managing Linux users, groups, and the sudoers file for secure administration.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Linux Permissions Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of chmod and chown.",
+          "quiz_questions": [
+            {
+              "question": "Which numeric permission represents read and execute for everyone, but full access for the owner?",
+              "options": [
+                "777",
+                "755",
+                "644",
+                "700"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "title": "Linux Process and Package Management",
+      "tasks": [
+        {
+          "title": "Managing Services with systemd",
+          "type": "reading",
+          "description": "Learning to start, stop, and enable services using systemctl and managing packages with apt/yum.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Service Control Task",
+          "type": "coding",
+          "description": "Write a bash command sequence to install Nginx, start it, and verify its status.",
+          "coding_language": "bash",
+          "coding_starter_code": "# nginx_setup.sh\n# TODO 1: Update package lists\n# TODO 2: Install nginx\n# TODO 3: Use systemctl to start the service"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "title": "Networking Fundamentals: The OSI Model",
+      "tasks": [
+        {
+          "title": "How Data Moves",
+          "type": "reading",
+          "description": "A deep dive into IP addressing, Subnetting, and the 7 layers of the OSI model.",
+          "reading_content_md": "# Network Architecture\n\nTo build a cloud, you must understand the network. We focus on **Layer 3 (Network)** for IP routing and **Layer 4 (Transport)** for TCP/UDP ports. In Project Gamma, we will design Virtual Private Clouds (VPCs) that mimic these physical networking concepts.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Networking Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of IP and Ports.",
+          "quiz_questions": [
+            {
+              "question": "Which protocol is 'connection-oriented' and ensures data delivery?",
+              "options": [
+                "UDP",
+                "ICMP",
+                "TCP",
+                "DNS"
+              ],
+              "correct_index": 2
+            },
+            {
+              "question": "What is the standard port for HTTPS traffic?",
+              "options": [
+                "80",
+                "22",
+                "443",
+                "3306"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "title": "SSH and Secure Remote Access",
+      "tasks": [
+        {
+          "title": "Public Key Infrastructure (PKI)",
+          "type": "reading",
+          "description": "Setting up SSH keys for passwordless, secure login to remote servers.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "SSH Keygen Task",
+          "type": "coding",
+          "description": "Simulate the generation of an Ed25519 SSH key pair and the command to copy it to a server.",
+          "coding_language": "bash",
+          "coding_starter_code": "# ssh_setup.sh\n# TODO 1: Generate a key using ssh-keygen\n# TODO 2: Print the command to copy the public key to 'gamma-server'"
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "title": "Cloud Computing Concepts",
+      "tasks": [
+        {
+          "title": "IaaS vs. PaaS vs. SaaS",
+          "type": "reading",
+          "description": "Categorizing cloud services and understanding the Shared Responsibility Model.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Cloud Service Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of cloud service models.",
+          "quiz_questions": [
+            {
+              "question": "Which model provides the most control over the underlying operating system?",
+              "options": [
+                "SaaS",
+                "PaaS",
+                "IaaS",
+                "FaaS"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "title": "Introduction to AWS Global Infrastructure",
+      "tasks": [
+        {
+          "title": "Regions and Availability Zones",
+          "type": "reading",
+          "description": "How AWS organizes data centers for high availability and disaster recovery.",
+          "reading_content_md": "# AWS Foundation\n\nProject Gamma will be hosted on **AWS**. We must design our infrastructure to span multiple **Availability Zones (AZs)**. If one data center goes dark, our automated failover ensures the platform stays online.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "AWS Infra Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of AZs and Regions.",
+          "quiz_questions": [
+            {
+              "question": "An Availability Zone is typically...",
+              "options": [
+                "A whole country",
+                "A collection of one or more physical data centers",
+                "A single server rack",
+                "A virtual software layer"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "title": "Identity and Access Management (IAM)",
+      "tasks": [
+        {
+          "title": "Securing the Cloud Console",
+          "type": "reading",
+          "description": "Creating users, groups, and policies to control access to AWS resources.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "IAM Policy Task",
+          "type": "coding",
+          "description": "Write a JSON IAM policy that allows 'Read Only' access to S3 buckets.",
+          "coding_language": "json",
+          "coding_starter_code": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:Get*\",\n        \"s3:List*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "title": "Virtual Private Cloud (VPC) - Part 1",
+      "tasks": [
+        {
+          "title": "Building Your Own Network",
+          "type": "reading",
+          "description": "Understanding VPC CIDR blocks, Public subnets, and Internet Gateways.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "VPC Logic Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of VPC components.",
+          "quiz_questions": [
+            {
+              "question": "What component allows a subnet to communicate with the public internet?",
+              "options": [
+                "Virtual Private Gateway",
+                "Internet Gateway",
+                "NAT Instance",
+                "Security Group"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "title": "VPC - Part 2: Private Subnets & NAT",
+      "tasks": [
+        {
+          "title": "Securing Internal Resources",
+          "type": "reading",
+          "description": "Setting up NAT Gateways to allow private instances to update software without being exposed.",
+          "reading_content_md": "# Private vs Public\n\nIn Project Gamma, our databases are placed in **Private Subnets**. They have no public IP address. Only our web servers (in Public Subnets) can talk to them, drastically reducing our attack surface.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Subnetting Task",
+          "type": "coding",
+          "description": "Calculate a CIDR split for a VPC with one public and one private subnet.",
+          "coding_language": "text",
+          "coding_starter_code": "VPC CIDR: 10.0.0.0/16\n# TODO 1: Define Public Subnet CIDR (e.g., /24)\n# TODO 2: Define Private Subnet CIDR (e.g., /24)"
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "title": "Security Groups and Network ACLs",
+      "tasks": [
+        {
+          "title": "Firewalls in the Cloud",
+          "type": "reading",
+          "description": "The difference between stateful Security Groups and stateless Network ACLs.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "SG vs NACL Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of cloud firewalls.",
+          "quiz_questions": [
+            {
+              "question": "Which firewall type is 'Stateful' (remembers incoming connections)?",
+              "options": [
+                "Network ACL",
+                "Security Group",
+                "IAM Policy",
+                "Route Table"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "title": "Elastic Compute Cloud (EC2) Fundamentals",
+      "tasks": [
+        {
+          "title": "Launching Virtual Servers",
+          "type": "reading",
+          "description": "Selecting Instance Types, AMIs, and Key Pairs for our first cloud server.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "EC2 Launch Task",
+          "type": "coding",
+          "description": "Write a bash script for 'User Data' to automatically install Apache on a new EC2 instance.",
+          "coding_language": "bash",
+          "coding_starter_code": "#!/bin/bash\n# TODO 1: Update OS\n# TODO 2: Install apache2\n# TODO 3: Echo 'Hello from Gamma' to index.html"
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "title": "Elastic Block Store (EBS)",
+      "tasks": [
+        {
+          "title": "Cloud Hard Drives",
+          "type": "reading",
+          "description": "Managing persistent block storage, snapshots, and volume types (GP3 vs IO1).",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Storage Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of EBS volumes.",
+          "quiz_questions": [
+            {
+              "question": "Which EBS feature allows you to create a point-in-time backup of a volume?",
+              "options": [
+                "Mirror",
+                "RAID",
+                "Snapshot",
+                "Lifecycle Policy"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 15,
+      "title": "Simple Storage Service (S3)",
+      "tasks": [
+        {
+          "title": "Object Storage for the Enterprise",
+          "type": "reading",
+          "description": "Using S3 for static assets, backups, and log storage with 99.999999999% durability.",
+          "reading_content_md": "# S3: The Infinite Bucket\n\nProject Gamma uses S3 as our 'Data Lake' for logs and application backups. We use **Lifecycle Policies** to automatically move old logs to cheaper storage classes like **Glacier** after 90 days.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "S3 CLI Task",
+          "type": "coding",
+          "description": "Simulate the AWS CLI commands to create a bucket and upload a file.",
+          "coding_language": "bash",
+          "coding_starter_code": "# s3_ops.sh\n# TODO 1: Create bucket 'gamma-project-backups-unique'\n# TODO 2: Upload system_check.txt to the bucket"
+        }
+      ]
+    },
+    {
+      "day": 16,
+      "title": "Route 53: Cloud DNS",
+      "tasks": [
+        {
+          "title": "Connecting Domains to IP Addresses",
+          "type": "reading",
+          "description": "Managing DNS records (A, CNAME, MX) and Health Checks.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "DNS Quiz",
+          "type": "quiz",
+          "description": "Verify your knowledge of DNS record types.",
+          "quiz_questions": [
+            {
+              "question": "Which record type maps a domain name to an IPv4 address?",
+              "options": [
+                "CNAME",
+                "AAAA",
+                "A",
+                "TXT"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 17,
+      "title": "Elastic Load Balancing (ELB)",
+      "tasks": [
+        {
+          "title": "Distributing Web Traffic",
+          "type": "reading",
+          "description": "Setting up an Application Load Balancer (ALB) to handle traffic for multiple EC2 instances.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "ELB Logic Task",
+          "type": "coding",
+          "description": "Define a Target Group and Health Check path in pseudocode.",
+          "coding_language": "text",
+          "coding_starter_code": "ALB Name: gamma-web-alb\n# TODO 1: Set Target Group Protocol to HTTP\n# TODO 2: Set Health Check Path to '/health'"
+        }
+      ]
+    },
+    {
+      "day": 18,
+      "title": "Auto Scaling Groups (ASG)",
+      "tasks": [
+        {
+          "title": "Elasticity in Action",
+          "type": "reading",
+          "description": "Configuring launch templates and scaling policies to automatically add servers during traffic spikes.",
+          "reading_content_md": "# Scaling Project Gamma\n\nWe never want a server to be a single point of failure. By using an **ASG**, if an EC2 instance crashes, AWS automatically detects it and launches a new one to maintain our 'Desired Capacity'.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "ASG Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of scaling triggers.",
+          "quiz_questions": [
+            {
+              "question": "What happens if an instance fails an ELB Health Check while in an ASG?",
+              "options": [
+                "The ASG reboots it",
+                "The ASG terminates it and launches a replacement",
+                "Nothing",
+                "The ELB stops the whole site"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 19,
+      "title": "Relational Database Service (RDS)",
+      "tasks": [
+        {
+          "title": "Managed Databases in the Cloud",
+          "type": "reading",
+          "description": "Launching a Multi-AZ PostgreSQL instance for high availability.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "RDS Configuration Task",
+          "type": "coding",
+          "description": "Write a SQL snippet to create a database and a dedicated 'gamma_app' user.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- db_init.sql\n-- TODO 1: Create DATABASE gamma_prod\n-- TODO 2: Create USER gamma_admin WITH PASSWORD 'secure_pass'"
+        }
+      ]
+    },
+    {
+      "day": 20,
+      "title": "CloudWatch: Monitoring & Logs",
+      "tasks": [
+        {
+          "title": "Gaining Visibility",
+          "type": "reading",
+          "description": "Using CloudWatch metrics, alarms, and log groups to monitor Project Gamma's health.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "CloudWatch Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of cloud monitoring.",
+          "quiz_questions": [
+            {
+              "question": "Which CloudWatch feature can automatically send a notification when CPU exceeds 80%?",
+              "options": [
+                "Logs",
+                "Metrics",
+                "Alarms",
+                "Events"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 21,
+      "title": "CloudTrail and AWS Config",
+      "tasks": [
+        {
+          "title": "Auditing and Compliance",
+          "type": "reading",
+          "description": "Tracking 'Who did what' across the AWS account for security compliance.",
+          "reading_content_md": "# The Audit Trail\n\nIn a 29-person team, we must log every API call. **CloudTrail** records if an engineer deletes an S3 bucket or changes a Security Group, providing the accountability required for enterprise DevOps.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Auditing Task",
+          "type": "coding",
+          "description": "Write a pseudocode logic to alert the team if CloudTrail is disabled.",
+          "coding_language": "python",
+          "coding_starter_code": "# audit_monitor.py\n# TODO: Check 'cloudtrail_status'\n# TODO: If status == 'OFF', print 'SECURITY BREACH ALERT'"
+        }
+      ]
+    },
+    {
+      "day": 22,
+      "title": "Month 1 Final Comprehensive Review",
+      "tasks": [
+        {
+          "title": "Project Gamma: Foundation Mastery",
+          "type": "reading",
+          "description": "Reviewing the progress from Linux command line to complex AWS VPC architectures.",
+          "reading_content_md": "# Month 1 Complete\n\nWe have established the **Cloud Foundation**. We have a secure network, a managed database, and automated server scaling. Month 2 will focus on **Infrastructure as Code (Terraform)** to automate everything we did manually this month.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 1 Final Quiz",
+          "type": "quiz",
+          "description": "The final assessment for the Month 1 Foundation phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool will we introduce in Month 2 to automate infrastructure provisioning?",
+              "options": [
+                "Excel",
+                "Terraform",
+                "Postman",
+                "Bash"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the primary benefit of a NAT Gateway?",
+              "options": [
+                "Faster internet",
+                "Allows private instances to access the internet securely",
+                "Stores large files",
+                "Replaces a database"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 23,
+      "title": "Introduction to Infrastructure as Code (IaC)",
+      "tasks": [
+        {
+          "title": "Why Declarative Infrastructure?",
+          "type": "reading",
+          "description": "Understanding the shift from manual setup to version-controlled infrastructure.",
+          "reading_content_md": "# Month 2: Automation\n\n## The Problem with Manual Config\nIn Month 1, we used the AWS Console. However, if we need to build 10 identical environments for our developers, doing it manually leads to 'Configuration Drift'.\n\n## The Terraform Solution\nTerraform allows us to define our AWS resources in configuration files. \n- **Declarative**: We describe the 'End State' (e.g., 'I want 3 EC2 instances'), and Terraform handles the creation.\n- **Idempotent**: Running the same code multiple times results in the same state.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "IaC Fundamentals Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of IaC benefits.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Configuration Drift'?",
+              "options": [
+                "Servers moving between regions",
+                "When manual changes cause environments to become different over time",
+                "A feature of the Linux kernel",
+                "An AWS billing alert"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 24,
+      "title": "Terraform HCL Basics",
+      "tasks": [
+        {
+          "title": "HashiCorp Configuration Language",
+          "type": "reading",
+          "description": "Learning the syntax of Providers, Resources, and Data Sources.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "First Terraform Resource",
+          "type": "coding",
+          "description": "Write a Terraform block to define an AWS S3 bucket.",
+          "coding_language": "hcl",
+          "coding_starter_code": "# main.tf\n# TODO 1: Define the 'aws' provider\n# TODO 2: Create a resource 'aws_s3_bucket' named 'gamma-state-storage'\n# TODO 3: Enable versioning on the bucket"
+        }
+      ]
+    },
+    {
+      "day": 25,
+      "title": "Terraform State Management",
+      "tasks": [
+        {
+          "title": "The source of truth: terraform.tfstate",
+          "type": "reading",
+          "description": "How Terraform tracks real-world resources and why state locking is critical for teams.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "State Management Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the state file.",
+          "quiz_questions": [
+            {
+              "question": "Where should the Terraform state file be stored in a team environment?",
+              "options": [
+                "On the engineer's local laptop",
+                "In the Git repository",
+                "In a remote backend like S3 with DynamoDB locking",
+                "It shouldn't be stored"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 26,
+      "title": "Provisioning a VPC with Terraform",
+      "tasks": [
+        {
+          "title": "Automating the Network",
+          "type": "reading",
+          "description": "Converting the manual VPC steps from Month 1 into a reusable Terraform script.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "VPC Code Task",
+          "type": "coding",
+          "description": "Define an AWS VPC and a single Public Subnet using Terraform.",
+          "coding_language": "hcl",
+          "coding_starter_code": "# network.tf\n# TODO 1: Create 'aws_vpc' with CIDR 10.0.0.0/16\n# TODO 2: Create 'aws_subnet' inside that VPC\n# TODO 3: Map public IP on launch"
+        }
+      ]
+    },
+    {
+      "day": 27,
+      "title": "Variables and Outputs",
+      "tasks": [
+        {
+          "title": "Making Code Reusable",
+          "type": "reading",
+          "description": "Using variables.tf and outputs.tf to parameterize your infrastructure.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Variables Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of Terraform variable types.",
+          "quiz_questions": [
+            {
+              "question": "Which file is typically used to provide values for variables in a specific environment?",
+              "options": [
+                "main.tf",
+                "terraform.tfvars",
+                "outputs.tf",
+                "provider.tf"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 28,
+      "title": "Terraform Modules",
+      "tasks": [
+        {
+          "title": "Infrastructure Blueprints",
+          "type": "reading",
+          "description": "How to package VPC or EC2 configurations into reusable modules for the Project Gamma team.",
+          "reading_content_md": "# Modular Infrastructure\n\nInstead of writing 500 lines of code in one file, we create **Modules**. One team member builds the 'Standard VPC' module, and everyone else 'calls' it with their specific CIDR. This ensures every network in Project Gamma follows the same security standards.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Module Implementation Task",
+          "type": "coding",
+          "description": "Write a 'module' block that calls a remote VPC module.",
+          "coding_language": "hcl",
+          "coding_starter_code": "# main.tf\n# TODO 1: Create a module 'vpc_alpha'\n# TODO 2: Set the source to a local folder './modules/vpc'\n# TODO 3: Pass a variable 'vpc_name'"
+        }
+      ]
+    },
+    {
+      "day": 29,
+      "title": "Terraform Provisioners vs. Cloud-Init",
+      "tasks": [
+        {
+          "title": "Bootstrapping Servers",
+          "type": "reading",
+          "description": "Comparing remote-exec and local-exec with User Data for initial server configuration.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Provisioning Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of server bootstrapping.",
+          "quiz_questions": [
+            {
+              "question": "Why is 'User Data' generally preferred over Terraform provisioners?",
+              "options": [
+                "It is faster",
+                "It follows the 'Immutable Infrastructure' pattern and is more reliable",
+                "It is easier to write",
+                "It doesn't require SSH"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 30,
+      "title": "Introduction to Ansible",
+      "tasks": [
+        {
+          "title": "Configuration Management",
+          "type": "reading",
+          "description": "How Ansible differs from Terraform: Provisioning (Terraform) vs. Configuring (Ansible).",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Ansible Inventory Task",
+          "type": "coding",
+          "description": "Create a simple Ansible inventory file (ini format) with two server groups.",
+          "coding_language": "ini",
+          "coding_starter_code": "# inventory.ini\n# TODO 1: Create a [webservers] group with two IPs\n# TODO 2: Create a [dbservers] group with one IP"
+        }
+      ]
+    },
+    {
+      "day": 31,
+      "title": "YAML Syntax and Ansible Playbooks",
+      "tasks": [
+        {
+          "title": "Defining the Server State",
+          "type": "reading",
+          "description": "Learning YAML syntax to write idempotent Ansible Playbooks.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Ansible Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of Ansible modules.",
+          "quiz_questions": [
+            {
+              "question": "Which Ansible module is used to install packages on Ubuntu/Debian?",
+              "options": [
+                "yum",
+                "apt",
+                "package",
+                "service"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 32,
+      "title": "Writing Your First Playbook",
+      "tasks": [
+        {
+          "title": "Automating Nginx Deployment",
+          "type": "reading",
+          "description": "Writing a playbook to install Nginx and start the service across multiple hosts.",
+          "reading_content_md": "# The Power of Ansible\n\nWith one command, `ansible-playbook site.yml`, we can update the configuration of 100 servers simultaneously. In Project Gamma, this is how we ensure all web servers have the same security patches and Nginx configs.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Playbook Coding Task",
+          "type": "coding",
+          "description": "Write a YAML playbook to ensure 'git' and 'curl' are installed.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# setup.yml\n- hosts: all\n  become: yes\n  tasks:\n    # TODO 1: Use 'apt' module to install 'git'\n    # TODO 2: Use 'apt' module to install 'curl'"
+        }
+      ]
+    },
+    {
+      "day": 33,
+      "title": "Ansible Roles",
+      "tasks": [
+        {
+          "title": "Modular Configuration",
+          "type": "reading",
+          "description": "Organizing playbooks into 'Roles' (common, web, db) for massive reuse.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Roles Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the Ansible directory structure.",
+          "quiz_questions": [
+            {
+              "question": "In an Ansible role, which directory contains the main list of tasks?",
+              "options": [
+                "handlers/",
+                "vars/",
+                "tasks/",
+                "templates/"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 34,
+      "title": "Terraform and Ansible Integration",
+      "tasks": [
+        {
+          "title": "The DevOps Workflow",
+          "type": "reading",
+          "description": "Using Terraform to 'output' IP addresses and Ansible to configure them.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Integration Task",
+          "type": "coding",
+          "description": "Write a bash script that takes a Terraform output and runs an Ansible playbook against it.",
+          "coding_language": "bash",
+          "coding_starter_code": "# deploy.sh\n# TODO 1: Run 'terraform apply'\n# TODO 2: Capture IP using 'terraform output'\n# TODO 3: Run 'ansible-playbook' using that IP"
+        }
+      ]
+    },
+    {
+      "day": 35,
+      "title": "Dynamic Inventory in Ansible",
+      "tasks": [
+        {
+          "title": "Cloud-Native Discovery",
+          "type": "reading",
+          "description": "Using the aws_ec2 plugin to automatically find servers based on AWS Tags.",
+          "reading_content_md": "# Stop Hardcoding IPs\n\nIn a dynamic cloud environment, servers are launched and terminated daily. We use **Dynamic Inventory** to tell Ansible: 'Find all servers with the tag Project: Gamma and configure them'.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Dynamic Inventory Quiz",
+          "type": "quiz",
+          "description": "Verify your knowledge of inventory plugins.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary benefit of dynamic inventory?",
+              "options": [
+                "It is faster",
+                "It automatically updates the host list as cloud resources change",
+                "It encrypts the IPs",
+                "It removes the need for SSH"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 36,
+      "title": "Ansible Vault: Securing Secrets",
+      "tasks": [
+        {
+          "title": "Encrypting Sensitive Data",
+          "type": "reading",
+          "description": "How to store passwords and API keys securely within your Ansible Git repo.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Vault Task",
+          "type": "coding",
+          "description": "Simulate the command to encrypt a file named 'secrets.yml' using a vault password.",
+          "coding_language": "bash",
+          "coding_starter_code": "# encrypt_secrets.sh\n# TODO: Use 'ansible-vault encrypt' command"
+        }
+      ]
+    },
+    {
+      "day": 37,
+      "title": "Terraform Workspaces",
+      "tasks": [
+        {
+          "title": "Managing Dev, Staging, and Prod",
+          "type": "reading",
+          "description": "Using Workspaces to manage multiple environments with the exact same code.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Workspaces Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of state isolation.",
+          "quiz_questions": [
+            {
+              "question": "What does a Terraform Workspace allow you to do?",
+              "options": [
+                "Write code in the browser",
+                "Isolate state files for different environments using the same config",
+                "Invite more users to your Git repo",
+                "Delete resources automatically"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 38,
+      "title": "Handling Secrets in Terraform",
+      "tasks": [
+        {
+          "title": "Integration with AWS Secrets Manager",
+          "type": "reading",
+          "description": "Using data sources to pull secrets into your infrastructure at runtime.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Secrets Data Source Task",
+          "type": "coding",
+          "description": "Define a data source block to fetch a secret from AWS Secrets Manager.",
+          "coding_language": "hcl",
+          "coding_starter_code": "# secrets.tf\n# TODO 1: Use 'aws_secretsmanager_secret' data source\n# TODO 2: Output the ARN of the secret"
+        }
+      ]
+    },
+    {
+      "day": 39,
+      "title": "Policy as Code with Terraform",
+      "tasks": [
+        {
+          "title": "Enforcing Standards",
+          "type": "reading",
+          "description": "Introduction to TFLint or Checkov to ensure your IaC follows security best practices.",
+          "reading_content_md": "# Automated Auditing\n\nBefore a 29-person team can apply code, we run **Static Analysis**. If an engineer tries to launch an 'Open-to-the-World' (0.0.0.0/0) Security Group, the build fails automatically.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Policy Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of IaC security scanning.",
+          "quiz_questions": [
+            {
+              "question": "Which tool is used for static analysis of Terraform files?",
+              "options": [
+                "Ansible",
+                "Checkov",
+                "Postman",
+                "JUnit"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 40,
+      "title": "Terraform Lifecycle Hooks",
+      "tasks": [
+        {
+          "title": "PreventDestroy and CreateBeforeDestroy",
+          "type": "reading",
+          "description": "Controlling the resource lifecycle to prevent accidental data loss in production.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Lifecycle Task",
+          "type": "coding",
+          "description": "Add a lifecycle block to an RDS database resource to prevent accidental deletion.",
+          "coding_language": "hcl",
+          "coding_starter_code": "# db.tf\n# TODO: Add lifecycle { prevent_destroy = true }"
+        }
+      ]
+    },
+    {
+      "day": 41,
+      "title": "Month 2 IaC Milestone Review",
+      "tasks": [
+        {
+          "title": "From Manual to Automated",
+          "type": "reading",
+          "description": "Reviewing the automated infrastructure for the Solaris and Beta project platforms.",
+          "reading_content_md": "# Automation Milestone\n\nWe have reached the point where our infrastructure is 'Software'. We can version it, test it, and deploy it in minutes. This is the foundation for our next phase: **Containerization**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 2 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Infrastructure as Code phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool is best for 'configuring' software inside a running OS?",
+              "options": [
+                "Terraform",
+                "Ansible",
+                "CloudWatch",
+                "IAM"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "Which command applies your Terraform changes to the real world?",
+              "options": [
+                "terraform plan",
+                "terraform apply",
+                "terraform init",
+                "terraform destroy"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 42,
+      "title": "Phase 1 Retrospective & Documentation",
+      "tasks": [
+        {
+          "title": "The Automation Runbook",
+          "type": "reading",
+          "description": "Documenting how to use the new Terraform and Ansible repos.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "ReadMe Task",
+          "type": "coding",
+          "description": "Write a 'Getting Started' guide for a new engineer to run the Terraform code.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Gamma Infrastructure\n## Prerequisites:\n## Deployment Steps:"
+        }
+      ]
+    },
+    {
+      "day": 43,
+      "title": "The Container Revolution",
+      "tasks": [
+        {
+          "title": "VMs vs. Containers",
+          "type": "reading",
+          "description": "Understanding the lightweight nature of containers and the shared OS kernel.",
+          "reading_content_md": "# Month 3: Containerization\n\n## Why Docker?\nVirtual Machines (VMs) are heavy; each includes a full OS. Containers share the host kernel, allowing us to run dozens of services (like our Java and Python apps) on a single server, saving significant cloud costs.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Container Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of containerization benefits.",
+          "quiz_questions": [
+            {
+              "question": "What does a container share with its host machine?",
+              "options": [
+                "The whole hard drive",
+                "The Operating System Kernel",
+                "The User accounts",
+                "The GPU"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 44,
+      "title": "Docker CLI Fundamentals",
+      "tasks": [
+        {
+          "title": "Running Your First Container",
+          "type": "reading",
+          "description": "Mastering docker run, ps, stop, and logs.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "CLI Task",
+          "type": "coding",
+          "description": "Write a command to run an Nginx container in detached mode on port 8080.",
+          "coding_language": "bash",
+          "coding_starter_code": "# docker_run.sh\n# TODO: Use 'docker run' with -d and -p flags"
+        }
+      ]
+    },
+    {
+      "day": 45,
+      "title": "Writing Effective Dockerfiles",
+      "tasks": [
+        {
+          "title": "Building Custom Images",
+          "type": "reading",
+          "description": "Understanding Layer Caching and instructions like FROM, RUN, and CMD.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Dockerfile Task",
+          "type": "coding",
+          "description": "Write a Dockerfile for a simple Python web app.",
+          "coding_language": "dockerfile",
+          "coding_starter_code": "# Dockerfile\n# TODO 1: Use 'python:3.9-slim' as base\n# TODO 2: Copy requirements.txt and install\n# TODO 3: Set ENTRYPOINT to python app.py"
+        }
+      ]
+    },
+    {
+      "day": 46,
+      "title": "Docker Image Optimization",
+      "tasks": [
+        {
+          "title": "Multi-Stage Builds",
+          "type": "reading",
+          "description": "Reducing image size by separating build tools from the final production runtime.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Optimization Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of image layers.",
+          "quiz_questions": [
+            {
+              "question": "Why do we use multi-stage builds?",
+              "options": [
+                "To make the code faster",
+                "To reduce the final image size by excluding build dependencies",
+                "To run multiple apps in one container",
+                "Because Docker requires it"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 47,
+      "title": "Docker Networking",
+      "tasks": [
+        {
+          "title": "Bridge, Host, and Overlay",
+          "type": "reading",
+          "description": "How containers talk to each other and the outside world.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Networking Task",
+          "type": "coding",
+          "description": "Create a custom Docker network and connect two containers to it.",
+          "coding_language": "bash",
+          "coding_starter_code": "# docker_net.sh\n# TODO 1: Create 'gamma-net' network\n# TODO 2: Run container A and container B on this network"
+        }
+      ]
+    },
+    {
+      "day": 48,
+      "title": "Docker Volumes & Persistence",
+      "tasks": [
+        {
+          "title": "Handling Stateful Data",
+          "type": "reading",
+          "description": "Mounting host directories into containers to save data after a container stops.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Volumes Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of data persistence.",
+          "quiz_questions": [
+            {
+              "question": "What happens to data written inside a container if no volume is used and the container is deleted?",
+              "options": [
+                "It is saved on the host",
+                "It is lost",
+                "It is backed up to S3",
+                "It stays in the image"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 49,
+      "title": "Docker Compose for Multi-Container Apps",
+      "tasks": [
+        {
+          "title": "Defining Services in YAML",
+          "type": "reading",
+          "description": "Launching a Web, App, and DB stack with a single command.",
+          "reading_content_md": "# Managing Complexity\n\nIn Project Gamma, our applications (like the Project Beta Java app) require a DB. We use **Docker Compose** to define this stack so any of the 29 engineers can run the entire environment locally with `docker-compose up`.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Compose Coding Task",
+          "type": "coding",
+          "description": "Write a docker-compose.yml for a web app and a redis database.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# docker-compose.yml\nservices:\n  web:\n    # TODO: Add image and ports\n  redis:\n    # TODO: Add image"
+        }
+      ]
+    },
+    {
+      "day": 50,
+      "title": "Environment Variables in Docker",
+      "tasks": [
+        {
+          "title": "Configuring Containers at Runtime",
+          "type": "reading",
+          "description": "Using ENV and .env files to provide DB credentials to containers.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "ENV Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of dynamic configuration.",
+          "quiz_questions": [
+            {
+              "question": "Which Dockerfile instruction sets a default environment variable?",
+              "options": [
+                "VAR",
+                "SET",
+                "ENV",
+                "DEFINE"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 51,
+      "title": "Container Security: Rootless Docker",
+      "tasks": [
+        {
+          "title": "Hardening the Container Host",
+          "type": "reading",
+          "description": "Running containers as non-root users to prevent privilege escalation attacks.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Security Task",
+          "type": "coding",
+          "description": "Update a Dockerfile to use a non-privileged user.",
+          "coding_language": "dockerfile",
+          "coding_starter_code": "# Dockerfile snippet\n# TODO 1: Create a group and user 'gamma'\n# TODO 2: Use the USER instruction"
+        }
+      ]
+    },
+    {
+      "day": 52,
+      "title": "Scanning Images for Vulnerabilities",
+      "tasks": [
+        {
+          "title": "DevSecOps: Trivy and Snyk",
+          "type": "reading",
+          "description": "Using scanning tools to find insecure libraries in your Docker base images.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Scanning Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of image security.",
+          "quiz_questions": [
+            {
+              "question": "Why should we scan images regularly?",
+              "options": [
+                "To make them smaller",
+                "To detect known vulnerabilities (CVEs) in OS packages and libraries",
+                "To check code style",
+                "To find missing comments"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 53,
+      "title": "Private Registries: AWS ECR",
+      "tasks": [
+        {
+          "title": "Storing Proprietary Images",
+          "type": "reading",
+          "description": "Setting up Amazon Elastic Container Registry (ECR) to securely store Project Gamma images.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "ECR CLI Task",
+          "type": "coding",
+          "description": "Write the sequence of commands to tag and push a local image to AWS ECR.",
+          "coding_language": "bash",
+          "coding_starter_code": "# ecr_push.sh\n# TODO 1: Authenticate with ECR\n# TODO 2: Tag image\n# TODO 3: Push image"
+        }
+      ]
+    },
+    {
+      "day": 54,
+      "title": "Introduction to Kubernetes (K8s) Pods",
+      "tasks": [
+        {
+          "title": "Beyond Docker: The Need for Orchestration",
+          "type": "reading",
+          "description": "Introduction to K8s and the concept of the Pod as the smallest unit of deployment.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "K8s Intro Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of K8s architecture.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary role of a Kubernetes Pod?",
+              "options": [
+                "To store data",
+                "To group one or more containers that share network and storage",
+                "To compile code",
+                "To route internet traffic"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 55,
+      "title": "K8s Architecture: Control Plane & Nodes",
+      "tasks": [
+        {
+          "title": "How K8s Manages the Cluster",
+          "type": "reading",
+          "description": "Understanding the API Server, Scheduler, and etcd.",
+          "reading_content_md": "# The Cluster Brain\n\nKubernetes is a distributed system. The **Control Plane** makes global decisions (scheduling), while **Worker Nodes** run the actual containers. In Project Gamma, we will use **Amazon EKS** to manage this complexity for us.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Architecture Task",
+          "type": "coding",
+          "description": "Simulate a 'kubectl' command to list all nodes in a cluster.",
+          "coding_language": "bash",
+          "coding_starter_code": "# cluster_info.sh\n# TODO: Print command to list nodes and their status"
+        }
+      ]
+    },
+    {
+      "day": 56,
+      "title": "Kubernetes Deployments",
+      "tasks": [
+        {
+          "title": "Self-Healing Infrastructure",
+          "type": "reading",
+          "description": "Using Deployments to manage replicas and handle rolling updates.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Deployment Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the K8s desired state.",
+          "quiz_questions": [
+            {
+              "question": "What happens if a container in a K8s Deployment crashes?",
+              "options": [
+                "The cluster stops",
+                "K8s automatically restarts the container to match the desired state",
+                "The engineer is alerted to manual restart",
+                "Nothing"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 57,
+      "title": "K8s Services: Load Balancing",
+      "tasks": [
+        {
+          "title": "Stable Networking for Pods",
+          "type": "reading",
+          "description": "Using ClusterIP, NodePort, and LoadBalancer service types.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Service Manifest Task",
+          "type": "coding",
+          "description": "Write a YAML manifest for a K8s Service of type LoadBalancer.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# service.yaml\napiVersion: v1\nkind: Service\n# TODO: Define metadata and spec with selector"
+        }
+      ]
+    },
+    {
+      "day": 58,
+      "title": "ConfigMaps and Secrets in K8s",
+      "tasks": [
+        {
+          "title": "Decoupling Config from Code",
+          "type": "reading",
+          "description": "Injecting configuration and secrets into K8s pods at runtime.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "K8s Config Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of K8s configuration.",
+          "quiz_questions": [
+            {
+              "question": "Where should you store a database password for a K8s app?",
+              "options": [
+                "ConfigMap",
+                "Secret",
+                "Dockerfile",
+                "GitHub README"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 59,
+      "title": "Liveness and Readiness Probes",
+      "tasks": [
+        {
+          "title": "Ensuring Application Health",
+          "type": "reading",
+          "description": "Telling K8s how to check if an app is truly ready to receive traffic.",
+          "reading_content_md": "# No More Traffic to Crashed Apps\n\nA container might be 'running' but the Java app inside is still booting. We use **Readiness Probes** to ensure K8s only sends traffic once the app confirms it is healthy.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Probes Task",
+          "type": "coding",
+          "description": "Add a livenessProbe to a K8s deployment manifest.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# deployment_v2.yaml snippet\n# TODO: Define livenessProbe with httpGet to /health"
+        }
+      ]
+    },
+    {
+      "day": 60,
+      "title": "Resource Limits and Requests",
+      "tasks": [
+        {
+          "title": "Preventing 'Noisy Neighbors'",
+          "type": "reading",
+          "description": "Setting CPU and Memory constraints to ensure one container doesn't starve others.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Resource Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of K8s resource management.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Resource Limit' in K8s?",
+              "options": [
+                "The minimum CPU required",
+                "The maximum CPU a container is allowed to consume",
+                "The total RAM in the cluster",
+                "The number of users"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 61,
+      "title": "Month 3 Container Milestone Review",
+      "tasks": [
+        {
+          "title": "The Containerized Enterprise",
+          "type": "reading",
+          "description": "Reviewing the shift from EC2 to K8s Pods and optimized Docker images.",
+          "reading_content_md": "# Portability Milestone\n\nOur applications are now packaged as standard units. We can run them in the cloud, on a laptop, or in a private data center identically. Month 4 will focus on **K8s Administration** at scale.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 3 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Containerization phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool is used to 'orchestrate' multiple containers across a cluster of servers?",
+              "options": [
+                "Docker",
+                "Kubernetes",
+                "Ansible",
+                "Terraform"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 62,
+      "title": "Phase 2 Handover: K8s Readiness",
+      "tasks": [
+        {
+          "title": "The Container Runbook",
+          "type": "reading",
+          "description": "Documenting image tagging standards and K8s namespace structures.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Manifest Task",
+          "type": "coding",
+          "description": "Create a set of standard labels for all Project Gamma K8s manifests.",
+          "coding_language": "yaml",
+          "coding_starter_code": "metadata:\n  labels:\n    # TODO 1: Add project: gamma\n    # TODO 2: Add env: prod"
+        }
+      ]
+    },
+    {
+      "day": 63,
+      "title": "Mastering Helm: The K8s Package Manager",
+      "tasks": [
+        {
+          "title": "Why Helm?",
+          "type": "reading",
+          "description": "Understanding how to template K8s YAML files to support multiple environments (Dev/Prod).",
+          "reading_content_md": "# Month 4: Orchestration at Scale\n\n## The Template Challenge\nIn Month 3, we wrote static YAML files. But in Project Gamma, we need different CPU limits and replica counts for Dev vs. Production. \n\n## Helm Charts\nHelm allows us to use **Charts**. We write one template and use a `values.yaml` file to inject the specific settings for each environment, preventing manual errors across our 29-person engineering team.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Helm Basics Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of Helm components.",
+          "quiz_questions": [
+            {
+              "question": "Which file in a Helm chart contains the default configuration values?",
+              "options": [
+                "Chart.yaml",
+                "values.yaml",
+                "templates.yaml",
+                "config.json"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 64,
+      "title": "Creating Your First Helm Chart",
+      "tasks": [
+        {
+          "title": "Charting the Solaris App",
+          "type": "reading",
+          "description": "Structuring a chart directory and using the 'helm install' command.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Helm Coding Task",
+          "type": "coding",
+          "description": "Write a snippet of a Helm template using the {{ .Values.replicaCount }} placeholder.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# templates/deployment.yaml snippet\nspec:\n  # TODO: Use the double-curly-brace syntax to pull 'replicaCount' from values.yaml\n  replicas: "
+        }
+      ]
+    },
+    {
+      "day": 65,
+      "title": "Kubernetes Ingress Controllers",
+      "tasks": [
+        {
+          "title": "Routing External Traffic",
+          "type": "reading",
+          "description": "Using NGINX Ingress to route traffic from gamma.com to specific internal K8s services.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Ingress Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of L7 load balancing in K8s.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary advantage of Ingress over a LoadBalancer service?",
+              "options": [
+                "It is faster",
+                "It allows routing multiple domains/paths through a single IP address",
+                "It encrypts the database",
+                "It replaces Docker"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 66,
+      "title": "SSL/TLS with cert-manager",
+      "tasks": [
+        {
+          "title": "Automating HTTPS",
+          "type": "reading",
+          "description": "Using Let's Encrypt and cert-manager to automatically issue and renew SSL certificates for our K8s Ingress.",
+          "reading_content_md": "# Secure by Default\n\nManual certificate management is a security risk. In Project Gamma, we deploy **cert-manager**. When an engineer creates a new Ingress, cert-manager automatically talks to Let's Encrypt and configures the HTTPS certificate without human intervention.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Cert-Manager Task",
+          "type": "coding",
+          "description": "Write a K8s Ingress annotation that triggers cert-manager to issue a certificate.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# ingress.yaml metadata snippet\nannotations:\n  # TODO: Add the cert-manager.io/cluster-issuer annotation"
+        }
+      ]
+    },
+    {
+      "day": 67,
+      "title": "Kubernetes RBAC: Securing the Cluster",
+      "tasks": [
+        {
+          "title": "Roles and RoleBindings",
+          "type": "reading",
+          "description": "Limiting what the 29 team members can do inside the cluster (e.g., preventing Analysts from deleting Production pods).",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "RBAC Quiz",
+          "type": "quiz",
+          "description": "Verify your knowledge of K8s security permissions.",
+          "quiz_questions": [
+            {
+              "question": "Which K8s object binds a Role to a specific User or ServiceAccount?",
+              "options": [
+                "ClusterRole",
+                "RoleBinding",
+                "Namespace",
+                "Secret"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 68,
+      "title": "StatefulSets: Managing Databases in K8s",
+      "tasks": [
+        {
+          "title": "Handling State in a Stateless World",
+          "type": "reading",
+          "description": "How StatefulSets differ from Deployments when running apps like PostgreSQL or Redis.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "StatefulSet Task",
+          "type": "coding",
+          "description": "Define a volumeClaimTemplates block in a YAML manifest.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# statefulset.yaml snippet\nspec:\n  # TODO: Define a volumeClaimTemplate with ReadWriteOnce access mode"
+        }
+      ]
+    },
+    {
+      "day": 69,
+      "title": "K8s Storage: PV and PVC",
+      "tasks": [
+        {
+          "title": "Persistent Volume Claims",
+          "type": "reading",
+          "description": "Understanding the abstraction between physical storage (EBS) and pod requests.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Storage Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of dynamic volume provisioning.",
+          "quiz_questions": [
+            {
+              "question": "What does PVC stand for?",
+              "options": [
+                "Private Virtual Connection",
+                "Persistent Volume Claim",
+                "Public Volume Connector",
+                "Pod Volume Controller"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 70,
+      "title": "The Horizontal Pod Autoscaler (HPA)",
+      "tasks": [
+        {
+          "title": "Scaling Based on Traffic",
+          "type": "reading",
+          "description": "Automatically increasing the number of Solaris app pods when CPU usage spikes.",
+          "reading_content_md": "# Self-Scaling Infrastructure\n\nIn Project Gamma, we don't manually add pods. We set a target: 'Keep CPU at 60%'. If traffic increases, the **HPA** tells the deployment to scale from 2 to 10 pods automatically.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "HPA Task",
+          "type": "coding",
+          "description": "Write a 'kubectl' command to autoscale a deployment between 2 and 5 replicas.",
+          "coding_language": "bash",
+          "coding_starter_code": "# autoscale.sh\n# TODO: Use 'kubectl autoscale deployment' with --min and --max flags"
+        }
+      ]
+    },
+    {
+      "day": 71,
+      "title": "Kubernetes Taints and Tolerations",
+      "tasks": [
+        {
+          "title": "Advanced Scheduling",
+          "type": "reading",
+          "description": "Ensuring specific pods (like GPU intensive ML models) only run on specific worker nodes.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Scheduling Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of node affinity and taints.",
+          "quiz_questions": [
+            {
+              "question": "What is used to repel certain pods from a node?",
+              "options": [
+                "Affinity",
+                "Taint",
+                "Toleration",
+                "Selector"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 72,
+      "title": "Monitoring K8s with Metrics Server",
+      "tasks": [
+        {
+          "title": "Gaining Cluster Visibility",
+          "type": "reading",
+          "description": "Installing the Metrics Server to enable 'kubectl top' and HPA functionality.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Metrics Task",
+          "type": "coding",
+          "description": "Write the command to view CPU and Memory usage for all pods in the 'gamma' namespace.",
+          "coding_language": "bash",
+          "coding_starter_code": "# check_usage.sh\n# TODO: Use 'kubectl top pod' with the namespace flag"
+        }
+      ]
+    },
+    {
+      "day": 73,
+      "title": "GitOps Principles: Introduction to ArgoCD",
+      "tasks": [
+        {
+          "title": "Syncing Git to the Cluster",
+          "type": "reading",
+          "description": "Introduction to GitOps: Making Git the single source of truth for your cluster state.",
+          "reading_content_md": "# The GitOps Way\n\nIn Project Gamma, no one runs `kubectl apply` manually in Production. Instead, we use **ArgoCD**. It watches our Git repo and ensures the cluster always matches the code. If someone changes something manually, ArgoCD 'corrects' it back to the Git version.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "GitOps Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the GitOps workflow.",
+          "quiz_questions": [
+            {
+              "question": "In GitOps, what is the single source of truth?",
+              "options": [
+                "The Developer's laptop",
+                "The Git Repository",
+                "The K8s Dashboard",
+                "The Cloud Provider Console"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 74,
+      "title": "Managed K8s: Amazon EKS",
+      "tasks": [
+        {
+          "title": "Production Grade Clusters",
+          "type": "reading",
+          "description": "How Amazon EKS manages the K8s control plane and high availability for us.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "EKS Task",
+          "type": "coding",
+          "description": "Write the 'eksctl' command to create a basic cluster with 2 nodes.",
+          "coding_language": "bash",
+          "coding_starter_code": "# create_eks.sh\n# TODO: Use 'eksctl create cluster' with --name and --nodes"
+        }
+      ]
+    },
+    {
+      "day": 75,
+      "title": "Month 4 Orchestration Milestone Review",
+      "tasks": [
+        {
+          "title": "The Self-Healing Cluster",
+          "type": "reading",
+          "description": "Reviewing the progress from single pods to a production-grade, auto-scaling EKS cluster.",
+          "reading_content_md": "# Orchestration Milestone\n\nWe have reached 'Cloud Native' status. Our applications are auto-scaling, auto-healing, and securely managed via RBAC. Next month: **CI/CD Automation** to connect the developer's code to this cluster.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 4 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Kubernetes and Orchestration phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool acts as the K8s package manager?",
+              "options": [
+                "Docker",
+                "Helm",
+                "Git",
+                "Maven"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the role of an Ingress Controller?",
+              "options": [
+                "Manage database storage",
+                "Route external HTTP/S traffic to internal services",
+                "Schedule pods on nodes",
+                "Delete old pods"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 76,
+      "title": "Phase 3 Handover: CI/CD Readiness",
+      "tasks": [
+        {
+          "title": "Defining the Pipeline Contract",
+          "type": "reading",
+          "description": "Preparing the K8s cluster for automated deployments from Jenkins.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Create a ServiceAccount and Token for a CI/CD system to deploy into the 'gamma' namespace.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# ci-access.yaml\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  # TODO: Set name to 'jenkins-deployer'"
+        }
+      ]
+    },
+    {
+      "day": 77,
+      "title": "Introduction to CI/CD Pipelines",
+      "tasks": [
+        {
+          "title": "The Path to Production",
+          "type": "reading",
+          "description": "Understanding the 'Continuous' philosophy and why manual deployments are forbidden in Project Gamma.",
+          "reading_content_md": "# Month 5: Automation\n\n## The Pipeline Goal\nWhen a developer pushes code to Git, we want to automatically:\n1. Run unit tests.\n2. Scan for security vulnerabilities.\n3. Build a Docker image.\n4. Deploy to a staging environment.\nThis ensures that only 'green' code ever reaches our users.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "CI/CD Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of pipeline stages.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary difference between Continuous Delivery and Continuous Deployment?",
+              "options": [
+                "One uses Docker, one doesn't",
+                "Continuous Deployment automates the release to production without manual intervention",
+                "Delivery is faster",
+                "Deployment is only for databases"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 78,
+      "title": "Jenkins: The Automation Engine",
+      "tasks": [
+        {
+          "title": "Jenkins Architecture",
+          "type": "reading",
+          "description": "Setting up Jenkins and understanding the Master-Agent relationship for scaling builds.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Jenkins Setup Task",
+          "type": "coding",
+          "description": "Write a command to run Jenkins in a Docker container with persistent storage.",
+          "coding_language": "bash",
+          "coding_starter_code": "# run_jenkins.sh\n# TODO: Run 'docker run' with port 8080 mapping and a volume for /var/jenkins_home"
+        }
+      ]
+    },
+    {
+      "day": 79,
+      "title": "Pipeline as Code: The Jenkinsfile",
+      "tasks": [
+        {
+          "title": "Declarative vs. Scripted Pipelines",
+          "type": "reading",
+          "description": "Learning Groovy syntax to define your pipeline stages inside a text file in Git.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Jenkinsfile Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of Jenkins pipeline structure.",
+          "quiz_questions": [
+            {
+              "question": "In a Declarative pipeline, which block contains the actual work instructions?",
+              "options": [
+                "agent",
+                "stages",
+                "steps",
+                "post"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 80,
+      "title": "Building the 'Test' Stage",
+      "tasks": [
+        {
+          "title": "Automated Testing in the Pipeline",
+          "type": "reading",
+          "description": "Integrating JUnit and PyTest into Jenkins to stop the build on failure.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Test Stage Task",
+          "type": "coding",
+          "description": "Write a Jenkinsfile 'stage' that executes 'mvn test'.",
+          "coding_language": "groovy",
+          "coding_starter_code": "// Jenkinsfile snippet\nstage('Test') {\n    steps {\n        # TODO: Execute the shell command for maven testing\n    }\n}"
+        }
+      ]
+    },
+    {
+      "day": 81,
+      "title": "Docker in the Pipeline",
+      "tasks": [
+        {
+          "title": "Automated Image Building",
+          "type": "reading",
+          "description": "Configuring Jenkins to build a Docker image and push it to AWS ECR automatically on successful tests.",
+          "reading_content_md": "# Building the Artifact\n\nIn Project Gamma, the Docker image is our 'Artifact'. The pipeline builds the image, tags it with the Git Commit ID, and stores it in ECR. This provides a clear 'Lineage' of which code version is inside which container.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Docker-Jenkins Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of artifact management.",
+          "quiz_questions": [
+            {
+              "question": "Why do we tag images with Git Commit IDs in the pipeline?",
+              "options": [
+                "To make them look pretty",
+                "To easily map a running container back to the exact code version in Git",
+                "To make the build faster",
+                "To encrypt the image"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 82,
+      "title": "Introduction to GitHub Actions",
+      "tasks": [
+        {
+          "title": "Cloud-Native CI",
+          "type": "reading",
+          "description": "Learning how to use GitHub's built-in automation for modern web projects.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "GitHub Actions Task",
+          "type": "coding",
+          "description": "Write a basic YAML workflow that triggers on 'push' to the main branch.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# .github/workflows/ci.yml\non:\n  # TODO: Define the 'push' trigger for 'main'\njobs:\n  build:\n    # TODO: Set runs-on to ubuntu-latest"
+        }
+      ]
+    },
+    {
+      "day": 83,
+      "title": "DevSecOps: Static Code Analysis",
+      "tasks": [
+        {
+          "title": "Finding Security Flaws Early",
+          "type": "reading",
+          "description": "Integrating SonarQube or Snyk into the pipeline to find vulnerabilities in code before it's built.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Security Scanning Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the 'Shift Left' philosophy.",
+          "quiz_questions": [
+            {
+              "question": "What does 'Shift Left' mean in DevSecOps?",
+              "options": [
+                "Moving the keyboard",
+                "Integrating security testing earlier in the development lifecycle",
+                "Deleting old code",
+                "Adding more servers to the left"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 84,
+      "title": "Automated K8s Deployments with Helm",
+      "tasks": [
+        {
+          "title": "The Final Stage: CD",
+          "type": "reading",
+          "description": "Using Jenkins to run 'helm upgrade' and deploy the new image to our EKS cluster.",
+          "reading_content_md": "# Closing the Loop\n\nOnce the image is in ECR and the security scan is green, Jenkins uses **Helm** to update the Kubernetes deployment. It updates the 'image tag' to the new version, and K8s performs a rolling update to the 10,000 users.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Deployment Coding Task",
+          "type": "coding",
+          "description": "Write a shell command to be used in Jenkins that updates a Helm release with a new image tag.",
+          "coding_language": "bash",
+          "coding_starter_code": "# helm_update.sh\n# TODO: Use 'helm upgrade' with the --set flag for image.tag"
+        }
+      ]
+    },
+    {
+      "day": 85,
+      "title": "Infrastructure Pipelines with Terraform",
+      "tasks": [
+        {
+          "title": "Automating the Automation",
+          "type": "reading",
+          "description": "Running Terraform within Jenkins to ensure infrastructure is updated before application code is deployed.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "IaC Pipeline Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of infra pipelines.",
+          "quiz_questions": [
+            {
+              "question": "Which Terraform command is most important to run in a PR review stage?",
+              "options": [
+                "init",
+                "plan",
+                "apply",
+                "destroy"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 86,
+      "title": "Pipeline Monitoring and Notifications",
+      "tasks": [
+        {
+          "title": "Knowing When things Break",
+          "type": "reading",
+          "description": "Configuring Jenkins to send Slack or Email notifications on build success or failure.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Notification Task",
+          "type": "coding",
+          "description": "Write a 'post' block for a Jenkinsfile to send a success message.",
+          "coding_language": "groovy",
+          "coding_starter_code": "// Jenkinsfile snippet\npost {\n    success {\n        # TODO: Define a message to print 'Pipeline Succeeded!'\n    }\n}"
+        }
+      ]
+    },
+    {
+      "day": 87,
+      "title": "Handling Secrets in the Pipeline",
+      "tasks": [
+        {
+          "title": "Credential Management",
+          "type": "reading",
+          "description": "Using Jenkins Credentials Store and GitHub Secrets to manage sensitive API keys and Docker login info.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Secrets Quiz",
+          "type": "quiz",
+          "description": "Verify your knowledge of secret handling.",
+          "quiz_questions": [
+            {
+              "question": "Where should a Docker Hub password be stored for a GitHub Action?",
+              "options": [
+                "In the YAML file",
+                "As a GitHub Secret",
+                "In the public README",
+                "On a sticky note"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 88,
+      "title": "CI/CD Milestone Review",
+      "tasks": [
+        {
+          "title": "The Automated Enterprise",
+          "type": "reading",
+          "description": "Reviewing the full pipeline: from Git push to a running K8s pod.",
+          "reading_content_md": "# Automation Milestone\n\nWe have replaced manual steps with a high-speed automation engine. The 29-member team can now deploy changes with confidence. Next month: **Observability & Launch** to ensure we can monitor these deployments in real-time.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 5 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the CI/CD Automation phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used to define the 'Pipeline as Code' for Project Gamma?",
+              "options": [
+                "Maven",
+                "Jenkins/GitHub Actions",
+                "Docker",
+                "Terraform"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 89,
+      "title": "Month 5 Transition: Monitoring Readiness",
+      "tasks": [
+        {
+          "title": "Preparing for Observability",
+          "type": "reading",
+          "description": "Understanding why automation without monitoring is dangerous.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Write a script to verify that all deployed pods have the required 'logging' labels.",
+          "coding_language": "bash",
+          "coding_starter_code": "# audit_labels.sh\n# TODO: Use 'kubectl get pods' with -L to check for 'app' and 'env' labels"
+        }
+      ]
+    },
+    {
+      "day": 90,
+      "title": "Introduction to Observability: Logs, Metrics, Traces",
+      "tasks": [
+        {
+          "title": "The Three Pillars of Observability",
+          "type": "reading",
+          "description": "Understanding the fundamental data points needed to monitor a complex cloud environment.",
+          "reading_content_md": "# The Observability Mindset\n\nMonitoring tells you *if* a system is down; **Observability** tells you *why*. In a microservices cluster like Project Gamma, we need:\n1. **Logs**: Detailed records of events.\n2. **Metrics**: Numerical indicators of health (CPU, RAM, Request Rate).\n3. **Traces**: The path a single request takes across all services.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Observability Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of monitoring pillars.",
+          "quiz_questions": [
+            {
+              "question": "Which pillar is best for identifying trends like 'slowly increasing memory usage'?",
+              "options": [
+                "Logs",
+                "Metrics",
+                "Traces",
+                "Alerts"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 91,
+      "title": "Log Aggregation: The ELK Stack",
+      "tasks": [
+        {
+          "title": "Centralizing the Noise",
+          "type": "reading",
+          "description": "Introduction to Elasticsearch, Logstash, and Kibana (ELK) for searching logs across the cluster.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "ELK Logic Task",
+          "type": "coding",
+          "description": "Write an Elasticsearch query to find all 'ERROR' logs in the last 15 minutes.",
+          "coding_language": "json",
+          "coding_starter_code": "# query.json\n{\n  \"query\": {\n    \"bool\": {\n      \"must\": [\n        # TODO: Filter for level: \"ERROR\"\n        # TODO: Add range filter for @timestamp\n      ]\n    }\n  }\n}"
+        }
+      ]
+    },
+    {
+      "day": 92,
+      "title": "Metrics Collection: Prometheus",
+      "tasks": [
+        {
+          "title": "Scraping the Cluster",
+          "type": "reading",
+          "description": "How Prometheus 'scrapes' numerical data from pods and stores it as time-series data.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Prometheus Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the pull-based monitoring model.",
+          "quiz_questions": [
+            {
+              "question": "What does Prometheus use to discover which pods to monitor?",
+              "options": [
+                "Static IP lists",
+                "Service Discovery (K8s API)",
+                "Manual configuration",
+                "DNS lookups"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 93,
+      "title": "Visualizing Health with Grafana",
+      "tasks": [
+        {
+          "title": "Building the Command Center",
+          "type": "reading",
+          "description": "Connecting Grafana to Prometheus to build real-time dashboards for the 29-member team.",
+          "reading_content_md": "# The Executive Dashboard\n\nIn Project Gamma, we don't look at CLI logs all day. We use **Grafana**. It provides a 'Single Pane of Glass' where the **Software Engineers** and **Stakeholders** can see exactly how many users are on the platform and if the response times are within the SLA.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Grafana Task",
+          "type": "coding",
+          "description": "Draft a PromQL query to calculate the average CPU usage across all worker nodes.",
+          "coding_language": "promql",
+          "coding_starter_code": "# cpu_usage.promql\n# TODO: Use avg(node_cpu_seconds_total) and filter for 'idle' mode"
+        }
+      ]
+    },
+    {
+      "day": 94,
+      "title": "Distributed Tracing: Jaeger & OpenTelemetry",
+      "tasks": [
+        {
+          "title": "Tracing the Web",
+          "type": "reading",
+          "description": "Understanding how a single user request travels through the Gateway to multiple microservices.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Tracing Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of span and trace IDs.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Span' in distributed tracing?",
+              "options": [
+                "A time-based backup",
+                "A single unit of work within a trace (e.g., one API call)",
+                "The distance between servers",
+                "A type of database join"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 95,
+      "title": "Alerting with Alertmanager",
+      "tasks": [
+        {
+          "title": "Intelligent Notifications",
+          "type": "reading",
+          "description": "Configuring rules to notify the team via Slack/PagerDuty *only* when critical thresholds are reached.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Alerting Logic Task",
+          "type": "coding",
+          "description": "Write a Prometheus alerting rule that triggers if 'Disk Space' is below 10%.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# alert.yaml\n- alert: LowDiskSpace\n  expr: # TODO: node_filesystem_avail_bytes / node_filesystem_size_bytes < 0.1\n  for: 5m\n  labels:\n    severity: critical"
+        }
+      ]
+    },
+    {
+      "day": 96,
+      "title": "Uptime Monitoring: Synthetic Tests",
+      "tasks": [
+        {
+          "title": "Proactive Health Checks",
+          "type": "reading",
+          "description": "Setting up external 'pings' to our production URL to ensure the Ingress and Load Balancers are working.",
+          "reading_content_md": "# The User Perspective\n\nEverything might look 'Green' inside the cluster, but the internet could be blocked. We use **Synthetic Monitoring** to periodically send requests from different global regions (US, India, Europe) to verify our actual end-user experience.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Synthetic Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of external monitoring.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of Synthetic Monitoring?",
+              "options": [
+                "To check if the database is full",
+                "To simulate user behavior and verify uptime from outside the network",
+                "To scan for viruses",
+                "To count the number of developers"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 97,
+      "title": "Production Deployment: The Green Light",
+      "tasks": [
+        {
+          "title": "Executing the Final Migration",
+          "type": "reading",
+          "description": "Executing the 'Big Move' of the Solaris and Beta projects to the new automated infrastructure.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Deployment Task",
+          "type": "coding",
+          "description": "Write a bash script to verify that the 'Production' namespace in K8s has no pods in an 'Error' state post-launch.",
+          "coding_language": "bash",
+          "coding_starter_code": "# verify_launch.sh\n# TODO: Use 'kubectl get pods' with --field-selector to find non-running pods"
+        }
+      ]
+    },
+    {
+      "day": 98,
+      "title": "Post-Launch Hypercare",
+      "tasks": [
+        {
+          "title": "Stability & Scaling Review",
+          "type": "reading",
+          "description": "Monitoring the system behavior under real user load and tuning HPA settings.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Hypercare Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of post-launch support.",
+          "quiz_questions": [
+            {
+              "question": "What is the 'Hypercare' phase?",
+              "options": [
+                "Fast medical support",
+                "Intensive post-launch support to ensure system stability",
+                "A type of server hardware",
+                "The marketing launch"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 99,
+      "title": "Security Audit & Hardening",
+      "tasks": [
+        {
+          "title": "Final Compliance Check",
+          "type": "reading",
+          "description": "Performing a final scan of the production cluster and IAM policies to ensure 'Zero Trust' is enforced.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Security Task",
+          "type": "coding",
+          "description": "Write a command to find any IAM users with 'AdministratorAccess' that shouldn't have it.",
+          "coding_language": "bash",
+          "coding_starter_code": "# audit_iam.sh\n# TODO: Use 'aws iam list-users' and check for attached policies"
+        }
+      ]
+    },
+    {
+      "day": 100,
+      "title": "Project Gamma: The Retrospective",
+      "tasks": [
+        {
+          "title": "Lessons Learned",
+          "type": "reading",
+          "description": "A deep dive into the 6-month journey: what went well and what we would do differently.",
+          "reading_content_md": "# Transformation Complete\n\nProject Gamma has moved from manual scripts to a global, automated, and observable cloud platform. The 29-member team has mastered Linux, AWS, Terraform, Docker, and K8s. We are now ready to maintain and scale this platform for the future.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Final Milestone Quiz",
+          "type": "quiz",
+          "description": "The ultimate final exam for the Project Gamma Cloud & DevOps curriculum.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used as the source of truth for our Infrastructure?",
+              "options": [
+                "AWS Console",
+                "Terraform",
+                "Excel",
+                "Jenkins"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the primary purpose of the 'Control Plane' in Kubernetes?",
+              "options": [
+                "To store user files",
+                "To manage the cluster's state and schedule workloads",
+                "To route internet traffic",
+                "To compile Java code"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 101,
+      "title": "Final Handover & Roadmap",
+      "tasks": [
+        {
+          "title": "The Next Phase",
+          "type": "reading",
+          "description": "Official project closure and defining the roadmap for Phase 2: Multi-cloud and Serverless.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Create a final 'Project Gamma Summary' JSON object for the handover documentation.",
+          "coding_language": "json",
+          "coding_starter_code": "{\n  \"project\": \"Gamma\",\n  \"status\": \"CLOSED\",\n  \"uptime_sla\": \"99.9%\",\n  \"automation_coverage\": \"100%\"\n}"
+        }
+      ]
+    },
+    {
+      "day": 102,
+      "title": "Observability Deep Dive: Logs",
+      "tasks": [
+        {
+          "title": "Structured Logging for Systems",
+          "type": "reading",
+          "description": "Moving beyond plain text logs to JSON format for easier parsing and searching.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Logging Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of log management.",
+          "quiz_questions": [
+            {
+              "question": "Why is JSON preferred over plain text for enterprise logs?",
+              "options": [
+                "It is smaller",
+                "It is easily searchable by machines and tools like Elasticsearch",
+                "It looks more professional",
+                "It is required by Linux"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 103,
+      "title": "ELK Stack: Configuring Logstash",
+      "tasks": [
+        {
+          "title": "The Data Transformer",
+          "type": "reading",
+          "description": "Learning how Logstash filters, parses, and enriches logs before sending them to Elasticsearch.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Logstash Task",
+          "type": "coding",
+          "description": "Write a basic Logstash 'grok' filter to parse a standard Nginx access log line.",
+          "coding_language": "text",
+          "coding_starter_code": "# logstash.conf snippet\nfilter {\n  grok {\n    # TODO: Define the match pattern for IP, timestamp, and request\n  }\n}"
+        }
+      ]
+    },
+    {
+      "day": 104,
+      "title": "Grafana Dashboards: User Experience",
+      "tasks": [
+        {
+          "title": "Visualizing Latency and Error Rates",
+          "type": "reading",
+          "description": "Building the 'Golden Signals' dashboard: Latency, Traffic, Errors, and Saturation.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Dashboard Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the Golden Signals.",
+          "quiz_questions": [
+            {
+              "question": "Which Golden Signal tracks how full your server's CPU or Memory is?",
+              "options": [
+                "Latency",
+                "Traffic",
+                "Errors",
+                "Saturation"
+              ],
+              "correct_index": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 105,
+      "title": "Alerting Best Practices: Avoiding Fatigue",
+      "tasks": [
+        {
+          "title": "Signal vs. Noise",
+          "type": "reading",
+          "description": "Designing alert thresholds that only wake up engineers for actionable, high-priority issues.",
+          "reading_content_md": "# Preventing Burnout\n\nIf we send a Slack alert for every minor CPU spike, the team will start to ignore them. In Project Gamma, we only alert on **Symptoms** (e.g., users getting 500 errors) rather than **Causes** (e.g., high CPU), unless it's critical.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Alerting Task",
+          "type": "coding",
+          "description": "Write a Slack notification template for a 'System Down' alert.",
+          "coding_language": "text",
+          "coding_starter_code": "ALERT: *{{ $labels.alertname }}*\n# TODO: Include the Severity, Environment, and Summary variables"
+        }
+      ]
+    },
+    {
+      "day": 106,
+      "title": "Synthetic Monitoring: Uptime Robot",
+      "tasks": [
+        {
+          "title": "Simulating the User Journey",
+          "type": "reading",
+          "description": "Setting up automated scripts that try to 'log in' and 'view projects' every 5 minutes from the outside world.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Uptime Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of synthetic monitoring.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary benefit of Synthetic monitoring?",
+              "options": [
+                "It makes the site faster",
+                "It alerts us if the site is unreachable for users before we hear it from them",
+                "It replaces the database",
+                "It fixes bugs automatically"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 107,
+      "title": "The Production Readiness Review (PRR)",
+      "tasks": [
+        {
+          "title": "The Final Quality Gate",
+          "type": "reading",
+          "description": "Conducting a formal review of the entire system architecture, documentation, and monitoring coverage.",
+          "reading_content_md": "# The Finish Line\n\nBefore the 'Big Switch', the lead engineers perform a **PRR**. We check: Is the backup working? Is the auto-scaler tuned? Is the monitoring dashboard accurate? This ensures we don't just launch, we launch with confidence.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "PRR Task",
+          "type": "coding",
+          "description": "Create a 'Launch Readiness' checklist in Markdown.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Launch Readiness Checklist\n- [ ] Infrastructure as Code applied\n- [ ] CI/CD Pipelines green\n- [ ] Monitoring active\n- [ ] Backups verified"
+        }
+      ]
+    },
+    {
+      "day": 108,
+      "title": "Executing the Blue-Green Deployment",
+      "tasks": [
+        {
+          "title": "Zero-Downtime Launch",
+          "type": "reading",
+          "description": "Switching the DNS from the 'Old' infrastructure to the 'New' automated Project Gamma cluster.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Deployment Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of zero-downtime strategies.",
+          "quiz_questions": [
+            {
+              "question": "In a Blue-Green deployment, what does the 'Green' represent?",
+              "options": [
+                "The old version",
+                "The new production-ready environment receiving traffic",
+                "The environment with bugs",
+                "The database"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 109,
+      "title": "Post-Launch Hypercare - Day 1",
+      "tasks": [
+        {
+          "title": "Watching the Metrics",
+          "type": "reading",
+          "description": "Intensive monitoring of the new production system as real users begin to hit the platform.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Stability Task",
+          "type": "coding",
+          "description": "Write a command to check the last 10 minutes of errors in the production namespace.",
+          "coding_language": "bash",
+          "coding_starter_code": "# error_check.sh\n# TODO: Use kubectl logs with --since=10m and grep for 'ERROR'"
+        }
+      ]
+    },
+    {
+      "day": 110,
+      "title": "Platform Scaling Audit",
+      "tasks": [
+        {
+          "title": "Did it Scale?",
+          "type": "reading",
+          "description": "Analyzing the CloudWatch and HPA logs to see if the auto-scalers responded correctly to the launch traffic.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Scaling Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of dynamic scaling behavior.",
+          "quiz_questions": [
+            {
+              "question": "If pods were scaling up and down too frequently (flapping), which setting should be adjusted?",
+              "options": [
+                "CPU limit",
+                "HPA Cooldown/Stabilization window",
+                "Memory request",
+                "The domain name"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 111,
+      "title": "Project Gamma: The Closing Ceremony",
+      "tasks": [
+        {
+          "title": "Transformation Complete",
+          "type": "reading",
+          "description": "Reflecting on 132 days of transformation and celebrating the new automated enterprise.",
+          "reading_content_md": "# Project Gamma: SUCCESS\n\nWe have successfully migrated the enterprise to the cloud. We have mastered Linux, AWS, Terraform, Docker, K8s, and Jenkins. The mission of automating and securing the infrastructure is complete. The team is now ready for the next frontier.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Final Milestone Quiz",
+          "type": "quiz",
+          "description": "The final mastery exam for the Project Gamma Cloud & DevOps curriculum.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used to orchestrate the final production deployment?",
+              "options": [
+                "Terraform",
+                "Kubernetes",
+                "Ansible",
+                "Docker"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the primary deliverable of the Launch phase?",
+              "options": [
+                "A manual",
+                "A live, automated, and observable production platform",
+                "A new code version",
+                "A budget report"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 112,
+      "title": "Observability Deep Dive: The Three Pillars",
+      "tasks": [
+        {
+          "title": "Logs, Metrics, and Traces",
+          "type": "reading",
+          "description": "Understanding the fundamental data points needed to monitor a complex cloud environment.",
+          "reading_content_md": "# The Observability Mindset\n\nMonitoring tells you *if* a system is down; **Observability** tells you *why*. In Project Gamma, we need a unified view of:\n1. **Logs**: Detailed records of events (ELK Stack).\n2. **Metrics**: Numerical indicators of health (Prometheus).\n3. **Traces**: The path a single request takes across all services (Jaeger).",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Observability Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of monitoring pillars.",
+          "quiz_questions": [
+            {
+              "question": "Which pillar is best for identifying trends like 'slowly increasing memory usage' over a month?",
+              "options": [
+                "Logs",
+                "Metrics",
+                "Traces",
+                "Alerts"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 113,
+      "title": "Log Aggregation: Configuring the ELK Stack",
+      "tasks": [
+        {
+          "title": "Centralizing the Noise",
+          "type": "reading",
+          "description": "Setting up Logstash to parse and enrich logs before storing them in Elasticsearch.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Logstash Filter Task",
+          "type": "coding",
+          "description": "Write a basic Logstash 'grok' filter to parse a standard Nginx access log.",
+          "coding_language": "text",
+          "coding_starter_code": "# logstash.conf snippet\nfilter {\n  grok {\n    # TODO: Define the match pattern for IP, timestamp, and request method\n  }\n}"
+        }
+      ]
+    },
+    {
+      "day": 114,
+      "title": "Metrics Collection with Prometheus",
+      "tasks": [
+        {
+          "title": "Scraping the Cluster",
+          "type": "reading",
+          "description": "How Prometheus 'scrapes' data from EKS pods and stores it as time-series data.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Prometheus Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the pull-based monitoring model.",
+          "quiz_questions": [
+            {
+              "question": "What does Prometheus use to discover which pods to monitor in K8s?",
+              "options": [
+                "Static IP lists",
+                "K8s Service Discovery API",
+                "Manual config",
+                "DNS lookups"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 115,
+      "title": "Visualizing Health with Grafana",
+      "tasks": [
+        {
+          "title": "Building the Command Center",
+          "type": "reading",
+          "description": "Connecting Grafana to Prometheus to build real-time dashboards for the 29-member team.",
+          "reading_content_md": "# The Single Pane of Glass\n\nIn Project Gamma, we use **Grafana** to visualize our 'Golden Signals': Latency, Traffic, Errors, and Saturation. This allows the team to spot anomalies in seconds rather than digging through raw logs.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Grafana Query Task",
+          "type": "coding",
+          "description": "Write a PromQL query to calculate the average CPU usage across all worker nodes.",
+          "coding_language": "promql",
+          "coding_starter_code": "# cpu_usage.promql\n# TODO: Use avg(node_cpu_seconds_total) and filter for mode='idle'\n# TODO: Subtract from 1 to get 'active' usage percentage"
+        }
+      ]
+    },
+    {
+      "day": 116,
+      "title": "Alerting with Alertmanager",
+      "tasks": [
+        {
+          "title": "Intelligent Notifications",
+          "type": "reading",
+          "description": "Configuring rules to notify the team via Slack *only* when critical thresholds are breached.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Alerting Logic Task",
+          "type": "coding",
+          "description": "Write a Prometheus alerting rule that triggers if 'Disk Space' is below 10% for 5 minutes.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# alert.yaml\n- alert: LowDiskSpace\n  expr: # TODO: node_filesystem_avail_bytes / node_filesystem_size_bytes < 0.1\n  for: 5m\n  labels:\n    severity: warning"
+        }
+      ]
+    },
+    {
+      "day": 117,
+      "title": "Uptime Monitoring: Synthetic Tests",
+      "tasks": [
+        {
+          "title": "Proactive Health Checks",
+          "type": "reading",
+          "description": "Setting up external 'pings' to our production Ingress to ensure it is reachable from the outside world.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Synthetic Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of external monitoring.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of Synthetic Monitoring?",
+              "options": [
+                "To check if the database is full",
+                "To simulate user behavior and verify uptime from outside the network",
+                "To scan for viruses",
+                "To count logs"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 118,
+      "title": "Distributed Tracing: OpenTelemetry",
+      "tasks": [
+        {
+          "title": "Following the Request Path",
+          "type": "reading",
+          "description": "Understanding how a single user request travels through the Gateway to multiple microservices in Project Beta.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Tracing Task",
+          "type": "coding",
+          "description": "Add a correlation ID header to a mock shell request to simulate tracing.",
+          "coding_language": "bash",
+          "coding_starter_code": "# trace_request.sh\n# TODO: Use curl with -H to add a 'X-Correlation-ID' header"
+        }
+      ]
+    },
+    {
+      "day": 119,
+      "title": "Cost Management in the Cloud",
+      "tasks": [
+        {
+          "title": "AWS Cost Explorer & Budgets",
+          "type": "reading",
+          "description": "Monitoring the Project Gamma budget and setting alerts for unexpected spending.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Cost Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of cloud cost optimization.",
+          "quiz_questions": [
+            {
+              "question": "Which AWS tool can automatically suggest moving to smaller EC2 instances to save money?",
+              "options": [
+                "CloudWatch",
+                "AWS Compute Optimizer",
+                "IAM",
+                "S3"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 120,
+      "title": "Chaos Engineering Basics",
+      "tasks": [
+        {
+          "title": "Resilience through Failure",
+          "type": "reading",
+          "description": "Introduction to 'breaking' things on purpose to test if the self-healing K8s cluster works as expected.",
+          "reading_content_md": "# The Chaos Mindset\n\nWe don't wait for a failure to happen in production. We use **Chaos Engineering** to randomly kill pods or shut down nodes in Staging to ensure our **Auto Scaling Groups** and **Liveness Probes** handle the recovery automatically.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Chaos Task",
+          "type": "coding",
+          "description": "Write a bash script that randomly kills a pod in the 'gamma' namespace to test K8s recovery.",
+          "coding_language": "bash",
+          "coding_starter_code": "# chaos_test.sh\n# TODO 1: List all pods in namespace gamma\n# TODO 2: Randomly select one and run 'kubectl delete pod <name>'"
+        }
+      ]
+    },
+    {
+      "day": 121,
+      "title": "Production Readiness Review (PRR)",
+      "tasks": [
+        {
+          "title": "The Final Quality Gate",
+          "type": "reading",
+          "description": "Conducting a formal review of the entire system architecture, documentation, and monitoring coverage.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "PRR Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of production readiness criteria.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary purpose of a PRR?",
+              "options": [
+                "To write more code",
+                "To ensure the system is stable, documented, and observable for launch",
+                "To hire more engineers",
+                "To change the budget"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 122,
+      "title": "The Big Switch: DNS Migration",
+      "tasks": [
+        {
+          "title": "Executing the Blue-Green Deployment",
+          "type": "reading",
+          "description": "Flipping the DNS from the 'Old' infrastructure to the 'New' automated Project Gamma cluster.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Migration Task",
+          "type": "coding",
+          "description": "Write an AWS CLI command to update a Route 53 A-record to point to the new Load Balancer.",
+          "coding_language": "bash",
+          "coding_starter_code": "# update_dns.sh\n# TODO: Use 'aws route53 change-resource-record-sets' with a JSON payload"
+        }
+      ]
+    },
+    {
+      "day": 123,
+      "title": "Post-Launch Hypercare: Day 1",
+      "tasks": [
+        {
+          "title": "Watching the Metrics",
+          "type": "reading",
+          "description": "Intensive monitoring of the new production system as real users hit the platform.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Hypercare Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of post-launch support.",
+          "quiz_questions": [
+            {
+              "question": "What is the 'Hypercare' phase?",
+              "options": [
+                "Fast medical support",
+                "Intensive post-launch support to ensure system stability",
+                "A type of server hardware",
+                "The marketing launch"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 124,
+      "title": "Incident Management Workflow",
+      "tasks": [
+        {
+          "title": "Handling Production Outages",
+          "type": "reading",
+          "description": "Defining the 'on-call' rotation and the steps to take when a critical alert triggers.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Incident Response Task",
+          "type": "coding",
+          "description": "Create a Python script that takes an error message and logs it to a 'Production-Incidents' file with a timestamp.",
+          "coding_language": "python",
+          "coding_starter_code": "# incident_logger.py\nimport datetime\n# TODO: Append the current time and user-input error to 'incidents.log'"
+        }
+      ]
+    },
+    {
+      "day": 125,
+      "title": "Automated Backups Verification",
+      "tasks": [
+        {
+          "title": "Data Safety Audit",
+          "type": "reading",
+          "description": "Verifying that the S3 lifecycle policies and RDS snapshots are occurring as planned.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Backup Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of cloud durability.",
+          "quiz_questions": [
+            {
+              "question": "What is the '99.999999999%' (11 nines) standard refer to in S3?",
+              "options": [
+                "Availability",
+                "Durability (Data Loss Prevention)",
+                "Speed",
+                "Price"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 126,
+      "title": "Scaling Audit: Analyzing HPA logs",
+      "tasks": [
+        {
+          "title": "Did we scale correctly?",
+          "type": "reading",
+          "description": "Reviewing if the Kubernetes pods scaled up and down smoothly during the launch traffic peaks.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Scaling Analysis Task",
+          "type": "coding",
+          "description": "Write a command to describe the HorizontalPodAutoscaler to check for 'ScalingActive' status.",
+          "coding_language": "bash",
+          "coding_starter_code": "# check_scaling.sh\n# TODO: Use 'kubectl describe hpa' for the gamma-web-deployment"
+        }
+      ]
+    },
+    {
+      "day": 127,
+      "title": "Security Post-Launch Audit",
+      "tasks": [
+        {
+          "title": "Closing the Attack Surface",
+          "type": "reading",
+          "description": "Final check of Security Groups and IAM permissions in the live production account.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Security Audit Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the 'Principle of Least Privilege'.",
+          "quiz_questions": [
+            {
+              "question": "If an engineer no longer needs to access the DB, what should happen to their IAM role?",
+              "options": [
+                "Keep it for backup",
+                "Immediately remove the DB permissions from the role",
+                "Wait until the next project",
+                "Nothing"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 128,
+      "title": "User Training: Monitoring for the Team",
+      "tasks": [
+        {
+          "title": "Sharing the Observability Tools",
+          "type": "reading",
+          "description": "Conducting a workshop for the 29-member team on how to use the new Grafana dashboards.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Training Task",
+          "type": "coding",
+          "description": "Write a simple 'Help' script that prints the URLs for the production Grafana and Kibana instances.",
+          "coding_language": "bash",
+          "coding_starter_code": "# get_tools.sh\n# TODO: Echo the internal URLs for the observability stack"
+        }
+      ]
+    },
+    {
+      "day": 129,
+      "title": "Final Documentation: The Infra Wiki",
+      "tasks": [
+        {
+          "title": "Recording the 6-Month Journey",
+          "type": "reading",
+          "description": "Ensuring every Terraform module and Ansible role is fully documented for the operations team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Documentation Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of technical handover.",
+          "quiz_questions": [
+            {
+              "question": "What is the 'Bus Factor'?",
+              "options": [
+                "A network speed metric",
+                "The risk of a project failing because key knowledge is held by too few people",
+                "The number of servers",
+                "A type of cloud billing"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 130,
+      "title": "Project Gamma: Retrospective",
+      "tasks": [
+        {
+          "title": "Wins, Losses, and Lessons",
+          "type": "reading",
+          "description": "Reviewing the technical transformation from manual scripts to a global cloud-native cluster.",
+          "reading_content_md": "# Transformation Retrospective\n\nProject Gamma has concluded. We moved from 'Click-Ops' to a fully automated CI/CD pipeline and an observable K8s cluster. Key success: 100% of infrastructure is now code in Git. Key challenge: Initial learning curve of Terraform state management.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Retrospective Task",
+          "type": "coding",
+          "description": "Generate a 'Project Gamma Report' summary in JSON format.",
+          "coding_language": "json",
+          "coding_starter_code": "{\n  \"project\": \"Gamma\",\n  \"status\": \"CLOSED\",\n  \"uptime_sla_met\": true,\n  \"iac_coverage\": \"100%\"\n}"
+        }
+      ]
+    },
+    {
+      "day": 131,
+      "title": "Official Handover & Roadmap for Phase 2",
+      "tasks": [
+        {
+          "title": "Beyond Project Gamma",
+          "type": "reading",
+          "description": "Transitioning the platform to the operations team and outlining the Phase 2 goals (Multi-Cloud & Serverless).",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Handover Quiz",
+          "type": "quiz",
+          "description": "Final check on project closure milestones.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary deliverable of the Launch phase?",
+              "options": [
+                "A manual",
+                "A live, automated, and observable production platform",
+                "A new code version",
+                "A budget report"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 132,
+      "title": "Project Gamma Closure & Certification",
+      "tasks": [
+        {
+          "title": "Mastery of the Cloud Engine",
+          "type": "reading",
+          "description": "Final review and project closure for the Cloud & DevOps Transformation journey.",
+          "reading_content_md": "# Mission Accomplished\n\nYou have transformed the enterprise. From the first Linux command on Day 2 to managing a global K8s cluster on Day 132, you have mastered the tools of modern DevOps. The infrastructure is now ready to support millions of users for both Project Solaris and Project Beta.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Final Mastery Quiz",
+          "type": "quiz",
+          "description": "The ultimate final exam for the Project Gamma curriculum.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was the source of truth for our Infrastructure?",
+              "options": [
+                "AWS Console",
+                "Terraform",
+                "Excel",
+                "Bash scripts"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the benefit of a Blue-Green deployment?",
+              "options": [
+                "It is cheaper",
+                "It allows zero-downtime updates and easy rollback",
+                "It uses fewer servers",
+                "It makes the code faster"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

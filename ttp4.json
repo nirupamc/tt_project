@@ -1,0 +1,2998 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "title": "Project Delta Kickoff: Governance & Risk",
+      "tasks": [
+        {
+          "title": "The GRC Framework",
+          "type": "reading",
+          "description": "Introduction to Governance, Risk, and Compliance (GRC) in an enterprise setting.",
+          "reading_content_md": "# Welcome to Project Delta\n\n## The Mission\nIn the previous projects, we built and deployed systems. In **Project Delta**, we ensure those systems are secure, compliant, and operationally efficient. We protect the business from legal, financial, and reputational risks.\n\n## The Three Pillars\n1. **Governance**: Setting the rules of the game (Policies).\n2. **Risk**: Identifying what could go wrong.\n3. **Compliance**: Proving we followed the rules to external auditors.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "GRC Objectives Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of Project Delta's core mission.",
+          "quiz_questions": [
+            {
+              "question": "What does GRC stand for?",
+              "options": [
+                "General Risk Control",
+                "Governance, Risk, and Compliance",
+                "Global Reporting Center",
+                "Grid Resource Connection"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "Which pillar is focused on identifying potential threats to the business?",
+              "options": [
+                "Governance",
+                "Compliance",
+                "Risk",
+                "Operations"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "title": "Security Fundamentals: The CIA Triad",
+      "tasks": [
+        {
+          "title": "Confidentiality, Integrity, and Availability",
+          "type": "reading",
+          "description": "Mastering the three core principles of information security.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "CIA Triad Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of core security principles.",
+          "quiz_questions": [
+            {
+              "question": "Encrypting a database to prevent unauthorized viewing is an example of which principle?",
+              "options": [
+                "Availability",
+                "Integrity",
+                "Confidentiality",
+                "Compliance"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "title": "Business Process Mapping",
+      "tasks": [
+        {
+          "title": "Visualizing Operations",
+          "type": "reading",
+          "description": "How to map internal business workflows to identify security bottlenecks.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Workflow Logic Task",
+          "type": "coding",
+          "description": "Write a Python script to model a simple 'Employee Onboarding' workflow as a list of steps.",
+          "coding_language": "python",
+          "coding_starter_code": "# onboarding_flow.py\n# TODO 1: Create a list 'steps' for onboarding (Background Check, IT Setup, etc.)\n# TODO 2: Create a function 'check_step' that marks a step as 'Secured'\n# TODO 3: Print the final workflow status"
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "title": "Threat Modeling Fundamentals",
+      "tasks": [
+        {
+          "title": "Identifying Potential Attackers",
+          "type": "reading",
+          "description": "Learning to categorize threats using the STRIDE model.",
+          "reading_content_md": "# STRIDE Threat Modeling\n\nWe analyze our systems (Solaris, Beta, Gamma) for:\n- **S**poofing identity\n- **T**ampering with data\n- **R**epudiation\n- **I**nformation disclosure\n- **D**enial of service\n- **E**levation of privilege",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "STRIDE Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of threat categories.",
+          "quiz_questions": [
+            {
+              "question": "What does the 'D' in STRIDE stand for?",
+              "options": [
+                "Data Loss",
+                "Denial of Service",
+                "Database Error",
+                "Detection"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "title": "Quantitative vs. Qualitative Risk",
+      "tasks": [
+        {
+          "title": "Calculating the Cost of a Breach",
+          "type": "reading",
+          "description": "Understanding SLE (Single Loss Expectancy) and ALE (Annualized Loss Expectancy).",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Risk Calculation Task",
+          "type": "coding",
+          "description": "Write a script to calculate ALE based on Asset Value, Exposure Factor, and Annual Rate of Occurrence.",
+          "coding_language": "python",
+          "coding_starter_code": "# risk_calc.py\ndef calculate_ale(asset_value, ef, aro):\n    # TODO 1: Calculate SLE (Asset * EF)\n    # TODO 2: Return ALE (SLE * ARO)\n    return 0"
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "title": "Asset Management & Discovery",
+      "tasks": [
+        {
+          "title": "You Can't Protect What You Don't Know",
+          "type": "reading",
+          "description": "Creating an inventory of hardware, software, and data assets for the 29-member team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Asset Inventory Quiz",
+          "type": "quiz",
+          "description": "Verify your knowledge of asset classification.",
+          "quiz_questions": [
+            {
+              "question": "Which of these is considered an 'Intangible Asset'?",
+              "options": [
+                "Laptop",
+                "Server",
+                "Intellectual Property (IP)",
+                "Router"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "title": "Introduction to Security Compliance",
+      "tasks": [
+        {
+          "title": "SOC2, ISO, and HIPAA",
+          "type": "reading",
+          "description": "Overview of the major security frameworks used in the enterprise world.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Framework Match Quiz",
+          "type": "quiz",
+          "description": "Match the industry to the standard compliance framework.",
+          "quiz_questions": [
+            {
+              "question": "Which framework is primarily used for the healthcare industry in the US?",
+              "options": [
+                "PCI-DSS",
+                "GDPR",
+                "HIPAA",
+                "ISO 27001"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "title": "Data Privacy Fundamentals",
+      "tasks": [
+        {
+          "title": "Understanding GDPR and CCPA",
+          "type": "reading",
+          "description": "How to manage user data privacy rights and 'The Right to be Forgotten'.",
+          "reading_content_md": "# Privacy is a Right\n\nFor **Project Beta**, we must ensure that our Java/PostgreSQL system supports data deletion requests. We learn about PII (Personally Identifiable Information) and why it must be handled with extreme care.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Privacy Logic Task",
+          "type": "coding",
+          "description": "Write a Python function that 'masks' PII data (e.g., email) in a log string.",
+          "coding_language": "python",
+          "coding_starter_code": "# pii_masker.py\ndef mask_email(email):\n    # TODO 1: Keep the first letter and domain\n    # TODO 2: Replace the rest with asterisks\n    return \"\""
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "title": "Physical Security & Environmental Controls",
+      "tasks": [
+        {
+          "title": "Protecting the Data Center",
+          "type": "reading",
+          "description": "Biometrics, fire suppression, and cold/hot aisle containment.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Physical Security Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of facility security.",
+          "quiz_questions": [
+            {
+              "question": "Which of these is a 'Detective' physical control?",
+              "options": [
+                "CCTV Camera",
+                "Security Guard",
+                "Steel Door",
+                "Fire Extinguisher"
+              ],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "title": "Business Impact Analysis (BIA)",
+      "tasks": [
+        {
+          "title": "Determining Criticality",
+          "type": "reading",
+          "description": "Learning to prioritize which business systems must be recovered first during an outage.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "BIA Logic Task",
+          "type": "coding",
+          "description": "Create a priority queue in Python to sort business systems by their 'Criticality Score'.",
+          "coding_language": "python",
+          "coding_starter_code": "# bia_priority.py\nsystems = [{\"name\": \"Payroll\", \"score\": 10}, {\"name\": \"Internal Wiki\", \"score\": 3}]\n# TODO: Sort systems by score descending"
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "title": "Network Security: Firewalls & IDPS",
+      "tasks": [
+        {
+          "title": "Defending the Perimeter",
+          "type": "reading",
+          "description": "Introduction to Next-Gen Firewalls and Intrusion Detection Systems.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Network Defense Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of IDS vs. IPS.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary difference between IDS and IPS?",
+              "options": [
+                "IDS is faster",
+                "IPS can actively block a threat, whereas IDS only alerts",
+                "IDS is hardware, IPS is software",
+                "There is no difference"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "title": "Introduction to Cryptography",
+      "tasks": [
+        {
+          "title": "Symmetric vs. Asymmetric Encryption",
+          "type": "reading",
+          "description": "How AES and RSA protect Project Delta's communications.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Crypto Implementation Task",
+          "type": "coding",
+          "description": "Simulate a simple Caesar Cipher in Python to understand the logic of encryption keys.",
+          "coding_language": "python",
+          "coding_starter_code": "# caesar_cipher.py\ndef encrypt(text, shift):\n    # TODO: Shift each letter by the key value\n    return \"\""
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "title": "Hashing and Digital Signatures",
+      "tasks": [
+        {
+          "title": "Ensuring Data Integrity",
+          "type": "reading",
+          "description": "Using SHA-256 to verify that files haven't been tampered with.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Hashing Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of hash functions.",
+          "quiz_questions": [
+            {
+              "question": "Is it possible to reverse a hash to get the original data?",
+              "options": [
+                "Yes",
+                "No",
+                "Only for short strings",
+                "Only with an admin key"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "title": "Social Engineering & Awareness",
+      "tasks": [
+        {
+          "title": "The Human Element",
+          "type": "reading",
+          "description": "Learning about Phishing, Vishing, and Tailgating.",
+          "reading_content_md": "# The Weakest Link\n\nNo matter how strong our **Project Gamma** firewall is, a single employee clicking a malicious link can bypass everything. We design security awareness campaigns for the 29-member team.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Phishing Detection Task",
+          "type": "coding",
+          "description": "Write a script that flags 'suspicious' keywords in a simulated email body.",
+          "coding_language": "python",
+          "coding_starter_code": "# phish_check.py\nemail = \"Urgent: Click here to reset your password now!\"\n# TODO: Check if 'urgent' or 'click here' are present"
+        }
+      ]
+    },
+    {
+      "day": 15,
+      "title": "Vulnerability Management",
+      "tasks": [
+        {
+          "title": "Scanning and Patching",
+          "type": "reading",
+          "description": "How to use tools like Nessus or OpenVAS to find 'holes' in the system.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Vulnerability Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of CVEs.",
+          "quiz_questions": [
+            {
+              "question": "What does 'CVE' stand for?",
+              "options": [
+                "Common Vulnerabilities and Exposures",
+                "Critical Virus Entry",
+                "Centralized Volume Encryption",
+                "Cloud Virtual Environment"
+              ],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 16,
+      "title": "Identity and Access Management (IAM) Basics",
+      "tasks": [
+        {
+          "title": "Identification vs. Authentication",
+          "type": "reading",
+          "description": "Defining the difference between who you say you are and how you prove it.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "IAM Logic Task",
+          "type": "coding",
+          "description": "Build a simple 'Login' validator in Python using a hashed password dictionary.",
+          "coding_language": "python",
+          "coding_starter_code": "# simple_auth.py\n# TODO: Validate username and check if hash matches"
+        }
+      ]
+    },
+    {
+      "day": 17,
+      "title": "Business Continuity Planning (BCP)",
+      "tasks": [
+        {
+          "title": "Keeping the Lights On",
+          "type": "reading",
+          "description": "How Project Delta ensures the business functions during a natural disaster.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "BCP Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of disaster recovery terms.",
+          "quiz_questions": [
+            {
+              "question": "What is 'RTO' (Recovery Time Objective)?",
+              "options": [
+                "Max data loss allowed",
+                "Max time allowed to restore a system",
+                "The cost of the server",
+                "The date of the last backup"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 18,
+      "title": "Disaster Recovery (DR) Strategies",
+      "tasks": [
+        {
+          "title": "Hot, Warm, and Cold Sites",
+          "type": "reading",
+          "description": "Choosing the right backup facility based on budget and RTO requirements.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "DR Strategy Task",
+          "type": "coding",
+          "description": "Create a logic that selects a DR site type based on a provided RTO (in hours).",
+          "coding_language": "python",
+          "coding_starter_code": "# dr_selector.py\n# TODO: If RTO < 1 return 'Hot Site', if < 24 return 'Warm Site'"
+        }
+      ]
+    },
+    {
+      "day": 19,
+      "title": "Risk Response Strategies",
+      "tasks": [
+        {
+          "title": "Avoid, Transfer, Mitigate, Accept",
+          "type": "reading",
+          "description": "How to handle a risk once it has been identified.",
+          "reading_content_md": "# Decisions in Risk\n\nIf a server is old, we can:\n- **Mitigate**: Install a firewall.\n- **Transfer**: Buy insurance.\n- **Avoid**: Shut down the server.\n- **Accept**: Do nothing because it's not critical.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Risk Response Quiz",
+          "type": "quiz",
+          "description": "Match the scenario to the response strategy.",
+          "quiz_questions": [
+            {
+              "question": "Buying cyber insurance is an example of which strategy?",
+              "options": [
+                "Mitigation",
+                "Transference",
+                "Avoidance",
+                "Acceptance"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 20,
+      "title": "Internal vs. External Audits",
+      "tasks": [
+        {
+          "title": "Preparing for the Auditor",
+          "type": "reading",
+          "description": "How to conduct 'Self-Assessments' before the official compliance audit.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Audit Task",
+          "type": "coding",
+          "description": "Write a script that parses a list of system settings and flags those that are 'Non-Compliant' (e.g., firewall=OFF).",
+          "coding_language": "python",
+          "coding_starter_code": "# audit_check.py\nconfig = {\"firewall\": \"OFF\", \"encryption\": \"ON\"}\n# TODO: Flag the 'OFF' setting"
+        }
+      ]
+    },
+    {
+      "day": 21,
+      "title": "Phase 1 Review: The Risk Register",
+      "tasks": [
+        {
+          "title": "Consolidating Findings",
+          "type": "reading",
+          "description": "Creating the master document for all security and operational risks identified this month.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Risk Register Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge on documentation standards.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary purpose of a Risk Register?",
+              "options": [
+                "To list all employees",
+                "To track and monitor identified risks and their status",
+                "To store passwords",
+                "To calculate payroll"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 22,
+      "title": "Month 1 Final Comprehensive Assessment",
+      "tasks": [
+        {
+          "title": "Project Delta: Security Foundation Mastery",
+          "type": "reading",
+          "description": "Review of the 22-day journey through risk, security, and compliance basics.",
+          "reading_content_md": "# Month 1 Complete\n\nYou have built the security mindset for Project Delta. You understand the CIA triad, risk math, and the human element. Next month: **Governance & Policies**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 1 Final Exam",
+          "type": "quiz",
+          "description": "Final assessment covering all Month 1 Delta topics.",
+          "quiz_questions": [
+            {
+              "question": "Which principle ensures data remains accurate and hasn't been tampered with?",
+              "options": [
+                "Confidentiality",
+                "Integrity",
+                "Availability",
+                "Authentication"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the team size supporting Project Delta?",
+              "options": [
+                "11",
+                "29",
+                "5",
+                "15"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 23,
+      "title": "Introduction to Security Governance",
+      "tasks": [
+        {
+          "title": "Setting the Strategic Direction",
+          "type": "reading",
+          "description": "Understanding how security governance aligns technical controls with business goals.",
+          "reading_content_md": "# Governance vs. Management\n\n**Governance** is about 'doing the right things' (strategy and oversight), while **Management** is about 'doing things right' (execution). In Project Delta, we establish a Governance Committee to ensure security decisions support our revenue goals.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Governance Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of organizational security structures.",
+          "quiz_questions": [
+            {
+              "question": "Who is ultimately responsible for security governance in an enterprise?",
+              "options": [
+                "The Intern",
+                "The IT Manager",
+                "The Board of Directors/Executive Leadership",
+                "The Firewall"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 24,
+      "title": "Developing an Acceptable Use Policy (AUP)",
+      "tasks": [
+        {
+          "title": "Defining Employee Responsibilities",
+          "type": "reading",
+          "description": "Learning to draft policies that govern how employees use company resources like laptops and email.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Policy Drafting Task",
+          "type": "coding",
+          "description": "Write a Python script that generates a standard AUP template with placeholders for 'Company Name' and 'Date'.",
+          "coding_language": "python",
+          "coding_starter_code": "# aup_gen.py\n# TODO: Create a string template for an AUP\n# TODO: Implement a function to replace placeholders and print the policy"
+        }
+      ]
+    },
+    {
+      "day": 25,
+      "title": "Access Control Models: DAC vs. MAC",
+      "tasks": [
+        {
+          "title": "Discretionary vs. Mandatory Access",
+          "type": "reading",
+          "description": "Comparing models where owners control permissions (DAC) vs. centralized security labels (MAC).",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Access Control Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of permission systems.",
+          "quiz_questions": [
+            {
+              "question": "Which model is most common in high-security military environments?",
+              "options": [
+                "DAC",
+                "MAC",
+                "RBAC",
+                "ABAC"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 26,
+      "title": "Role-Based Access Control (RBAC) Design",
+      "tasks": [
+        {
+          "title": "Designing the Role Hierarchy",
+          "type": "reading",
+          "description": "Structuring permissions based on job functions for the 29-member team.",
+          "reading_content_md": "# Scaling Access\n\nIn Project Delta, we don't assign permissions to users directly. We assign them to **Roles** (e.g., 'Auditor', 'DevOps'). Users are then added to these roles, making it easy to manage access as the team grows.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "RBAC Logic Task",
+          "type": "coding",
+          "description": "Model an RBAC system in Python using a dictionary where keys are roles and values are lists of permissions.",
+          "coding_language": "python",
+          "coding_starter_code": "# rbac_model.py\nroles = {\"admin\": [\"read\", \"write\", \"delete\"], \"user\": [\"read\"]}\n# TODO: Write a function check_permission(role, permission) that returns True/False"
+        }
+      ]
+    },
+    {
+      "day": 27,
+      "title": "Attribute-Based Access Control (ABAC)",
+      "tasks": [
+        {
+          "title": "The Future of Contextual Access",
+          "type": "reading",
+          "description": "Using attributes like 'Time of Day' or 'Location' to make access decisions.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "ABAC Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of attribute-driven security.",
+          "quiz_questions": [
+            {
+              "question": "In ABAC, which of the following can be an attribute?",
+              "options": [
+                "User Department",
+                "Resource Type",
+                "Current Time",
+                "All of the above"
+              ],
+              "correct_index": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 28,
+      "title": "Separation of Duties (SoD)",
+      "tasks": [
+        {
+          "title": "Preventing Internal Fraud",
+          "type": "reading",
+          "description": "Ensuring that no single person has enough power to complete a sensitive process (like payments) alone.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "SoD Implementation Task",
+          "type": "coding",
+          "description": "Write a script that validates if two different users performed the 'Request' and 'Approval' steps in a mock transaction.",
+          "coding_language": "python",
+          "coding_starter_code": "# sod_validator.py\ntran = {\"request_user\": \"Alice\", \"approval_user\": \"Alice\"}\n# TODO: Flag the transaction if request_user == approval_user"
+        }
+      ]
+    },
+    {
+      "day": 29,
+      "title": "Identity Lifecycle Management",
+      "tasks": [
+        {
+          "title": "Onboarding, Moving, and Offboarding",
+          "type": "reading",
+          "description": "Managing the full lifecycle of a user identity in an enterprise system.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Lifecycle Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of identity transitions.",
+          "quiz_questions": [
+            {
+              "question": "What is the most critical step during employee offboarding?",
+              "options": [
+                "Changing their desk",
+                "Revoking all access immediately",
+                "Collecting their badge",
+                "Deleting their emails"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 30,
+      "title": "Privileged Access Management (PAM)",
+      "tasks": [
+        {
+          "title": "Securing the 'Keys to the Kingdom'",
+          "type": "reading",
+          "description": "Using tools like CyberArk or HashiCorp Vault to manage administrative accounts.",
+          "reading_content_md": "# Managing Superusers\n\nAdministrative accounts are the primary targets for attackers. Project Delta implements **Just-In-Time (JIT)** access, where an engineer only gets 'Admin' rights for a specific window of time to perform a task.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "PAM Task",
+          "type": "coding",
+          "description": "Simulate a JIT access token that expires after 5 seconds using Python's time module.",
+          "coding_language": "python",
+          "coding_starter_code": "# jit_token.py\nimport time\nexpiry = time.time() + 5\n# TODO: Write a loop that checks if the token is still valid"
+        }
+      ]
+    },
+    {
+      "day": 31,
+      "title": "Software Asset Management (SAM)",
+      "tasks": [
+        {
+          "title": "Licensing and Vulnerabilities",
+          "type": "reading",
+          "description": "Tracking software versions and licenses used across the Project Gamma clusters.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "SAM Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of software inventory.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Shadow IT'?",
+              "options": [
+                "Hacking tools",
+                "Software used by employees without IT approval",
+                "Linux servers in the dark",
+                "Old versions of Windows"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 32,
+      "title": "Hardware Asset Management (HAM)",
+      "tasks": [
+        {
+          "title": "Physical Inventory & Lifecycle",
+          "type": "reading",
+          "description": "Managing the procurement, deployment, and disposal of physical hardware.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "HAM Task",
+          "type": "coding",
+          "description": "Create a Python class 'HardwareAsset' with attributes for 'Serial Number', 'Purchase Date', and 'Status'.",
+          "coding_language": "python",
+          "coding_starter_code": "# ham_model.py\n# TODO: Create the class and a method to calculate asset age"
+        }
+      ]
+    },
+    {
+      "day": 33,
+      "title": "Data Classification Framework",
+      "tasks": [
+        {
+          "title": "Public, Private, and Restricted",
+          "type": "reading",
+          "description": "Categorizing data based on the impact its disclosure would have on the organization.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Classification Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of data sensitivity levels.",
+          "quiz_questions": [
+            {
+              "question": "Customer credit card numbers should be classified as...",
+              "options": [
+                "Public",
+                "Internal Use",
+                "Restricted/Confidential",
+                "Low Priority"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 34,
+      "title": "Data Handling Standards",
+      "tasks": [
+        {
+          "title": "Encryption and Labeling",
+          "type": "reading",
+          "description": "Defining specific technical controls for each data classification level.",
+          "reading_content_md": "# Protecting the Data\n\nRestricted data must be encrypted **At Rest** (in Snowflake) and **In Transit** (TLS 1.2+). Public data requires no encryption but must be monitored for unauthorized modification (Integrity).",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Standards Task",
+          "type": "coding",
+          "description": "Write a Python script that returns the required security control based on a data label input.",
+          "coding_language": "python",
+          "coding_starter_code": "# control_mapper.py\ndef get_required_control(label):\n    # TODO: If 'Restricted' return 'AES-256 Encryption Required'"
+        }
+      ]
+    },
+    {
+      "day": 35,
+      "title": "Change Management Process",
+      "tasks": [
+        {
+          "title": "Request, Review, and Approve",
+          "type": "reading",
+          "description": "Learning the formal process for making changes to production systems to avoid downtime.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Change Management Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of the CAB (Change Advisory Board).",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of Change Management?",
+              "options": [
+                "To make changes faster",
+                "To minimize risk and impact of changes to the business",
+                "To document everything in Git",
+                "To delete old code"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 36,
+      "title": "Configuration Management (CMDB)",
+      "tasks": [
+        {
+          "title": "The Configuration Management Database",
+          "type": "reading",
+          "description": "Using a CMDB to track relationships between IT assets and business services.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "CMDB Task",
+          "type": "coding",
+          "description": "Represent a system dependency in JSON format (e.g., 'Web Server' depends on 'Database').",
+          "coding_language": "json",
+          "coding_starter_code": "{\n  \"service\": \"Project Beta\",\n  \"dependencies\": []\n  # TODO: Add nested objects for DB and Cache servers\n}"
+        }
+      ]
+    },
+    {
+      "day": 37,
+      "title": "Third-Party Risk Management (TPRM)",
+      "tasks": [
+        {
+          "title": "Managing Vendor Risk",
+          "type": "reading",
+          "description": "How to assess the security posture of cloud providers and software vendors.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "TPRM Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of vendor security.",
+          "quiz_questions": [
+            {
+              "question": "What document does a vendor provide to prove their security compliance?",
+              "options": [
+                "Marketing brochure",
+                "SOC2 Type II Report",
+                "Tax return",
+                "Employee list"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 38,
+      "title": "Service Level Agreements (SLAs)",
+      "tasks": [
+        {
+          "title": "Defining Service Quality",
+          "type": "reading",
+          "description": "Managing contractual obligations for system uptime and performance.",
+          "reading_content_md": "# Contractual Security\n\nProject Delta defines the **SLA** for the entire organization. If our Cloud Provider (Gamma) fails to meet 99.9% uptime, we must have clear financial and operational remedies defined in the contract.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "SLA Task",
+          "type": "coding",
+          "description": "Calculate 'allowed downtime' per month for a 99.95% SLA using Python.",
+          "coding_language": "python",
+          "coding_starter_code": "# sla_calc.py\ntotal_minutes = 30 * 24 * 60\n# TODO: Calculate and print 0.05% of total_minutes"
+        }
+      ]
+    },
+    {
+      "day": 39,
+      "title": "Developing an Incident Response Policy",
+      "tasks": [
+        {
+          "title": "The Roadmap for Crisis",
+          "type": "reading",
+          "description": "Establishing the high-level policy for how the organization responds to a cyber attack.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Policy Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of IR roles.",
+          "quiz_questions": [
+            {
+              "question": "Who should be the primary communicator during a major security incident?",
+              "options": [
+                "The Lead Engineer",
+                "A dedicated Incident Commander/Comms Lead",
+                "The Intern",
+                "The Customer"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 40,
+      "title": "Compliance vs. Security",
+      "tasks": [
+        {
+          "title": "The Gap Analysis",
+          "type": "reading",
+          "description": "Understanding why being 'compliant' doesn't always mean you are 'secure'.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Gap Analysis Task",
+          "type": "coding",
+          "description": "Write a script that compares 'Actual Controls' against 'Required Controls' and outputs the missing ones.",
+          "coding_language": "python",
+          "coding_starter_code": "# gap_analysis.py\nrequired = {\"MFA\", \"Encryption\", \"Logging\"}\nactual = {\"Encryption\", \"Logging\"}\n# TODO: Print the set difference"
+        }
+      ]
+    },
+    {
+      "day": 41,
+      "title": "Month 2 Governance Milestone Review",
+      "tasks": [
+        {
+          "title": "Building the Framework",
+          "type": "reading",
+          "description": "Reviewing the policies, roles, and asset inventories completed this month.",
+          "reading_content_md": "# Governance Milestone\n\nWe now have a controlled environment. We know what we own (HAM/SAM), who has access (RBAC), and what the rules are (Policies). Month 3 will focus on **Compliance Audits**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 2 Final Quiz",
+          "type": "quiz",
+          "description": "Final assessment for the Governance and Policy phase.",
+          "quiz_questions": [
+            {
+              "question": "Which access control model uses Roles to assign permissions?",
+              "options": [
+                "DAC",
+                "MAC",
+                "RBAC",
+                "ABAC"
+              ],
+              "correct_index": 2
+            },
+            {
+              "question": "What does a CMDB track?",
+              "options": [
+                "User passwords",
+                "Relationships between IT assets and business services",
+                "Employee salaries",
+                "Customer emails"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 42,
+      "title": "Phase 2 Handover: Compliance Readiness",
+      "tasks": [
+        {
+          "title": "Documentation Audit",
+          "type": "reading",
+          "description": "Ensuring all policies are signed and stored in the central GRC tool.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "ReadMe Task",
+          "type": "coding",
+          "description": "Write a summary of the 'Asset Management' status for the next phase's auditors.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Delta — Governance Summary\n## HAM Status:\n## SAM Status:\n## Policy Coverage %:"
+        }
+      ]
+    },
+    {
+      "day": 43,
+      "title": "Introduction to SOC2 (System and Organization Controls)",
+      "tasks": [
+        {
+          "title": "The Five Trust Services Criteria",
+          "type": "reading",
+          "description": "Learning the core pillars of SOC2: Security, Availability, Processing Integrity, Confidentiality, and Privacy.",
+          "reading_content_md": "# SOC2 for Project Delta\n\nSOC2 is the gold standard for service organizations. Unlike a 'Pass/Fail' certification, it is an **Attestation** where an independent CPA audits our controls and issues an opinion on their effectiveness.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "SOC2 Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the SOC2 framework.",
+          "quiz_questions": [
+            {
+              "question": "Which SOC2 report type evaluates the effectiveness of controls over a period of time (e.g., 6 months)?",
+              "options": [
+                "Type I",
+                "Type II",
+                "Type III",
+                "Standard Report"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 44,
+      "title": "ISO 27001: The ISMS Standard",
+      "tasks": [
+        {
+          "title": "Managing the Information Security Management System",
+          "type": "reading",
+          "description": "Understanding the Annex A controls and the Plan-Do-Check-Act (PDCA) cycle.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "ISO 27001 Task",
+          "type": "coding",
+          "description": "Write a Python script that maps ISO 27001 control IDs (e.g., A.12.1.1) to their simplified titles.",
+          "coding_language": "python",
+          "coding_starter_code": "# iso_mapper.py\ncontrols = {\"A.12.1.1\": \"Documented Operating Procedures\"}\n# TODO: Implement a lookup function"
+        }
+      ]
+    },
+    {
+      "day": 45,
+      "title": "GDPR Compliance Deep Dive",
+      "tasks": [
+        {
+          "title": "Data Privacy in Practice",
+          "type": "reading",
+          "description": "Learning about Data Protection Impact Assessments (DPIAs) and the role of the DPO.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "GDPR Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of GDPR requirements.",
+          "quiz_questions": [
+            {
+              "question": "What is the maximum fine for a serious GDPR violation?",
+              "options": [
+                "$10,000",
+                "€20 Million or 4% of global turnover",
+                "1 Year in prison",
+                "$1 Million"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 46,
+      "title": "Evidence Collection for Audits",
+      "tasks": [
+        {
+          "title": "Proving the Controls Work",
+          "type": "reading",
+          "description": "How to gather screenshots, logs, and database exports as evidence for an external auditor.",
+          "reading_content_md": "# If it isn't documented, it didn't happen\n\nAuditors don't take your word for it. In Project Delta, we use **Evidence Request Lists**. We must provide proof (e.g., an AWS CloudTrail log) that only authorized users accessed the Solaris database last month.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Evidence Task",
+          "type": "coding",
+          "description": "Write a script that creates a timestamped folder structure for 'Evidence_Q2_2026' using Python's os module.",
+          "coding_language": "python",
+          "coding_starter_code": "# evidence_organizer.py\n# TODO: Create a folder for each SOC2 pillar"
+        }
+      ]
+    },
+    {
+      "day": 47,
+      "title": "Regulatory Mapping: Unified Control Framework",
+      "tasks": [
+        {
+          "title": "One Control, Many Frameworks",
+          "type": "reading",
+          "description": "How to map a single security control (e.g., MFA) to SOC2, ISO, and GDPR simultaneously.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Mapping Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of control mapping.",
+          "quiz_questions": [
+            {
+              "question": "What is the benefit of mapping controls across frameworks?",
+              "options": [
+                "It makes the audit longer",
+                "It reduces redundant work by satisfying multiple audits with one control",
+                "It replaces the need for a firewall",
+                "It saves money on cloud storage"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 48,
+      "title": "Data Protection Impact Assessment (DPIA)",
+      "tasks": [
+        {
+          "title": "Assessing Privacy Risks",
+          "type": "reading",
+          "description": "When and how to conduct a DPIA for new high-risk processing activities.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "DPIA Task",
+          "type": "coding",
+          "description": "Create a Python dictionary representing a DPIA checklist (e.g., 'Purpose', 'Data Types', 'Retention Period').",
+          "coding_language": "python",
+          "coding_starter_code": "# dpia_checklist.py\n# TODO: Initialize checklist and a function to print it"
+        }
+      ]
+    },
+    {
+      "day": 49,
+      "title": "Audit Interview Techniques",
+      "tasks": [
+        {
+          "title": "Talking to the Auditor",
+          "type": "reading",
+          "description": "Best practices for answering auditor questions accurately without over-sharing.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Interview Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of audit communication.",
+          "quiz_questions": [
+            {
+              "question": "If an auditor asks a question you don't know the answer to, what should you do?",
+              "options": [
+                "Guess",
+                "Stay silent",
+                "State that you will check with the subject matter expert and get back to them",
+                "Ignore the question"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 50,
+      "title": "Introduction to GRC Tools",
+      "tasks": [
+        {
+          "title": "Automating Compliance",
+          "type": "reading",
+          "description": "Overview of tools like Vanta, Drata, or ServiceNow for managing compliance automation.",
+          "reading_content_md": "# Automation in GRC\n\nManual compliance is dead. We use **GRC Tools** to connect directly to our **Project Gamma** AWS environment. The tool automatically detects if an S3 bucket is public and alerts the 29-member team immediately.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "GRC Tool Task",
+          "type": "coding",
+          "description": "Write a mock logic for an 'Automated Control Check' that scans a dictionary of S3 settings for 'public_access: True'.",
+          "coding_language": "python",
+          "coding_starter_code": "# s3_scanner.py\nbuckets = [{\"name\": \"logs\", \"public\": False}, {\"name\": \"web\", \"public\": True}]\n# TODO: Flag the public bucket"
+        }
+      ]
+    },
+    {
+      "day": 51,
+      "title": "External Audit Kickoff Simulation",
+      "tasks": [
+        {
+          "title": "The First Meeting",
+          "type": "reading",
+          "description": "What to expect during the opening meeting of an external audit.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Audit Kickoff Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of audit stages.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary purpose of the audit kickoff meeting?",
+              "options": [
+                "To issue fines",
+                "To define the scope, timeline, and logistics of the audit",
+                "To finish the audit",
+                "To fire employees"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 52,
+      "title": "Vulnerability Scans as Compliance Evidence",
+      "tasks": [
+        {
+          "title": "Continuous Monitoring",
+          "type": "reading",
+          "description": "Integrating monthly vulnerability scan reports into the compliance evidence vault.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Scan Task",
+          "type": "coding",
+          "description": "Write a Python script that takes a mock CSV of scan results and filters for only 'Critical' and 'High' vulnerabilities.",
+          "coding_language": "python",
+          "coding_starter_code": "# scan_filter.py\n# TODO: Implement filtering logic"
+        }
+      ]
+    },
+    {
+      "day": 53,
+      "title": "Penetration Testing Requirements",
+      "tasks": [
+        {
+          "title": "The Annual Pentest",
+          "type": "reading",
+          "description": "Why SOC2 and ISO require an annual external penetration test.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Pentest Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of proactive testing.",
+          "quiz_questions": [
+            {
+              "question": "What is the main difference between a Vulnerability Scan and a Pentest?",
+              "options": [
+                "A Pentest is automated",
+                "A Pentest involves a human actively trying to exploit vulnerabilities",
+                "Scans are more expensive",
+                "There is no difference"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 54,
+      "title": "User Access Review (UAR) Procedures",
+      "tasks": [
+        {
+          "title": "Quarterly Access Certification",
+          "type": "reading",
+          "description": "Developing the process for managers to review and re-approve their employees' system access.",
+          "reading_content_md": "# The UAR Loop\n\nEvery 90 days, we perform a **User Access Review**. We export the list of all users in the **Project Solaris** database and send it to the Lead Engineer to confirm that everyone on the list still needs access.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "UAR Task",
+          "type": "coding",
+          "description": "Write a script that generates a 'Review Request' email text for each manager in a list.",
+          "coding_language": "python",
+          "coding_starter_code": "# uar_gen.py\nmanagers = [\"Alice\", \"Bob\"]\n# TODO: Loop and print 'Dear {name}, please review access for your team...'"
+        }
+      ]
+    },
+    {
+      "day": 55,
+      "title": "Disaster Recovery Testing Evidence",
+      "tasks": [
+        {
+          "title": "Proving Resilience",
+          "type": "reading",
+          "description": "How to document a successful DR test for auditors (Tabletop vs. Technical).",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "DR Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of resilience proof.",
+          "quiz_questions": [
+            {
+              "question": "What is the most important piece of evidence for a DR control?",
+              "options": [
+                "A photo of the server",
+                "The 'Post-Test Report' showing actual recovery times vs objectives",
+                "The server's manual",
+                "The purchase receipt"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 56,
+      "title": "Employee Awareness Training Compliance",
+      "tasks": [
+        {
+          "title": "Tracking Completion",
+          "type": "reading",
+          "description": "Proving to auditors that 100% of the 29-member team completed security training.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Training Task",
+          "type": "coding",
+          "description": "Create a Python script that checks a list of 'Completed' users against a 'Master Employee List' and identifies those who haven't finished.",
+          "coding_language": "python",
+          "coding_starter_code": "# training_audit.py\n# TODO: Print the names of delinquent users"
+        }
+      ]
+    },
+    {
+      "day": 57,
+      "title": "Encryption Key Management Compliance",
+      "tasks": [
+        {
+          "title": "Who has the Keys?",
+          "type": "reading",
+          "description": "Auditing the rotation and storage of encryption keys (AWS KMS).",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "KMS Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of key lifecycle.",
+          "quiz_questions": [
+            {
+              "question": "How often should administrative encryption keys be rotated for best practice?",
+              "options": [
+                "Never",
+                "Every 5 years",
+                "Annually",
+                "Every decade"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 58,
+      "title": "Physical Access Logs Audit",
+      "tasks": [
+        {
+          "title": "Reviewing Facility Entrances",
+          "type": "reading",
+          "description": "Analyzing badge reader logs to ensure only authorized personnel entered the server room.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Badge Task",
+          "type": "coding",
+          "description": "Write a script that flags any badge entry attempt between 10 PM and 5 AM.",
+          "coding_language": "python",
+          "coding_starter_code": "# badge_monitor.py\n# TODO: Implement time-based filtering"
+        }
+      ]
+    },
+    {
+      "day": 59,
+      "title": "Self-Correction & Finding Remediation",
+      "tasks": [
+        {
+          "title": "The Plan of Action and Milestones (POA&M)",
+          "type": "reading",
+          "description": "How to handle a failed internal audit finding by creating a remediation plan.",
+          "reading_content_md": "# Fixing the Gaps\n\nIf we find that a database isn't encrypted, we don't hide it. We create a **POA&M**. This document tells the auditor: 'We know this is broken, and here is our plan to fix it by July 15th'.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Remediation Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of audit findings.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Management Response' in an audit report?",
+              "options": [
+                "A resignation letter",
+                "The organization's plan to address the auditor's findings",
+                "A request for more money",
+                "A marketing email"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 60,
+      "title": "Final Audit Package Preparation",
+      "tasks": [
+        {
+          "title": "Assembling the Evidence Vault",
+          "type": "reading",
+          "description": "One last review of all collected evidence before the external auditor arrives.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Vault Task",
+          "type": "coding",
+          "description": "Write a script to generate an 'Evidence manifest' file that lists all files in your evidence folder.",
+          "coding_language": "python",
+          "coding_starter_code": "# gen_manifest.py\n# TODO: List all filenames and write to manifest.txt"
+        }
+      ]
+    },
+    {
+      "day": 61,
+      "title": "Month 3 Compliance Milestone Review",
+      "tasks": [
+        {
+          "title": "Audit Ready",
+          "type": "reading",
+          "description": "Reviewing the SOC2, ISO, and GDPR readiness status for Project Delta.",
+          "reading_content_md": "# Compliance Milestone\n\nProject Delta is now 'Audit Ready'. We have a full evidence vault, a remediation plan for known gaps, and a trained team. Next month: **Business Operations & Internal Systems**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 3 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Compliance and Audit phase.",
+          "quiz_questions": [
+            {
+              "question": "Which framework focuses on an Information Security Management System (ISMS)?",
+              "options": [
+                "SOC2",
+                "ISO 27001",
+                "HIPAA",
+                "CCPA"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What does a DPIA evaluate?",
+              "options": [
+                "Server speed",
+                "Privacy risks for processing activities",
+                "Employee salaries",
+                "Office temperature"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 62,
+      "title": "Phase 2 Mid-Point Retrospective",
+      "tasks": [
+        {
+          "title": "Reflecting on the Compliance Journey",
+          "type": "reading",
+          "description": "What was the hardest evidence to collect and how can we automate it next time?",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Retrospective Task",
+          "type": "coding",
+          "description": "Document the 'Top 3 Audit Gaps' and their current remediation status.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Delta — Audit Gap Report\n## Gap 1:\n## Gap 2:\n## Gap 3:"
+        }
+      ]
+    },
+    {
+      "day": 63,
+      "title": "Enterprise Systems Architecture",
+      "tasks": [
+        {
+          "title": "Mapping the Business Tech Stack",
+          "type": "reading",
+          "description": "Understanding how ERP, CRM, and HRIS systems integrate to support enterprise operations.",
+          "reading_content_md": "# Business Systems\n\nA modern enterprise runs on interconnected software. We analyze how data flows from our Sales CRM into our Project Management tools. In Project Delta, we ensure these 'Business Ops' systems are as secure and automated as our production code.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Systems Architecture Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of core enterprise software categories.",
+          "quiz_questions": [
+            {
+              "question": "Which system is primarily used for managing customer relationships and sales leads?",
+              "options": [
+                "ERP",
+                "CRM",
+                "HRIS",
+                "SCM"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 64,
+      "title": "Streamlining Workflows with Automation",
+      "tasks": [
+        {
+          "title": "Eliminating Manual Toil",
+          "type": "reading",
+          "description": "Using Zapier or custom Python scripts to automate repetitive business tasks.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Workflow Automation Task",
+          "type": "coding",
+          "description": "Write a Python script that parses a CSV of 'New Hires' and prints a checklist of IT assets to be provisioned for each.",
+          "coding_language": "python",
+          "coding_starter_code": "# provision_checker.py\nimport csv\n# TODO: Loop through new_hires.csv and print formatted asset lists"
+        }
+      ]
+    },
+    {
+      "day": 65,
+      "title": "Vendor Management & Lifecycle",
+      "tasks": [
+        {
+          "title": "Managing the Supply Chain",
+          "type": "reading",
+          "description": "From procurement to offboarding: how to manage third-party software vendors.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Vendor Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the vendor lifecycle.",
+          "quiz_questions": [
+            {
+              "question": "What is an 'SLA' in the context of vendor management?",
+              "options": [
+                "Security Level Audit",
+                "Service Level Agreement",
+                "Software License Access",
+                "System Logic Assessment"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 66,
+      "title": "Cost Optimization: SaaS Management",
+      "tasks": [
+        {
+          "title": "Reducing Wasteful Spending",
+          "type": "reading",
+          "description": "Identifying underutilized software licenses and consolidating tools.",
+          "reading_content_md": "# Financial Ops\n\nProject Delta monitors the cost of Project Beta and Gamma. We analyze license usage logs to see if we really need 29 'Pro' licenses for every tool, or if 'Basic' tiers suffice for some team members.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Cost Analysis Task",
+          "type": "coding",
+          "description": "Write a script that takes a list of license costs and usage percentages, flagging any tool with < 10% usage.",
+          "coding_language": "python",
+          "coding_starter_code": "# license_audit.py\ntools = [{'name': 'DesignTool', 'usage': 5, 'cost': 500}]\n# TODO: Print a 'Cancel' recommendation for low usage tools"
+        }
+      ]
+    },
+    {
+      "day": 67,
+      "title": "Data Governance: Retention Policies",
+      "tasks": [
+        {
+          "title": "When to Delete Data",
+          "type": "reading",
+          "description": "Defining legal and operational retention periods for logs, emails, and customer data.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Retention Quiz",
+          "type": "quiz",
+          "description": "Verify your knowledge of data lifecycle management.",
+          "quiz_questions": [
+            {
+              "question": "Why shouldn't an organization keep all data forever?",
+              "options": [
+                "Legal liability and storage costs",
+                "It makes searches too fast",
+                "It's required by the hardware",
+                "It increases security"
+              ],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 68,
+      "title": "Change Management: The CAB Process",
+      "tasks": [
+        {
+          "title": "Governance in Action",
+          "type": "reading",
+          "description": "Learning how the Change Advisory Board (CAB) reviews high-risk changes to business systems.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "CAB Logic Task",
+          "type": "coding",
+          "description": "Create a Python dictionary representing a 'Change Request' and write a function that auto-approves if the risk is 'Low'.",
+          "coding_language": "python",
+          "coding_starter_code": "# change_request.py\nreq = {'id': 1, 'risk': 'High', 'impact': 'Global'}\n# TODO: Write logic to flag 'High' risk for manual review"
+        }
+      ]
+    },
+    {
+      "day": 69,
+      "title": "IT Service Management (ITSM) Basics",
+      "tasks": [
+        {
+          "title": "Incidents vs. Problems",
+          "type": "reading",
+          "description": "Introduction to the ITIL framework for managing internal support and service delivery.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "ITSM Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of support terminology.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Problem' in ITIL terms?",
+              "options": [
+                "A broken laptop",
+                "The underlying cause of one or more incidents",
+                "A rude customer",
+                "A coding bug"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 70,
+      "title": "Internal Auditing of Business Ops",
+      "tasks": [
+        {
+          "title": "Self-Assessment Workflows",
+          "type": "reading",
+          "description": "How to perform 'Spot Checks' on business processes like payroll or procurement.",
+          "reading_content_md": "# Trust but Verify\n\nWe don't wait for annual auditors. Project Delta conducts monthly 'mini-audits'. We might pick 5 random new hires and verify their background checks were actually completed according to policy.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Audit Logic Task",
+          "type": "coding",
+          "description": "Write a random sampler script in Python that picks 5 items from a list of 100 for audit review.",
+          "coding_language": "python",
+          "coding_starter_code": "# auditor_sample.py\nimport random\nitems = list(range(1, 101))\n# TODO: Use random.sample to pick 5 unique IDs"
+        }
+      ]
+    },
+    {
+      "day": 71,
+      "title": "Project Delta: Ops Milestone Review",
+      "tasks": [
+        {
+          "title": "Efficient Operations",
+          "type": "reading",
+          "description": "Reviewing the automated workflows and cost optimizations achieved this month.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Ops Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Business Operations phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool is best for managing customer interactions?",
+              "options": [
+                "ERP",
+                "CRM",
+                "GitHub",
+                "Terraform"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 72,
+      "title": "Phase 2 Handover: Incident Prep",
+      "tasks": [
+        {
+          "title": "Documenting System Dependencies",
+          "type": "reading",
+          "description": "Ensuring the Incident Response team knows which business processes depend on which servers.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Create a Markdown document mapping 3 Business Services to their underlying Cloud Resources.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Business Dependency Map\n## Service 1: Payroll -> RDS Cluster Gamma\n## Service 2: ..."
+        }
+      ]
+    },
+    {
+      "day": 85,
+      "title": "The Incident Response Lifecycle",
+      "tasks": [
+        {
+          "title": "Preparation to Lessons Learned",
+          "type": "reading",
+          "description": "Understanding the NIST/SANS steps for responding to a security breach.",
+          "reading_content_md": "# Phase 3: Resilience\n\n## When, Not If\nIn Project Delta, we assume a breach will happen. Our success is measured by how fast we detect (**Containment**) and how well we recover (**Eradication & Recovery**).",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "IR Lifecycle Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of response stages.",
+          "quiz_questions": [
+            {
+              "question": "What is the first step in the IR process?",
+              "options": [
+                "Containment",
+                "Preparation",
+                "Recovery",
+                "Reporting"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 86,
+      "title": "Building an Incident Response Plan (IRP)",
+      "tasks": [
+        {
+          "title": "Roles and Responsibilities",
+          "type": "reading",
+          "description": "Defining who does what during a 'Code Red' event.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "IRP Template Task",
+          "type": "coding",
+          "description": "Write a Python script to generate a 'Call Tree' for the 29-member team, organized by priority.",
+          "coding_language": "python",
+          "coding_starter_code": "# call_tree.py\n# TODO: Create a list of team roles and contact info\n# TODO: Print them in order of notification priority"
+        }
+      ]
+    },
+    {
+      "day": 87,
+      "title": "Detection & Analysis: SIEM Fundamentals",
+      "tasks": [
+        {
+          "title": "The Security Operations Center (SOC)",
+          "type": "reading",
+          "description": "How logs from Project Gamma (Cloud) feed into SIEM tools like Splunk or ELK for alerting.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Detection Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of security monitoring.",
+          "quiz_questions": [
+            {
+              "question": "What does SIEM stand for?",
+              "options": [
+                "Security Information and Event Management",
+                "System Internal Encryption Mode",
+                "Secure Internet Entry Method",
+                "Software Integration and Error Monitor"
+              ],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 88,
+      "title": "Containment Strategies",
+      "tasks": [
+        {
+          "title": "Stopping the Bleeding",
+          "type": "reading",
+          "description": "Learning how to isolate a compromised server without shutting down the whole business.",
+          "reading_content_md": "# Surgical Isolation\n\nIf a **Project Beta** API pod is compromised, we don't delete the cluster. We use Kubernetes network policies to isolate that specific pod (Containment) while we analyze the memory for malware (Analysis).",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Containment Logic Task",
+          "type": "coding",
+          "description": "Write a bash command mock-up to 'Isolate' a server by changing its Security Group via CLI.",
+          "coding_language": "bash",
+          "coding_starter_code": "# isolate_server.sh\n# TODO: Use 'aws ec2 modify-instance-attribute' to swap to an 'Isolation-SG'"
+        }
+      ]
+    },
+    {
+      "day": 89,
+      "title": "Forensics & Root Cause Analysis (RCA)",
+      "tasks": [
+        {
+          "title": "Digital Evidence Handling",
+          "type": "reading",
+          "description": "Maintaining the Chain of Custody during a forensic investigation.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "RCA Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of investigation principles.",
+          "quiz_questions": [
+            {
+              "question": "Why is 'Chain of Custody' important?",
+              "options": [
+                "To make the code faster",
+                "To ensure evidence is admissible in court",
+                "To help the developer find the bug",
+                "To save storage space"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 90,
+      "title": "Communication Plans & Legal Obligations",
+      "tasks": [
+        {
+          "title": "Managing the Narrative",
+          "type": "reading",
+          "description": "How and when to notify customers, regulators, and the press about a breach.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Communication Task",
+          "type": "coding",
+          "description": "Draft a 'Breach Notification' email template with placeholders for 'Type of Data' and 'Date of Discovery'.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Breach Notification\nDear User, we are writing to inform you of a security incident regarding [DATA_TYPE] on [DATE]..."
+        }
+      ]
+    },
+    {
+      "day": 91,
+      "title": "Tabletop Exercises (TTX)",
+      "tasks": [
+        {
+          "title": "Wargaming the Response",
+          "type": "reading",
+          "description": "Simulating a ransomware attack in a meeting room to test the team's readiness.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "TTX Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of simulation goals.",
+          "quiz_questions": [
+            {
+              "question": "What is the main goal of a Tabletop Exercise?",
+              "options": [
+                "To find technical bugs",
+                "To identify gaps in policy and team coordination",
+                "To write new code",
+                "To fire underperforming staff"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 92,
+      "title": "Business Continuity: Plan Activation",
+      "tasks": [
+        {
+          "title": "The Disaster Declaration",
+          "type": "reading",
+          "description": "Criteria for when to stop normal operations and switch to the Business Continuity Plan (BCP).",
+          "reading_content_md": "# Resuming Operations\n\nIf the primary AWS region for **Project Gamma** goes down, we 'Declare a Disaster'. The 29-member team activates the BCP to move essential business functions (like Payroll and Solaris Grid monitoring) to the secondary region.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "BCP Logic Task",
+          "type": "coding",
+          "description": "Write a Python script that outputs 'ACTIVATE BCP' if 3 or more critical systems are 'DOWN'.",
+          "coding_language": "python",
+          "coding_starter_code": "# bcp_trigger.py\nsystems = {'Solaris': 'DOWN', 'Beta': 'UP', 'Gamma': 'DOWN', 'Payroll': 'DOWN'}\n# TODO: Count 'DOWN' statuses and check against threshold"
+        }
+      ]
+    },
+    {
+      "day": 93,
+      "title": "Disaster Recovery: Technical Failover",
+      "tasks": [
+        {
+          "title": "Flipping the Switch",
+          "type": "reading",
+          "description": "Using DNS (Route 53) and Database Replication to restore services in a new location.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "DR Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of failover types.",
+          "quiz_questions": [
+            {
+              "question": "In a 'Warm Site' DR strategy, what is usually ready?",
+              "options": [
+                "Nothing",
+                "Infrastructure is ready, but data must be restored from backups",
+                "Everything is live and in-sync",
+                "Only the building"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 94,
+      "title": "Data Backup Verification & Testing",
+      "tasks": [
+        {
+          "title": "Restoring is More Important than Backing Up",
+          "type": "reading",
+          "description": "How to perform monthly 'Restore Tests' to ensure our Project Beta backups actually work.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Backup Task",
+          "type": "coding",
+          "description": "Write a pseudocode script that attempts to 'Mount' a backup volume and check for a specific file's existence.",
+          "coding_language": "python",
+          "coding_starter_code": "# restore_test.py\n# TODO: Simulate mounting volume_backup_01\n# TODO: Log 'SUCCESS' if file 'db_dump.sql' is found"
+        }
+      ]
+    },
+    {
+      "day": 95,
+      "title": "RPO vs. RTO Deep Dive",
+      "tasks": [
+        {
+          "title": "Setting Expectations",
+          "type": "reading",
+          "description": "Managing the trade-off between cost and recovery speed.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "RPO/RTO Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of recovery metrics.",
+          "quiz_questions": [
+            {
+              "question": "What does RPO (Recovery Point Objective) measure?",
+              "options": [
+                "Time to recover",
+                "Maximum acceptable data loss (in time)",
+                "Cost of recovery",
+                "Number of servers"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 96,
+      "title": "Cyber Insurance & Risk Transfer",
+      "tasks": [
+        {
+          "title": "The Financial Safety Net",
+          "type": "reading",
+          "description": "Understanding how cyber insurance works and what it covers (Legal, Ransom, Forensic costs).",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Insurance Task",
+          "type": "coding",
+          "description": "Create a Python class 'InsurancePolicy' that checks if an incident cost is within the 'Deductible' or 'Coverage Limit'.",
+          "coding_language": "python",
+          "coding_starter_code": "# policy_check.py\n# TODO: Implement check_coverage(incident_cost) method"
+        }
+      ]
+    },
+    {
+      "day": 97,
+      "title": "Third-Party Incident Management",
+      "tasks": [
+        {
+          "title": "When the Cloud Provider Fails",
+          "type": "reading",
+          "description": "Managing the response when a critical vendor (like AWS or a SaaS provider) has an outage.",
+          "reading_content_md": "# Managing Vendors in Crisis\n\nIf our SaaS CRM is down, we don't just wait. Project Delta playbooks include 'Manual Workarounds'. We use our local Excel backups to continue high-priority sales activities until the vendor restores service.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Vendor Incident Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of vendor SLAs.",
+          "quiz_questions": [
+            {
+              "question": "What is the 'Service Credit' in an SLA?",
+              "options": [
+                "A loan from the vendor",
+                "Financial compensation for service downtime",
+                "A discount on future software",
+                "Free training"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 98,
+      "title": "Pandemic & Workforce Continuity",
+      "tasks": [
+        {
+          "title": "Managing the Human Resource",
+          "type": "reading",
+          "description": "Planning for scenarios where 50% of the 29-member team is unavailable.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Workforce Task",
+          "type": "coding",
+          "description": "Write a script that identifies 'Single Points of Failure' (roles with only 1 person trained) in a team roster.",
+          "coding_language": "python",
+          "coding_starter_code": "# spof_finder.py\n# TODO: Count team members per 'Skill' and flag counts < 2"
+        }
+      ]
+    },
+    {
+      "day": 99,
+      "title": "Public Relations & Crisis Comms",
+      "tasks": [
+        {
+          "title": "Protecting the Brand",
+          "type": "reading",
+          "description": "Strategies for maintaining public trust during a high-profile data leak.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "PR Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of transparent communication.",
+          "quiz_questions": [
+            {
+              "question": "Which approach is generally better for long-term brand trust?",
+              "options": [
+                "Hiding the breach as long as possible",
+                "Prompt, transparent communication with clear remediation steps",
+                "Blaming the intern",
+                "Ignoring all emails"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 100,
+      "title": "After-Action Reports (AAR)",
+      "tasks": [
+        {
+          "title": "Learning from Failure",
+          "type": "reading",
+          "description": "How to facilitate a 'Blameless Post-Mortem' and update policies based on real-world incidents.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "AAR Task",
+          "type": "coding",
+          "description": "Generate a Markdown summary for an 'After-Action Report' with sections for 'Timeline', 'Root Cause', and 'Action Items'.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# After-Action Report: Incident #102\n## Timeline:\n## Root Cause:\n## Action Items:"
+        }
+      ]
+    },
+    {
+      "day": 101,
+      "title": "Month 5 Resilience Milestone Review",
+      "tasks": [
+        {
+          "title": "Ready for Anything",
+          "type": "reading",
+          "description": "Reviewing the IRP, BCP, and DR plans completed this month.",
+          "reading_content_md": "# Resilience Milestone\n\nProject Delta is now prepared for crisis. We have the playbooks, the call trees, and the failover tech in place. We've moved from 'Hoping nothing happens' to 'Knowing we can handle it'. Month 6 will focus on the **Final Audit & Launch**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 5 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Incident Response and BCP phase.",
+          "quiz_questions": [
+            {
+              "question": "What does a 'Blameless Post-Mortem' focus on?",
+              "options": [
+                "Who to fire",
+                "Systemic improvements and process failures",
+                "Assigning blame to the vendor",
+                "The cost of the incident"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 102,
+      "title": "SIEM Dashboard Configuration",
+      "tasks": [
+        {
+          "title": "Visualizing Threat Intelligence",
+          "type": "reading",
+          "description": "Building dashboards that show 'Login Failures', 'Traffic Spikes', and 'Unauthorized API Calls' in real-time.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "SIEM Task",
+          "type": "coding",
+          "description": "Write a mock query that filters for 'Unauthorized' logs specifically from the 'Identity Service'.",
+          "coding_language": "python",
+          "coding_starter_code": "# query_builder.py\n# TODO: Create a string 'SELECT * FROM logs WHERE status=401 AND service=auth'"
+        }
+      ]
+    },
+    {
+      "day": 103,
+      "title": "Incident Triage Logic",
+      "tasks": [
+        {
+          "title": "Sorting the Noise",
+          "type": "reading",
+          "description": "How to categorize alerts as 'True Positive', 'False Positive', or 'Benign'.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Triage Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of alert classification.",
+          "quiz_questions": [
+            {
+              "question": "An alert for a known vulnerability scan performed by your own team is a...",
+              "options": [
+                "True Positive",
+                "False Positive",
+                "Benign/Authorized activity",
+                "Critical Breach"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 104,
+      "title": "Data Loss Prevention (DLP) Basics",
+      "tasks": [
+        {
+          "title": "Stopping the Leak",
+          "type": "reading",
+          "description": "Implementing tools that monitor for credit card numbers or secrets being uploaded to public sites.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "DLP Task",
+          "type": "coding",
+          "description": "Write a RegEx (Regular Expression) in Python to detect a 16-digit credit card pattern in a text block.",
+          "coding_language": "python",
+          "coding_starter_code": "# dlp_scanner.py\nimport re\ntext = \"Customer card: 1234-5678-1234-5678\"\n# TODO: Use re.findall to locate the card number"
+        }
+      ]
+    },
+    {
+      "day": 105,
+      "title": "Internal Crisis Drill - Session 1",
+      "tasks": [
+        {
+          "title": "The Simulation Begins",
+          "type": "reading",
+          "description": "Conducting a live-action drill to test the 'Call Tree' and the initial 'Preparation' phase of the IRP.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Drill Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the drill's first response.",
+          "quiz_questions": [
+            {
+              "question": "What is the first goal of a live incident drill?",
+              "options": [
+                "To fix the bug",
+                "To verify the notification chain works as documented",
+                "To calculate the ROI",
+                "To buy new servers"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 106,
+      "title": "Internal Crisis Drill - Session 2",
+      "tasks": [
+        {
+          "title": "Containment and Eradication",
+          "type": "reading",
+          "description": "Testing the team's ability to 'Block IPs' and 'Reset Passwords' across the cluster in under 10 minutes.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Drill Task",
+          "type": "coding",
+          "description": "Write a script that simulates 'Bulk Password Reset' by iterating through a user dictionary and setting a random hash.",
+          "coding_language": "python",
+          "coding_starter_code": "# bulk_reset.py\n# TODO: Loop and update 'password' for all users"
+        }
+      ]
+    },
+    {
+      "day": 107,
+      "title": "Supply Chain Security: Software BOM",
+      "tasks": [
+        {
+          "title": "Knowing Your Dependencies",
+          "type": "reading",
+          "description": "Understanding the Software Bill of Materials (SBOM) and why it's critical for enterprise security.",
+          "reading_content_md": "# The Ingredient List\n\nIn Project Delta, we require every software build from **Project Beta** to include an **SBOM**. If a new vulnerability (like Log4j) is found, we can search our SBOM database to instantly see which services are vulnerable.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "SBOM Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of component tracking.",
+          "quiz_questions": [
+            {
+              "question": "What does 'SBOM' stand for?",
+              "options": [
+                "Software Bill of Materials",
+                "System Backup Operations Mode",
+                "Secure Binary Object Mapping",
+                "Software Build and Output Manager"
+              ],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 108,
+      "title": "SOC2 Readiness Audit - Control Review",
+      "tasks": [
+        {
+          "title": "The Self-Assessment",
+          "type": "reading",
+          "description": "Reviewing all 5 Trust Service Criteria to ensure our Month 3 evidence is still fresh and valid.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Readiness Task",
+          "type": "coding",
+          "description": "Create a Python dictionary mapping SOC2 criteria to the folder path of our evidence.",
+          "coding_language": "python",
+          "coding_starter_code": "# evidence_map.py\n# TODO: Map 'Availability' to './evidence/logs/uptime'"
+        }
+      ]
+    },
+    {
+      "day": 109,
+      "title": "Vulnerability Disclosure Program (VDP)",
+      "tasks": [
+        {
+          "title": "Working with Ethical Hackers",
+          "type": "reading",
+          "description": "Establishing a 'Bug Bounty' or VDP policy to allow outsiders to report vulnerabilities securely.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "VDP Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of safe harbor.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Safe Harbor' in a VDP policy?",
+              "options": [
+                "A place to store servers",
+                "Legal protection for researchers who follow the rules",
+                "A type of encryption",
+                "A cloud region"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 110,
+      "title": "Cyber Security Awareness Month (Simulation)",
+      "tasks": [
+        {
+          "title": "The Final Training push",
+          "type": "reading",
+          "description": "Conducting a final 'Phishing Test' on the 29-member team to measure improvements in awareness.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Awareness Task",
+          "type": "coding",
+          "description": "Write a script that calculates the 'Click Rate' from a list of simulated phish results (e.g., [True, False, False]).",
+          "coding_language": "python",
+          "coding_starter_code": "# metric_calc.py\nresults = [True, False, True, False, False]\n# TODO: Calculate percentage of 'True' values"
+        }
+      ]
+    },
+    {
+      "day": 111,
+      "title": "Month 5 Final Retrospective: Ready for Audit",
+      "tasks": [
+        {
+          "title": "Final Reflection",
+          "type": "reading",
+          "description": "Looking back at the move from setup to resilience. The organization is now fortified and ready for the final launch.",
+          "reading_content_md": "# Resilience Complete\n\nProject Delta has moved through the most stressful part of the project—the drills and simulations. We are now standing in a production-ready, resilient, and compliant posture. Month 6 is the finish line.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Phase 3 Final Quiz",
+          "type": "quiz",
+          "description": "Check on the completion status of the resilience phase.",
+          "quiz_questions": [
+            {
+              "question": "Which phase begins in Month 6?",
+              "options": [
+                "Setup",
+                "Build",
+                "Integrate",
+                "Audit & Launch"
+              ],
+              "correct_index": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 112,
+      "title": "Phase 4 Transition: The Final Audit Plan",
+      "tasks": [
+        {
+          "title": "Executing the Final Audit",
+          "type": "reading",
+          "description": "Preparing the final schedule for the external auditors and the internal sign-off meetings.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Audit Plan Task",
+          "type": "coding",
+          "description": "Write a Markdown 'Audit Schedule' mapping specific times to specific department leads for interviews.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Final External Audit Schedule\n## 09:00: Kickoff with CEO\n## 10:30: DevOps Lead (Gamma)\n## 13:00: ..."
+        }
+      ]
+    },
+    {
+      "day": 113,
+      "title": "External Audit: Opening Meeting",
+      "tasks": [
+        {
+          "title": "Setting the Audit Stage",
+          "type": "reading",
+          "description": "Participating in the formal kickoff with external auditors for SOC2/ISO 27001.",
+          "reading_content_md": "# The Big Test\n\nToday the official auditors arrive. We present our **Project Delta** governance framework. The goal is to demonstrate that our controls are not just documented, but actively functioning across all our projects (Solaris, Beta, Gamma).",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Audit Protocol Quiz",
+          "type": "quiz",
+          "description": "Test your readiness for auditor interactions.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary objective of the opening meeting?",
+              "options": [
+                "To fix bugs",
+                "To confirm audit scope, methodology, and schedule",
+                "To pay the audit fee",
+                "To delete old logs"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 114,
+      "title": "Auditor Walkthroughs: Infrastructure",
+      "tasks": [
+        {
+          "title": "Demonstrating Cloud Controls",
+          "type": "reading",
+          "description": "Walking the auditor through our Terraform and AWS IAM configurations.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Walkthrough Task",
+          "type": "coding",
+          "description": "Write a script to generate a list of all IAM Users and their last login dates for the auditor's review.",
+          "coding_language": "python",
+          "coding_starter_code": "# audit_login_report.py\n# TODO: Simulate a list of users with 'last_login' keys\n# TODO: Filter users who haven't logged in for > 90 days"
+        }
+      ]
+    },
+    {
+      "day": 115,
+      "title": "Auditor Walkthroughs: Application Security",
+      "tasks": [
+        {
+          "title": "Demonstrating Project Beta Security",
+          "type": "reading",
+          "description": "Showing how JWT and RBAC protect the user data in our Java/React applications.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "App Security Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of application-level evidence.",
+          "quiz_questions": [
+            {
+              "question": "Which evidence proves that users cannot access admin functions?",
+              "options": [
+                "The site logo",
+                "The Security Filter Chain code and a non-admin test login",
+                "A photo of the server",
+                "The developer's resume"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 116,
+      "title": "Evidence Review: Data Privacy",
+      "tasks": [
+        {
+          "title": "Proving GDPR Compliance",
+          "type": "reading",
+          "description": "Submitting DPIAs and data deletion logs as evidence of privacy-by-design.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Privacy Task",
+          "type": "coding",
+          "description": "Write a Python function that verifies if a dataset has been 'Anonymized' by checking for the absence of names and emails.",
+          "coding_language": "python",
+          "coding_starter_code": "# anonymity_check.py\n# TODO: Scan dictionary keys for 'email' or 'name'\n# TODO: Return False if PII keys are present"
+        }
+      ]
+    },
+    {
+      "day": 117,
+      "title": "Managing Audit Findings in Real-Time",
+      "tasks": [
+        {
+          "title": "The 'Exceptions' List",
+          "type": "reading",
+          "description": "How to respond when an auditor identifies a control gap during the walkthrough.",
+          "reading_content_md": "# Managing Gaps\n\nIf the auditor finds a server without logging, we don't argue. We acknowledge the 'Exception' and immediately move it into our **Remediation Tracker**. Fast response can sometimes mitigate the severity of the final report.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Finding Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of audit exceptions.",
+          "quiz_questions": [
+            {
+              "question": "What is an 'Audit Exception'?",
+              "options": [
+                "A server that works well",
+                "A failure of a control to operate as designed",
+                "An employee on vacation",
+                "A type of database join"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 118,
+      "title": "Business Ops: ERP System Audit",
+      "tasks": [
+        {
+          "title": "Reviewing Financial Integrity",
+          "type": "reading",
+          "description": "Auditing the access and change logs of the organization's ERP system.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "ERP Audit Task",
+          "type": "coding",
+          "description": "Write a script that parses a log of 'Financial Transactions' and flags any that were 'Approved' by the same person who 'Created' them.",
+          "coding_language": "python",
+          "coding_starter_code": "# sod_audit.py\n# TODO: Loop through transactions and flag SoD violations"
+        }
+      ]
+    },
+    {
+      "day": 119,
+      "title": "The Audit Closing Meeting",
+      "tasks": [
+        {
+          "title": "Receiving Preliminary Results",
+          "type": "reading",
+          "description": "Reviewing the auditor's initial findings and clarifying any misunderstandings.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Closing Meeting Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the audit conclusion process.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary goal of the closing meeting?",
+              "options": [
+                "To fire the auditor",
+                "To review findings and ensure factual accuracy before the final report",
+                "To start the next project",
+                "To celebrate"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 120,
+      "title": "Executive Reporting: Drafting the Memo",
+      "tasks": [
+        {
+          "title": "Translating Tech to Business",
+          "type": "reading",
+          "description": "How to summarize the audit results for the Board of Directors.",
+          "reading_content_md": "# Board Level Communication\n\nThe board doesn't want to hear about SQL injections. They want to hear about **Residual Risk** and **Business Impact**. We use high-level dashboards to show that Project Delta has reduced the probability of a data breach by 40%.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Reporting Task",
+          "type": "coding",
+          "description": "Create a Python script that generates a summary string of 'Risk Levels' (High, Medium, Low) from a findings dictionary.",
+          "coding_language": "python",
+          "coding_starter_code": "# board_report_gen.py\nfindings = {'Critical': 0, 'High': 2, 'Medium': 5, 'Low': 12}\n# TODO: Print a summary paragraph for the executives"
+        }
+      ]
+    },
+    {
+      "day": 121,
+      "title": "Final Remediation: Closing the Gaps",
+      "tasks": [
+        {
+          "title": "The Post-Audit Sprint",
+          "type": "reading",
+          "description": "Implementing the technical fixes for the final items identified during the external audit.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Remediation Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of post-audit duties.",
+          "quiz_questions": [
+            {
+              "question": "What happens after an audit finding is remediated?",
+              "options": [
+                "It is forgotten",
+                "It is verified internally and evidence is updated for the next audit cycle",
+                "The auditor is called back immediately",
+                "Nothing"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 122,
+      "title": "Establishing Continuous Compliance",
+      "tasks": [
+        {
+          "title": "Moving from Audit to Operations",
+          "type": "reading",
+          "description": "Automating evidence collection so the next audit is 'Push-Button'.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Automation Task",
+          "type": "coding",
+          "description": "Write a crontab-style logic in Python that simulates a daily 'Security Config Check' export to S3.",
+          "coding_language": "python",
+          "coding_starter_code": "# daily_config_export.py\n# TODO: Log 'Exporting current AWS Config to S3 bucket: compliance-vault'"
+        }
+      ]
+    },
+    {
+      "day": 123,
+      "title": "User Training: Compliance for Employees",
+      "tasks": [
+        {
+          "title": "Sustaining the Culture",
+          "type": "reading",
+          "description": "Training the 29-member team on the new 'Business Ops' workflows and security policies.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Training Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of security culture.",
+          "quiz_questions": [
+            {
+              "question": "Who is responsible for following security policies?",
+              "options": [
+                "Only the Security Lead",
+                "The IT Department only",
+                "Every employee and contractor in the organization",
+                "Only the CEO"
+              ],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 124,
+      "title": "Third-Party Risk: Vendor Review Cycle",
+      "tasks": [
+        {
+          "title": "Maintaining Vendor Oversight",
+          "type": "reading",
+          "description": "Setting up the annual calendar for re-evaluating the security of our SaaS and Cloud providers.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Vendor Task",
+          "type": "coding",
+          "description": "Write a script that identifies vendors whose 'SOC2 Report' is more than 12 months old.",
+          "coding_language": "python",
+          "coding_starter_code": "# vendor_expiry_check.py\n# TODO: Compare current_date with last_audit_date for a list of vendors"
+        }
+      ]
+    },
+    {
+      "day": 125,
+      "title": "Disaster Recovery Handover",
+      "tasks": [
+        {
+          "title": "Ownership of Resilience",
+          "type": "reading",
+          "description": "Formally handing over the DR playbooks to the Project Gamma operations team.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "DR Handover Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the handover requirements.",
+          "quiz_questions": [
+            {
+              "question": "What is the most important part of a DR handover?",
+              "options": [
+                "A server manual",
+                "Up-to-date playbooks and a trained response team",
+                "A hard drive",
+                "A new password"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 126,
+      "title": "Internal GRC Tool: Final Configuration",
+      "tasks": [
+        {
+          "title": "The Compliance Dashboard",
+          "type": "reading",
+          "description": "Finalizing the automated alerts in our GRC tool (e.g., Vanta/Drata) for the leadership team.",
+          "reading_content_md": "# The Permanent Watchman\n\nProject Delta concludes by leaving behind an automated GRC system. This tool continuously monitors our **Project Beta** repo for secrets and our **Project Gamma** cloud for misconfigurations, ensuring we never drift from our compliant state.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Alerting Task",
+          "type": "coding",
+          "description": "Write a Python script to send a mock Slack notification if 'MFA_ENABLED' is False in a user report.",
+          "coding_language": "python",
+          "coding_starter_code": "# compliance_notifier.py\n# TODO: Scan list for mfa: False and print 'SENDING ALERT...'"
+        }
+      ]
+    },
+    {
+      "day": 127,
+      "title": "Data Retention: Automation Cleanup",
+      "tasks": [
+        {
+          "title": "Purging According to Policy",
+          "type": "reading",
+          "description": "Implementing the automated scripts to delete data that has exceeded the retention period.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Cleanup Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of data retention.",
+          "quiz_questions": [
+            {
+              "question": "Why is automated deletion better than manual?",
+              "options": [
+                "It is more expensive",
+                "It ensures consistency and reduces the risk of human error or oversight",
+                "It deletes more data",
+                "It uses less electricity"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 128,
+      "title": "Final Project Delta Presentation",
+      "tasks": [
+        {
+          "title": "Showcasing the Transformation",
+          "type": "reading",
+          "description": "Presenting the 6-month journey of Project Delta to the entire 29-member team.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Presentation Task",
+          "type": "coding",
+          "description": "Generate a JSON 'Achievement List' summarizing the key security wins of the project.",
+          "coding_language": "json",
+          "coding_starter_code": "{\n  \"project\": \"Delta\",\n  \"wins\": [\"SOC2 Ready\", \"Zero-Trust Applied\"]\n}"
+        }
+      ]
+    },
+    {
+      "day": 129,
+      "title": "Security & Compliance Handover",
+      "tasks": [
+        {
+          "title": "Transition to BAU (Business As Usual)",
+          "type": "reading",
+          "description": "Formal handover of the GRC tool and Policy manual to the permanent Compliance Officer.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "BAU Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of project transition.",
+          "quiz_questions": [
+            {
+              "question": "What does 'BAU' stand for?",
+              "options": [
+                "Better Asset Utility",
+                "Business As Usual",
+                "Basic Audit Unit",
+                "Binary Access Update"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 130,
+      "title": "Project Delta: Lessons Learned",
+      "tasks": [
+        {
+          "title": "The Final Post-Mortem",
+          "type": "reading",
+          "description": "Reviewing the security challenges and how they were overcome during the 6-month project.",
+          "reading_content_md": "# Reflection\n\nProject Delta was the hardest 'cultural' shift. We moved the team from 'Speed at all costs' to 'Secure Speed'. Key lesson: Early involvement of security in the dev lifecycle (Shift Left) saved hundreds of hours of rework.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Lessons Task",
+          "type": "coding",
+          "description": "Create a Markdown summary of 'The Top 5 Security Gaps Found' and their 'Permanent Fixes'.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# Project Delta Retrospective\n## 1. Gap: Lack of MFA -> Fix: Enforced via Okta"
+        }
+      ]
+    },
+    {
+      "day": 131,
+      "title": "Final Project Sign-Off",
+      "tasks": [
+        {
+          "title": "The Official Closure",
+          "type": "reading",
+          "description": "Stakeholder sign-off on Project Delta deliverables and budget closure.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Sign-Off Quiz",
+          "type": "quiz",
+          "description": "Final check on project milestones.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary deliverable of Project Delta?",
+              "options": [
+                "A new website",
+                "A secure, compliant, and operationally optimized organization",
+                "A database migration",
+                "A marketing video"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 132,
+      "title": "Project Delta Mastery: The 6-Month Review",
+      "tasks": [
+        {
+          "title": "Conclusion of Project Delta",
+          "type": "reading",
+          "description": "Final project review and closure of the Security, Compliance & Business Ops journey.",
+          "reading_content_md": "# Mission Accomplished\n\nYou have successfully protected the organization. From the first risk assessment on Day 1 to the final external audit on Day 119, you have mastered the governance needed for a modern enterprise. Project Delta is now officially CLOSED.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Final Mastery Quiz",
+          "type": "quiz",
+          "description": "The ultimate final exam for the Project Delta curriculum.",
+          "quiz_questions": [
+            {
+              "question": "Which framework focuses on the Five Trust Services Criteria?",
+              "options": [
+                "GDPR",
+                "SOC2",
+                "ISO 27001",
+                "PCI-DSS"
+              ],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the goal of 'Shift Left' security?",
+              "options": [
+                "Moving servers to the left",
+                "Integrating security early in the development process",
+                "Deleting old code",
+                "Reducing the number of developers"
+              ],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

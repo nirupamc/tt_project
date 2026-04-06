@@ -1,0 +1,2944 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "title": "Project Beta Kickoff: Enterprise Requirements",
+      "tasks": [
+        {
+          "title": "Defining the Enterprise Scope",
+          "type": "reading",
+          "description": "Introduction to the Project Beta mission and the Java/React tech stack.",
+          "reading_content_md": "# Welcome to Project Beta\n\n## The Objective\nWe are building a scalable **Enterprise Web Application** designed to handle 10,000+ concurrent users. This is not a simple website; it is a distributed system.\n\n## The Tech Stack\n- **Backend**: Java 21 with Spring Boot 3.\n- **Frontend**: React.js with TypeScript.\n- **Architecture**: Microservices with Spring Cloud.\n- **Database**: PostgreSQL for relational data and Redis for caching.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Project Scope Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of Project Beta's architectural goals.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary backend framework for Project Beta?",
+              "options": ["Node.js", "Django", "Spring Boot", "Flask"],
+              "correct_index": 2
+            },
+            {
+              "question": "Which architecture style are we adopting for scalability?",
+              "options": ["Monolithic", "Microservices", "Serverless only", "Peer-to-Peer"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "title": "Monolith vs. Microservices Architecture",
+      "tasks": [
+        {
+          "title": "The Distributed Systems Mindset",
+          "type": "reading",
+          "description": "Understanding why enterprise apps split logic into independent services.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Architecture Trade-offs Quiz",
+          "type": "quiz",
+          "description": "Assess the pros and cons of microservices.",
+          "quiz_questions": [
+            {
+              "question": "What is a major challenge of microservices?",
+              "options": ["Difficult to scale", "Simple deployment", "Network latency and data consistency", "Limited language support"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "title": "Spring Boot 3 Infrastructure Setup",
+      "tasks": [
+        {
+          "title": "Setting up the Java Development Kit (JDK)",
+          "type": "reading",
+          "description": "Configuring Java 21 and the Spring Initializr for a multi-module project.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Spring Boot Project Init",
+          "type": "coding",
+          "description": "Initialize the base Spring Boot project with required dependencies (Web, DevTools, Lombok).",
+          "coding_language": "java",
+          "coding_starter_code": "// BetaApplication.java\npackage com.projectbeta.core;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n// TODO 1: Annotate the class with @SpringBootApplication\n// TODO 2: Create the main method\n// TODO 3: Use SpringApplication.run() to launch the app"
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "title": "Maven Dependency Management",
+      "tasks": [
+        {
+          "title": "Understanding the pom.xml",
+          "type": "reading",
+          "description": "Learning how Maven manages enterprise dependencies and build lifecycles.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Maven Config Task",
+          "type": "coding",
+          "description": "Add the Spring Data JPA and PostgreSQL driver dependencies to your pom.xml.",
+          "coding_language": "xml",
+          "coding_starter_code": "\n\n"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "title": "Designing the Domain Model",
+      "tasks": [
+        {
+          "title": "Enterprise Entity Modeling",
+          "type": "reading",
+          "description": "How to translate business requirements into Java Entities.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Entity Creation Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of JPA annotations.",
+          "quiz_questions": [
+            {
+              "question": "Which annotation marks a Java class as a database table?",
+              "options": ["@Table", "@Entity", "@Database", "@Repository"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "title": "JPA and Hibernate Fundamentals",
+      "tasks": [
+        {
+          "title": "Object-Relational Mapping (ORM)",
+          "type": "reading",
+          "description": "Bridging the gap between Java objects and PostgreSQL rows.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "User Entity Implementation",
+          "type": "coding",
+          "description": "Create a User entity with ID, Email, and Password fields using JPA.",
+          "coding_language": "java",
+          "coding_starter_code": "// User.java\npackage com.projectbeta.core.models;\n\nimport jakarta.persistence.*;\n\n// TODO 1: Add @Entity and @Table annotations\n// TODO 2: Define a Long ID with @Id and @GeneratedValue\n// TODO 3: Define a String email with @Column(unique = true)"
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "title": "PostgreSQL Configuration",
+      "tasks": [
+        {
+          "title": "Database Connectivity in Spring Boot",
+          "type": "reading",
+          "description": "Configuring application.properties for a local PostgreSQL instance.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "DB Config Quiz",
+          "type": "quiz",
+          "description": "Test your understanding of datasource properties.",
+          "quiz_questions": [
+            {
+              "question": "What is the default port for PostgreSQL?",
+              "options": ["3306", "8080", "5432", "27017"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "title": "The Repository Pattern",
+      "tasks": [
+        {
+          "title": "Abstraction of Data Access",
+          "type": "reading",
+          "description": "Using Spring Data JPA Repositories to perform CRUD operations without writing SQL.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "UserRepository Interface",
+          "type": "coding",
+          "description": "Create a UserRepository that extends JpaRepository.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserRepository.java\npackage com.projectbeta.core.repositories;\n\nimport com.projectbeta.core.models.User;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\n// TODO 1: Create an interface UserRepository\n// TODO 2: Extend JpaRepository<User, Long>\n// TODO 3: Add a method findByEmail(String email)"
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "title": "REST API Principles",
+      "tasks": [
+        {
+          "title": "Designing Clean Endpoints",
+          "type": "reading",
+          "description": "Best practices for HTTP methods (GET, POST, PUT, DELETE) in enterprise apps.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "RESTful Logic Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of HTTP status codes.",
+          "quiz_questions": [
+            {
+              "question": "Which status code represents a successful resource creation?",
+              "options": ["200 OK", "201 Created", "404 Not Found", "500 Internal Error"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "title": "The Service Layer Pattern",
+      "tasks": [
+        {
+          "title": "Separating Business Logic from Controllers",
+          "type": "reading",
+          "description": "Why we use a Service layer to handle complex processing.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "UserService Implementation",
+          "type": "coding",
+          "description": "Build a service class that uses the UserRepository to find users.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserService.java\npackage com.projectbeta.core.services;\n\nimport org.springframework.stereotype.Service;\n\n// TODO 1: Annotate with @Service\n// TODO 2: Inject UserRepository via Constructor\n// TODO 3: Create a method to save a user"
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "title": "Introduction to React.js for Enterprise",
+      "tasks": [
+        {
+          "title": "The Virtual DOM and Component Architecture",
+          "type": "reading",
+          "description": "Understanding why React is chosen for complex enterprise UIs.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "React Basics Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of React components.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary way to pass data from a parent component to a child?",
+              "options": ["State", "Props", "Context", "Redux"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "title": "TypeScript in the Enterprise",
+      "tasks": [
+        {
+          "title": "Adding Type Safety to the Frontend",
+          "type": "reading",
+          "description": "Why Project Beta uses TypeScript over vanilla JavaScript for scale.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "TS Interface Task",
+          "type": "coding",
+          "description": "Define a TypeScript interface for a User object to match the backend entity.",
+          "coding_language": "typescript",
+          "coding_starter_code": "// user.types.ts\n\n// TODO 1: Define an interface 'User'\n// TODO 2: Add 'id' as number and 'email' as string\n// TODO 3: Make 'profilePicture' an optional string"
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "title": "Building the API Controller",
+      "tasks": [
+        {
+          "title": "Mapping Requests to Code",
+          "type": "reading",
+          "description": "Using @RestController and @RequestMapping annotations in Spring Boot.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "UserController implementation",
+          "type": "coding",
+          "description": "Implement a GET endpoint to fetch a user by ID.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserController.java\npackage com.projectbeta.core.controllers;\n\nimport org.springframework.web.bind.annotation.*;\n\n// TODO 1: Annotate with @RestController and @RequestMapping(\"/api/users\")\n// TODO 2: Inject UserService\n// TODO 3: Create a @GetMapping(\"/{id}\") method"
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "title": "Exception Handling and Response Entities",
+      "tasks": [
+        {
+          "title": "Standardizing API Responses",
+          "type": "reading",
+          "description": "Using ResponseEntity to return consistent JSON and status codes.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Exception Handling Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of @ControllerAdvice.",
+          "quiz_questions": [
+            {
+              "question": "What is the purpose of @ControllerAdvice?",
+              "options": ["To suggest code improvements", "To handle exceptions globally across all controllers", "To secure the API", "To cache responses"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 15,
+      "title": "Vite and Frontend Project Setup",
+      "tasks": [
+        {
+          "title": "Modern Frontend Build Tools",
+          "type": "reading",
+          "description": "Setting up a Vite-based React project for Project Beta.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Vite Init Task",
+          "type": "coding",
+          "description": "Simulate the initialization of a React/TypeScript project via terminal commands.",
+          "coding_language": "bash",
+          "coding_starter_code": "# Terminal Commands\n# TODO 1: npm create vite@latest frontend -- --template react-ts\n# TODO 2: npm install\n# TODO 3: npm run dev"
+        }
+      ]
+    },
+    {
+      "day": 16,
+      "title": "Component Lifecycle and Hooks",
+      "tasks": [
+        {
+          "title": "Mastering useEffect and useState",
+          "type": "reading",
+          "description": "How to manage side effects and local component data.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Hook Logic Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of React Hooks.",
+          "quiz_questions": [
+            {
+              "question": "Which hook should be used for fetching data on component mount?",
+              "options": ["useState", "useContext", "useEffect", "useMemo"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 17,
+      "title": "Frontend Styling: Tailwind CSS",
+      "tasks": [
+        {
+          "title": "Utility-First CSS for Enterprise",
+          "type": "reading",
+          "description": "Why Tailwind is preferred for rapid, consistent UI development.",
+          "reading_content_md": "# Styling Project Beta\n\nTailwind CSS allows us to build complex enterprise UIs without writing custom CSS files. It ensures that our **Software Engineers** and **UI/UX Designers** share a standard set of spacing and color utility classes.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Tailwind Implementation Task",
+          "type": "coding",
+          "description": "Apply Tailwind classes to a React Button component.",
+          "coding_language": "tsx",
+          "coding_starter_code": "// Button.tsx\nexport const Button = () => {\n  // TODO: Add Tailwind classes for blue background, white text, and padding\n  return <button className=\"\">Click Me</button>;\n}"
+        }
+      ]
+    },
+    {
+      "day": 18,
+      "title": "Client-Side Routing: React Router",
+      "tasks": [
+        {
+          "title": "Single Page Application (SPA) Navigation",
+          "type": "reading",
+          "description": "Setting up the routing structure for the dashboard and settings pages.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Routing Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the React Router library.",
+          "quiz_questions": [
+            {
+              "question": "Which component is used to define a path-to-component mapping?",
+              "options": ["<Link>", "<Route>", "<Navigate>", "<Switch>"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 19,
+      "title": "Environment Variable Management",
+      "tasks": [
+        {
+          "title": "Configuring API URLs per Environment",
+          "type": "reading",
+          "description": "Using .env files to switch between Local and Staging backends.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Env Config Task",
+          "type": "coding",
+          "description": "Create a sample .env file for the React application.",
+          "coding_language": "plaintext",
+          "coding_starter_code": "# .env.local\n# TODO 1: VITE_API_BASE_URL=http://localhost:8080/api\n# TODO 2: VITE_APP_NAME=Project Beta"
+        }
+      ]
+    },
+    {
+      "day": 20,
+      "title": "Axios for API Communication",
+      "tasks": [
+        {
+          "title": "Standardizing Client-Side HTTP Calls",
+          "type": "reading",
+          "description": "Setting up an Axios instance with base URLs and interceptors.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Axios Setup Task",
+          "type": "coding",
+          "description": "Configure an axios.create instance for the Project Beta API.",
+          "coding_language": "typescript",
+          "coding_starter_code": "// api.ts\nimport axios from 'axios';\n\n// TODO 1: Create an axios instance\n// TODO 2: Set baseURL from environment variables\n// TODO 3: Export the instance"
+        }
+      ]
+    },
+    {
+      "day": 21,
+      "title": "Unit Testing with JUnit 5",
+      "tasks": [
+        {
+          "title": "Ensuring Backend Stability",
+          "type": "reading",
+          "description": "Learning to write unit tests for the Service layer using Mockito.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "JUnit Test Task",
+          "type": "coding",
+          "description": "Write a test case to verify user creation logic.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserServiceTest.java\n\n// TODO 1: Use @Mock to mock UserRepository\n// TODO 2: Use @InjectMocks for UserService\n// TODO 3: Write a test method using assertNotNull()"
+        }
+      ]
+    },
+    {
+      "day": 22,
+      "title": "Month 1 Final Comprehensive Review",
+      "tasks": [
+        {
+          "title": "Project Beta Phase 1 Mastery",
+          "type": "reading",
+          "description": "Reviewing the progress from JDK setup to basic React-Spring Boot integration.",
+          "reading_content_md": "# Month 1 Complete\n\nWe have established the **Enterprise Foundation**. We have a Spring Boot backend connected to PostgreSQL and a React frontend ready for development. Month 2 will focus on the Core Business APIs.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 1 Final Quiz",
+          "type": "quiz",
+          "description": "The ultimate final exam for the Project Beta kickoff phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used to bridge the gap between Java and PostgreSQL?",
+              "options": ["React", "Maven", "Hibernate/JPA", "Vite"],
+              "correct_index": 2
+            },
+            {
+              "question": "What is the primary role of the Service layer?",
+              "options": ["Handle UI clicks", "Direct database access", "Contain business logic and processing", "Define API routes"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 23,
+      "title": "Advanced JPA: One-to-Many Relationships",
+      "tasks": [
+        {
+          "title": "Modeling Parent-Child Data",
+          "type": "reading",
+          "description": "Understanding how to link an Enterprise User to multiple Projects or Tasks.",
+          "reading_content_md": "# Database Relationships\n\nIn a real-world enterprise app, data is rarely flat. We use `@OneToMany` and `@ManyToOne` annotations to create relationships. For example, a `User` can own many `Project` entities. We must also consider **FetchType** (Lazy vs. Eager) to ensure the application remains performant.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Relationship Logic Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of JPA mapping.",
+          "quiz_questions": [
+            {
+              "question": "Which annotation is typically placed on the 'Child' side of a bidirectional relationship?",
+              "options": ["@OneToMany", "@ManyToOne", "@ManyToMany", "@OneToOne"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 24,
+      "title": "Cascading Operations and Orphan Removal",
+      "tasks": [
+        {
+          "title": "Managing Data Lifecycle",
+          "type": "reading",
+          "description": "Learning how to automatically delete or update child records when a parent is modified.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Cascade Logic Task",
+          "type": "coding",
+          "description": "Update the User entity to cascade deletions to their associated Project records.",
+          "coding_language": "java",
+          "coding_starter_code": "// User.java snippet\n// TODO: Define a List<Project> projects\n// TODO: Add @OneToMany with cascade = CascadeType.ALL and orphanRemoval = true"
+        }
+      ]
+    },
+    {
+      "day": 25,
+      "title": "DTO Pattern: Data Transfer Objects",
+      "tasks": [
+        {
+          "title": "Decoupling Entities from APIs",
+          "type": "reading",
+          "description": "Why we should never return raw Database Entities directly to the frontend.",
+          "reading_content_md": "# The DTO Pattern\n\nExposing Entities directly is a security risk (e.g., leaking password hashes). DTOs allow us to define a specific 'view' of our data for the API. We only send the fields the **React** frontend actually needs.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "DTO Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of API security and data layering.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary benefit of using DTOs?",
+              "options": ["Faster database access", "Security and API contract stability", "Automatic code generation", "Reduced memory usage"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 26,
+      "title": "Object Mapping with MapStruct",
+      "tasks": [
+        {
+          "title": "Automating Entity-to-DTO Conversion",
+          "type": "reading",
+          "description": "Using MapStruct to generate boilerplate mapping code at compile-time.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Mapper Implementation Task",
+          "type": "coding",
+          "description": "Create a UserMapper interface using MapStruct annotations.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserMapper.java\npackage com.projectbeta.core.mappers;\n\nimport org.mapstruct.Mapper;\n\n// TODO 1: Annotate with @Mapper(componentModel = \"spring\")\n// TODO 2: Define a method to map User entity to UserDTO"
+        }
+      ]
+    },
+    {
+      "day": 27,
+      "title": "Spring Data JPA: Derived Query Methods",
+      "tasks": [
+        {
+          "title": "Writing SQL Without SQL",
+          "type": "reading",
+          "description": "How to generate complex queries by simply naming interface methods.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Query Method Quiz",
+          "type": "quiz",
+          "description": "Test your ability to derive method names.",
+          "quiz_questions": [
+            {
+              "question": "Which method name correctly finds users by email and status?",
+              "options": ["findEmailAndStatus()", "findByEmailAndStatus()", "searchEmailStatus()", "getUsersByEmailStatus()"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 28,
+      "title": "Custom Queries with @Query",
+      "tasks": [
+        {
+          "title": "JPQL and Native SQL",
+          "type": "reading",
+          "description": "Using the @Query annotation for complex joins and reporting logic.",
+          "reading_content_md": "# Advanced Queries\n\nWhen method names become too long, we use **JPQL** (Java Persistence Query Language). This allows us to write queries against our Java classes rather than database tables, ensuring the code remains database-agnostic.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Custom Query Task",
+          "type": "coding",
+          "description": "Write a JPQL query to find all users who have more than 5 projects.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserRepository.java snippet\n// TODO: Use @Query(\"SELECT u FROM User u WHERE size(u.projects) > :minCount\")\n// TODO: Define the method findActiveUsers(@Param(\"minCount\") int minCount)"
+        }
+      ]
+    },
+    {
+      "day": 29,
+      "title": "Pagination and Sorting",
+      "tasks": [
+        {
+          "title": "Handling Large Result Sets",
+          "type": "reading",
+          "description": "Implementing Pageable to prevent the API from crashing when returning thousands of records.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Pagination Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of the Page object.",
+          "quiz_questions": [
+            {
+              "question": "What does a 'Page' object contain besides the data list?",
+              "options": ["Database password", "Metadata like totalPages and totalElements", "The raw SQL query", "The user's IP address"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 30,
+      "title": "Implementing Pagination in Controllers",
+      "tasks": [
+        {
+          "title": "Exposing Paged Data to React",
+          "type": "reading",
+          "description": "Updating the UserController to accept page and size parameters.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Paged Controller Task",
+          "type": "coding",
+          "description": "Implement a GET /api/users endpoint that returns a Page of UserDTOs.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserController.java snippet\n// TODO 1: Add Pageable parameter to the method\n// TODO 2: Call service.findAll(pageable)\n// TODO 3: Return ResponseEntity<Page<UserDTO>>"
+        }
+      ]
+    },
+    {
+      "day": 31,
+      "title": "Transactional Management",
+      "tasks": [
+        {
+          "title": "The @Transactional Annotation",
+          "type": "reading",
+          "description": "Ensuring Atomicity, Consistency, Isolation, and Durability (ACID) in business operations.",
+          "reading_content_md": "# Transactions in Project Beta\n\nIn an enterprise app, if a process creates a User but fails to assign their Initial Role, the whole operation must roll back. We use `@Transactional` to ensure that 'all or nothing' logic is respected.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Transaction Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of transaction propagation.",
+          "quiz_questions": [
+            {
+              "question": "What happens if a RuntimeException is thrown inside a @Transactional method?",
+              "options": ["The data is saved anyway", "The transaction is committed", "The transaction is rolled back", "The database is deleted"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 32,
+      "title": "Database Migrations with Flyway",
+      "tasks": [
+        {
+          "title": "Version Control for SQL",
+          "type": "reading",
+          "description": "Using Flyway to manage database schema changes across the 29-person team.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Flyway Migration Task",
+          "type": "coding",
+          "description": "Create a V1__init_schema.sql file to set up the initial tables.",
+          "coding_language": "sql",
+          "coding_starter_code": "-- src/main/resources/db/migration/V1__init_schema.sql\n-- TODO: Create table 'users'\n-- TODO: Create table 'projects' with a foreign key to users"
+        }
+      ]
+    },
+    {
+      "day": 33,
+      "title": "Introduction to Spring Validation",
+      "tasks": [
+        {
+          "title": "Bean Validation (JSR-303)",
+          "type": "reading",
+          "description": "Using annotations like @Email, @NotNull, and @Size to validate incoming JSON.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Validation Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of request body validation.",
+          "quiz_questions": [
+            {
+              "question": "Which annotation triggers validation on a controller method parameter?",
+              "options": ["@Validate", "@Valid", "@Check", "@Verify"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 34,
+      "title": "Custom Validation Annotations",
+      "tasks": [
+        {
+          "title": "Extending the Validator",
+          "type": "reading",
+          "description": "Creating custom logic (e.g., checking if a username is profane) using custom annotations.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Custom Validator Task",
+          "type": "coding",
+          "description": "Implement a 'UniqueEmail' validator that checks the database during request validation.",
+          "coding_language": "java",
+          "coding_starter_code": "// UniqueEmail.java\n// TODO 1: Create the @interface UniqueEmail\n// TODO 2: Create the UniqueEmailValidator class implementing ConstraintValidator"
+        }
+      ]
+    },
+    {
+      "day": 35,
+      "title": "Unit Testing Controllers with MockMvc",
+      "tasks": [
+        {
+          "title": "Testing the API Layer",
+          "type": "reading",
+          "description": "Simulating HTTP requests to verify controller logic without starting the full server.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "MockMvc Quiz",
+          "type": "quiz",
+          "description": "Assess your knowledge of Spring Boot test slices.",
+          "quiz_questions": [
+            {
+              "question": "Which annotation is used to test only the Web layer?",
+              "options": ["@SpringBootTest", "@WebMvcTest", "@DataJpaTest", "@RestControllerTest"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 36,
+      "title": "Integration Testing with @SpringBootTest",
+      "tasks": [
+        {
+          "title": "Testing the Whole System",
+          "type": "reading",
+          "description": "Running tests that involve the database, service, and controller layers together.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Integration Test Task",
+          "type": "coding",
+          "description": "Write a test that performs a POST request and verifies the record exists in the H2/Test database.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserIntegrationTest.java\n// TODO 1: Annotate with @SpringBootTest and @AutoConfigureMockMvc\n// TODO 2: Perform a .post(\"/api/users\")\n// TODO 3: Assert the response status is 201 Created"
+        }
+      ]
+    },
+    {
+      "day": 37,
+      "title": "Auditing with Spring Data Envers",
+      "tasks": [
+        {
+          "title": "Tracking Historical Changes",
+          "type": "reading",
+          "description": "Implementing audit tables to see 'Who changed what and when' in the enterprise app.",
+          "reading_content_md": "# Enterprise Auditing\n\nSecurity is paramount. We use **Hibernate Envers** to automatically create audit tables (e.g., `users_aud`). This allows us to revert to previous versions of data and provides a clear trail for compliance audits.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Auditing Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of @Audited.",
+          "quiz_questions": [
+            {
+              "question": "Which annotation enables auditing on a specific entity class?",
+              "options": ["@Audit", "@Envers", "@Audited", "@History"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 38,
+      "title": "Querying Audit Data",
+      "tasks": [
+        {
+          "title": "Retrieving Revisions",
+          "type": "reading",
+          "description": "How to query the history of a specific user using the AuditReader API.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Audit Query Task",
+          "type": "coding",
+          "description": "Write a service method that returns a list of all historical versions of a User ID.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserAuditService.java\n// TODO: Inject AuditReader\n// TODO: Use AuditReaderFactory.get(entityManager)\n// TODO: Create a query for revisions of the User class"
+        }
+      ]
+    },
+    {
+      "day": 39,
+      "title": "PostgreSQL Performance: Indexing",
+      "tasks": [
+        {
+          "title": "Speeding Up Enterprise Searches",
+          "type": "reading",
+          "description": "Understanding B-Tree and GIN indexes in PostgreSQL for high-performance lookups.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Indexing Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of database optimization.",
+          "quiz_questions": [
+            {
+              "question": "What is the trade-off of adding too many indexes to a table?",
+              "options": ["Slower SELECTs", "Slower INSERTs and UPDATEs", "More RAM usage only", "Data becomes corrupt"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 40,
+      "title": "Database Indexing Implementation",
+      "tasks": [
+        {
+          "title": "Applying Indexes to Entities",
+          "type": "reading",
+          "description": "Using JPA's @Index annotation to define database indexes directly in Java code.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Index Task",
+          "type": "coding",
+          "description": "Update the User entity to include an index on the 'email' and 'username' columns.",
+          "coding_language": "java",
+          "coding_starter_code": "// User.java snippet\n// TODO: Update @Table annotation\n// TODO: Add indexes = {@Index(name = \"idx_user_email\", columnList = \"email\")}"
+        }
+      ]
+    },
+    {
+      "day": 41,
+      "title": "API Documentation with Swagger/OpenAPI",
+      "tasks": [
+        {
+          "title": "Self-Documenting Code",
+          "type": "reading",
+          "description": "Integrating SpringDoc to automatically generate a UI for testing our APIs.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Swagger Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of API documentation tools.",
+          "quiz_questions": [
+            {
+              "question": "What is the default URL to access the Swagger UI in Spring Boot?",
+              "options": ["/docs", "/swagger-ui.html", "/api-docs", "/help"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 42,
+      "title": "Month 2 Core Services Review",
+      "tasks": [
+        {
+          "title": "Recap: Building the Backbone",
+          "type": "reading",
+          "description": "Reviewing the progress from basic entities to a fully audited, paginated, and documented API.",
+          "reading_content_md": "# Core Services Complete\n\nWe now have a professional-grade backend. We've mastered relationships, transactions, auditing, and performance tuning. The **React** frontend can now consume a stable, paginated API. Month 3 will focus on the UI/UX layer.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 2 Final Quiz",
+          "type": "quiz",
+          "description": "The final assessment for the Month 2 Core Services phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used to manage database schema versioning?",
+              "options": ["Hibernate", "Flyway", "PostgreSQL", "Swagger"],
+              "correct_index": 1
+            },
+            {
+              "question": "What is 'Orphan Removal' in JPA?",
+              "options": ["Deleting users without emails", "Deleting child records when they are disconnected from the parent", "Removing unused database tables", "Cleaning up temp files"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 43,
+      "title": "Preparing for Frontend Integration",
+      "tasks": [
+        {
+          "title": "CORS: Cross-Origin Resource Sharing",
+          "type": "reading",
+          "description": "Configuring Spring Security to allow the React frontend (port 5173) to talk to the Backend (port 8080).",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "CORS Config Task",
+          "type": "coding",
+          "description": "Implement a WebMvcConfigurer to globaly enable CORS for the frontend dev server.",
+          "coding_language": "java",
+          "coding_starter_code": "// WebConfig.java\n// TODO 1: Implement WebMvcConfigurer\n// TODO 2: Override addCorsMappings\n// TODO 3: Allow origins 'http://localhost:5173'"
+        }
+      ]
+    },
+    {
+      "day": 44,
+      "title": "Month 2 Retrospective & Phase 1 Handover",
+      "tasks": [
+        {
+          "title": "Project Beta: Phase 1 Completion",
+          "type": "reading",
+          "description": "Documenting the current state of the backend for the full-stack handover.",
+          "reading_content_md": "# Handover to Phase 2\n\nPhase 1 (Setup & Core Services) is officially closed. We have a robust Java Spring Boot backend. Next month, we shift fully to the **Frontend (React/TypeScript)** to build the user interface that will consume these services.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Retrospective Quiz",
+          "type": "quiz",
+          "description": "Final check on project milestones.",
+          "quiz_questions": [
+            {
+              "question": "Which phase begins in Month 3?",
+              "options": ["Microservices", "Frontend Dev", "Security", "Deployment"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 45,
+      "title": "Transition to Enterprise Frontend Architecture",
+      "tasks": [
+        {
+          "title": "The Full-Stack Connection",
+          "type": "reading",
+          "description": "Understanding how a React SPA interacts with a Spring Boot Microservice architecture.",
+          "reading_content_md": "# Phase 2: The Frontend Build\n\n## The Shift\nWe have a robust API. Now, we build the consumer. In Project Beta, we don't just build pages; we build a **Design System**. This ensures that as our team of 29 grows, the UI remains consistent.\n\n## Key Architectural Decisions\n1. **Component-Based UI**: Everything is a reusable atom, molecule, or organism.\n2. **Type Safety**: Using TypeScript to catch API mismatch errors at compile-time.\n3. **State Management**: Handling complex data flows across the dashboard.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Frontend Strategy Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of enterprise frontend requirements.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary benefit of using TypeScript in Project Beta?",
+              "options": ["Faster styling", "Catching data type errors during development", "Reducing CSS size", "Replacing the backend"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 46,
+      "title": "Advanced React Patterns: Composition",
+      "tasks": [
+        {
+          "title": "Component Composition vs. Inheritance",
+          "type": "reading",
+          "description": "Learning to build flexible layouts by passing components as props.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Layout Composition Task",
+          "type": "coding",
+          "description": "Create a 'DashboardLayout' component that accepts a 'Sidebar' and 'MainContent' as children.",
+          "coding_language": "tsx",
+          "coding_starter_code": "// DashboardLayout.tsx\nimport React from 'react';\n\ninterface Props { children: React.ReactNode; }\n\n// TODO 1: Create a functional component with 'children' prop\n// TODO 2: Wrap children in a div with Tailwind flex-row layout"
+        }
+      ]
+    },
+    {
+      "day": 47,
+      "title": "Global State: Introduction to Context API",
+      "tasks": [
+        {
+          "title": "Avoiding Prop Drilling",
+          "type": "reading",
+          "description": "Using React Context to share User Session data across the entire application.",
+          "reading_content_md": "# Context API\n\nFor enterprise apps, certain data (like the logged-in user's profile) is needed everywhere. Instead of passing it through every component, we use a **Provider** to make it globally accessible to the 29-member dev team's components.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Context Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of global state.",
+          "quiz_questions": [
+            {
+              "question": "What does a 'Provider' do in React Context?",
+              "options": ["Stores data in local storage", "Makes data available to all descendant components", "Connects directly to PostgreSQL", "Styles the component"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 48,
+      "title": "Custom Hooks for Data Fetching",
+      "tasks": [
+        {
+          "title": "Abstracting Logic with useFetch",
+          "type": "reading",
+          "description": "Writing reusable hooks to handle loading, error, and data states from the Spring API.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "useUser Hook Task",
+          "type": "coding",
+          "description": "Create a custom hook that fetches a user profile from /api/users/{id}.",
+          "coding_language": "typescript",
+          "coding_starter_code": "// useUser.ts\nimport { useState, useEffect } from 'react';\n\n// TODO 1: Define a custom hook useUser(userId)\n// TODO 2: Use axios to fetch data\n// TODO 3: Return { user, loading, error }"
+        }
+      ]
+    },
+    {
+      "day": 49,
+      "title": "React Query: Server State Management",
+      "tasks": [
+        {
+          "title": "Moving Beyond useEffect",
+          "type": "reading",
+          "description": "Using TanStack Query (React Query) for caching and synchronizing backend data.",
+          "reading_content_md": "# Managing Server State\n\nIn Project Beta, we don't want to re-fetch data every time a user switches tabs. **React Query** handles caching, background updates, and stale-time, significantly reducing the load on our Spring Boot backend.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "React Query Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of caching strategies.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary advantage of React Query over standard useEffect?",
+              "options": ["It writes the CSS for you", "Built-in caching and automatic re-fetching", "It replaces the database", "It makes components larger"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 50,
+      "title": "Enterprise Forms: React Hook Form",
+      "tasks": [
+        {
+          "title": "Efficient Form Handling",
+          "type": "reading",
+          "description": "Learning to build performant forms without unnecessary re-renders.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Registration Form Task",
+          "type": "coding",
+          "description": "Build a User Registration form with validation using React Hook Form and Zod.",
+          "coding_language": "tsx",
+          "coding_starter_code": "// RegistrationForm.tsx\nimport { useForm } from 'react-hook-form';\n\n// TODO 1: Register 'email' and 'password' fields\n// TODO 2: Implement onSubmit logic to call the Spring API\n// TODO 3: Display validation error messages"
+        }
+      ]
+    },
+    {
+      "day": 51,
+      "title": "Form Validation with Zod",
+      "tasks": [
+        {
+          "title": "Schema-Based Validation",
+          "type": "reading",
+          "description": "Syncing frontend validation rules with our Java Bean Validation constraints.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Zod Schema Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of TypeScript schema validation.",
+          "quiz_questions": [
+            {
+              "question": "Which tool allows you to define a schema and infer a TypeScript type from it?",
+              "options": ["Tailwind", "Axios", "Zod", "Maven"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 52,
+      "title": "Complex UI Components: Data Tables",
+      "tasks": [
+        {
+          "title": "Building the User Management Table",
+          "type": "reading",
+          "description": "Implementing sorting, filtering, and pagination on the frontend using Headless UI.",
+          "reading_content_md": "# The Table Organism\n\nProject Beta requires displaying thousands of users. We use **TanStack Table** to build a 'headless' table. The logic for sorting and filtering is decoupled from the Tailwind styling, making it easy for **Full Stack Developers** to maintain.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Table Logic Task",
+          "type": "coding",
+          "description": "Define column headers for the User Management table including a custom 'Action' button.",
+          "coding_language": "tsx",
+          "coding_starter_code": "// columns.ts\n// TODO 1: Define columns for 'ID', 'Email', and 'Role'\n// TODO 2: Add a cell renderer for a 'Delete' button"
+        }
+      ]
+    },
+    {
+      "day": 53,
+      "title": "Client-Side Pagination Logic",
+      "tasks": [
+        {
+          "title": "Syncing UI with Paged APIs",
+          "type": "reading",
+          "description": "Connecting our React table to the Spring Data Pageable endpoints built in Month 2.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Pagination Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of server-side vs client-side pagination.",
+          "quiz_questions": [
+            {
+              "question": "Why do we prefer server-side pagination for Project Beta?",
+              "options": ["It's easier to code", "To avoid loading thousands of records into the browser's memory", "Because React requires it", "To make the URL shorter"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 54,
+      "title": "Interceptors and Global Error Handling",
+      "tasks": [
+        {
+          "title": "Handling 401 and 500 errors",
+          "type": "reading",
+          "description": "Using Axios interceptors to redirect to login or show 'Toast' notifications on failure.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Interceptor Task",
+          "type": "coding",
+          "description": "Add an Axios interceptor that logs the user out if the API returns a 401 Unauthorized.",
+          "coding_language": "typescript",
+          "coding_starter_code": "// api.ts\n// TODO 1: Use axiosInstance.interceptors.response.use\n// TODO 2: Catch error.response.status === 401\n// TODO 3: Redirect to /login"
+        }
+      ]
+    },
+    {
+      "day": 55,
+      "title": "Enterprise Theming with Tailwind",
+      "tasks": [
+        {
+          "title": "Dark Mode and Multi-Theme Support",
+          "type": "reading",
+          "description": "Configuring tailwind.config.ts for a professional enterprise color palette.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Theming Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of utility-first styling.",
+          "quiz_questions": [
+            {
+              "question": "How do you apply a style only in Dark Mode using Tailwind?",
+              "options": ["Using the 'night:' prefix", "Using the 'dark:' prefix", "Adding a .dark-theme class to every div", "It happens automatically"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 56,
+      "title": "Component Testing with Vitest",
+      "tasks": [
+        {
+          "title": "Testing the UI Logic",
+          "type": "reading",
+          "description": "Writing unit tests for React components to ensure buttons and forms work as expected.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Vitest Task",
+          "type": "coding",
+          "description": "Write a test to check if the Button component renders the correct text label.",
+          "coding_language": "tsx",
+          "coding_starter_code": "// Button.test.tsx\nimport { render, screen } from '@testing-library/react';\n\n// TODO 1: Render the Button component\n// TODO 2: Expect(screen.getByText('Submit')).toBeInTheDocument()"
+        }
+      ]
+    },
+    {
+      "day": 57,
+      "title": "State Management: Introduction to Redux Toolkit",
+      "tasks": [
+        {
+          "title": "Predictable State Containers",
+          "type": "reading",
+          "description": "When to move from Context API to Redux Toolkit for complex state (e.g., massive data grids).",
+          "reading_content_md": "# Scaling with Redux\n\nWhile Context is great for static data like user profiles, **Redux Toolkit (RTK)** is used in Project Beta for high-frequency updates and complex undo/redo logic. It provides a strict 'Action-Reducer' flow that prevents state bugs in a 29-person environment.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Redux Quiz",
+          "type": "quiz",
+          "description": "Assess your knowledge of the Redux data flow.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Slice' in Redux Toolkit?",
+              "options": ["A part of the UI", "A collection of Redux reducer logic and actions for a single feature", "A way to cut database rows", "A CSS utility"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 58,
+      "title": "RTK Query: Advanced Data Fetching",
+      "tasks": [
+        {
+          "title": "The All-in-One Data Solution",
+          "type": "reading",
+          "description": "Integrating RTK Query into our Redux store for automated API caching.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "RTK Query Task",
+          "type": "coding",
+          "description": "Define an 'apiSlice' that fetches user data from the backend.",
+          "coding_language": "typescript",
+          "coding_starter_code": "// userApi.ts\nimport { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';\n\n// TODO 1: Define endpoints for 'getUsers'\n// TODO 2: use the 'useGetUsersQuery' hook in a component"
+        }
+      ]
+    },
+    {
+      "day": 59,
+      "title": "Real-Time Updates with WebSockets",
+      "tasks": [
+        {
+          "title": "Full-Duplex Communication",
+          "type": "reading",
+          "description": "Introduction to SockJS and STOMP for real-time notifications in the dashboard.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "WebSocket Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of real-time protocols.",
+          "quiz_questions": [
+            {
+              "question": "What is the main benefit of WebSockets over HTTP polling?",
+              "options": ["Lower latency and real-time server-to-client updates", "Higher security", "Easier to style", "No backend required"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 60,
+      "title": "Responsive Design for Enterprise",
+      "tasks": [
+        {
+          "title": "Mobile-First Dashboards",
+          "type": "reading",
+          "description": "Using Tailwind breakpoints to ensure the app works on tablets and mobile devices.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Responsive Layout Task",
+          "type": "coding",
+          "description": "Create a grid layout that is 1 column on mobile and 3 columns on desktop.",
+          "coding_language": "tsx",
+          "coding_starter_code": "// StatsGrid.tsx\n// TODO 1: Use Tailwind 'grid-cols-1'\n// TODO 2: Add 'md:grid-cols-3' for larger screens"
+        }
+      ]
+    },
+    {
+      "day": 61,
+      "title": "Performance Optimization: Code Splitting",
+      "tasks": [
+        {
+          "title": "React.lazy and Suspense",
+          "type": "reading",
+          "description": "Reducing the initial bundle size by only loading components when they are needed.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Optimization Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of load time optimization.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Tree Shaking'?",
+              "options": ["Removing unused code from the final bundle", "A type of animation", "Fixing database errors", "Restarting the server"],
+              "correct_index": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 62,
+      "title": "Internationalization (i18n)",
+      "tasks": [
+        {
+          "title": "Multi-Language Support with react-i18next",
+          "type": "reading",
+          "description": "Setting up the framework to support English, Spanish, and French versions of the app.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "i18n Implementation Task",
+          "type": "coding",
+          "description": "Create a translation JSON file and use the useTranslation hook in a component.",
+          "coding_language": "json",
+          "coding_starter_code": "// en.json\n{ \"welcome\": \"Welcome to Project Beta\" }\n\n// Component.tsx\n// TODO: Use t('welcome')"
+        }
+      ]
+    },
+    {
+      "day": 63,
+      "title": "Advanced Animation: Framer Motion",
+      "tasks": [
+        {
+          "title": "Polishing the User Experience",
+          "type": "reading",
+          "description": "Adding subtle transitions to page changes and modal popups.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Animation Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of UI motion.",
+          "quiz_questions": [
+            {
+              "question": "Why do we use subtle animations in enterprise apps?",
+              "options": ["To entertain users", "To provide visual cues and improve perceived performance", "Because the CPU requires it", "To make the code longer"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 64,
+      "title": "Frontend Security Best Practices",
+      "tasks": [
+        {
+          "title": "XSS and CSRF Protection",
+          "type": "reading",
+          "description": "How React's built-in escaping and Spring Security's CSRF tokens protect our users.",
+          "reading_content_md": "# Securing the Client\n\nWhile the backend is the primary line of defense, the frontend must be smart. We never store JWTs in `localStorage` due to XSS risks; instead, we use **HttpOnly Cookies**. We also sanitize any user-generated HTML to prevent script injection.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Security Logic Task",
+          "type": "coding",
+          "description": "Write a utility function to sanitize a simple string for display.",
+          "coding_language": "typescript",
+          "coding_starter_code": "// sanitize.ts\n// TODO: Replace '<' and '>' with HTML entities to prevent execution"
+        }
+      ]
+    },
+    {
+      "day": 65,
+      "title": "Month 3 Frontend Milestone Review",
+      "tasks": [
+        {
+          "title": "Enterprise Dashboard Completion",
+          "type": "reading",
+          "description": "Reviewing the completed React/TS interface and its integration with the Month 2 APIs.",
+          "reading_content_md": "# Frontend Milestone Achieved\n\nWe have a high-performance, responsive, and type-safe user interface. We've mastered State Management, Routing, and API integration. Next month, we move to the most complex architectural phase: **Microservices**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 3 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Frontend Development phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used for CSS in Project Beta?",
+              "options": ["Bootstrap", "Sass", "Tailwind CSS", "Material UI"],
+              "correct_index": 2
+            },
+            {
+              "question": "What is the purpose of React.Suspense?",
+              "options": ["To stop the app from running", "To show a fallback UI while a lazy-loaded component is loading", "To delete the cache", "To encrypt data"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 66,
+      "title": "Phase 2 Mid-Point Retrospective",
+      "tasks": [
+        {
+          "title": "Reflecting on Full-Stack Synergy",
+          "type": "reading",
+          "description": "Evaluating how well the React frontend and Spring backend communicated during development.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Retrospective Task",
+          "type": "coding",
+          "description": "Document the 'API Contract' between the User Service and the User Dashboard.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# API Contract: User Service\n## Base URL:\n## Endpoints Used:\n## Common Error Codes:"
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 67,
+      "title": "Introduction to Microservices Patterns",
+      "tasks": [
+        {
+          "title": "Decomposing the Monolith",
+          "type": "reading",
+          "description": "Strategies for splitting the User and Project modules into independent deployable services.",
+          "reading_content_md": "# Month 4: Distributed Architecture\n\n## Why Microservices?\nAs Project Beta grows, a single JAR file becomes a bottleneck for the 29-member team. Microservices allow us to:\n1. **Scale Independently**: Scale only the 'Search Service' during high load.\n2. **Fault Isolation**: A bug in the 'Notification Service' won't crash the 'Auth Service'.\n3. **Tech Flexibility**: Use different Java versions or even different languages for specific tasks.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Microservices Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of distributed system benefits.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Horizontal Scaling' in the context of microservices?",
+              "options": ["Adding more RAM to a single server", "Adding more instances of a service", "Writing more lines of code", "Increasing database table size"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 68,
+      "title": "Service Discovery with Netflix Eureka",
+      "tasks": [
+        {
+          "title": "The Service Registry",
+          "type": "reading",
+          "description": "How services find each other in a dynamic cloud environment without hardcoded IP addresses.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Eureka Server Setup",
+          "type": "coding",
+          "description": "Create a standalone Spring Boot project acting as the Eureka Discovery Server.",
+          "coding_language": "java",
+          "coding_starter_code": "// DiscoveryServerApplication.java\npackage com.projectbeta.discovery;\n\nimport org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;\n\n// TODO 1: Add @EnableEurekaServer annotation\n// TODO 2: Configure 'eureka.client.register-with-eureka=false' in properties"
+        }
+      ]
+    },
+    {
+      "day": 69,
+      "title": "Client Registration",
+      "tasks": [
+        {
+          "title": "Joining the Registry",
+          "type": "reading",
+          "description": "Configuring the User and Project services to announce themselves to Eureka on startup.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Eureka Client Task",
+          "type": "coding",
+          "description": "Update the User Service application class to enable Eureka client discovery.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserServiceApplication.java\n// TODO 1: Add @EnableDiscoveryClient\n// TODO 2: Set 'spring.application.name=user-service' in properties"
+        }
+      ]
+    },
+    {
+      "day": 70,
+      "title": "API Gateway: Spring Cloud Gateway",
+      "tasks": [
+        {
+          "title": "The Single Entry Point",
+          "type": "reading",
+          "description": "Why we use a Gateway to route frontend requests to the correct internal microservice.",
+          "reading_content_md": "# The Gateway Pattern\n\nThe **React** frontend should not need to know the URLs of 10 different services. It talks only to the **API Gateway**, which handles routing, security, and rate limiting for the entire system.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Gateway Routing Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of request routing.",
+          "quiz_questions": [
+            {
+              "question": "Which component is responsible for cross-cutting concerns like global logging and authentication?",
+              "options": ["Eureka Server", "API Gateway", "PostgreSQL", "React Frontend"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 71,
+      "title": "Gateway Route Configuration",
+      "tasks": [
+        {
+          "title": "Defining Predicates and Filters",
+          "type": "reading",
+          "description": "Configuring YAML routes to map /api/users/** to the user-service.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Gateway Config Task",
+          "type": "coding",
+          "description": "Write a YAML snippet for the Gateway to route requests to the 'project-service' using load balancing.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# application.yml\n# TODO 1: Define route id 'project-service'\n# TODO 2: Use uri 'lb://project-service'\n# TODO 3: Set predicates path to '/api/projects/**'"
+        }
+      ]
+    },
+    {
+      "day": 72,
+      "title": "Inter-Service Communication: RestTemplate",
+      "tasks": [
+        {
+          "title": "Synchronous Requests",
+          "type": "reading",
+          "description": "Using RestTemplate to make HTTP calls from one Java service to another.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "RestTemplate Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of Java-based HTTP clients.",
+          "quiz_questions": [
+            {
+              "question": "What is a downside of using synchronous RestTemplate calls in a large chain?",
+              "options": ["It is too fast", "It can lead to 'Cascading Failures' if one service is slow", "It doesn't support JSON", "It only works with local databases"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 73,
+      "title": "Declarative Clients: OpenFeign",
+      "tasks": [
+        {
+          "title": "Simplifying Service Calls",
+          "type": "reading",
+          "description": "Using Feign to write service-to-service calls as simple Java interfaces.",
+          "reading_content_md": "# OpenFeign\n\nInstead of writing complex URL-building logic, Project Beta uses **Feign**. We define an interface, annotate it with `@FeignClient`, and Spring Boot automatically generates the implementation to call the target microservice.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Feign Client Task",
+          "type": "coding",
+          "description": "Define a Feign client in the Project Service to fetch User details from the User Service.",
+          "coding_language": "java",
+          "coding_starter_code": "// UserClient.java\npackage com.projectbeta.projects.clients;\n\nimport org.springframework.cloud.openfeign.FeignClient;\n\n// TODO 1: Annotate with @FeignClient(name = \"user-service\")\n// TODO 2: Define a method to GET \"/api/users/{id}\""
+        }
+      ]
+    },
+    {
+      "day": 74,
+      "title": "Load Balancing with Spring Cloud LoadBalancer",
+      "tasks": [
+        {
+          "title": "Distributing the Traffic",
+          "type": "reading",
+          "description": "How the system chooses which instance of a service to call when multiple are running.",
+          "reading_time_minutes": 9
+        },
+        {
+          "title": "Load Balancing Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of client-side load balancing.",
+          "quiz_questions": [
+            {
+              "question": "What does 'Round Robin' mean in load balancing?",
+              "options": ["The server stops working", "Requests are distributed sequentially across all available instances", "Data is deleted after reading", "The client waits for 10 minutes"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 75,
+      "title": "Resilience Patterns: Circuit Breaker",
+      "tasks": [
+        {
+          "title": "Introduction to Resilience4j",
+          "type": "reading",
+          "description": "Preventing system-wide crashes when a single microservice goes down.",
+          "reading_content_md": "# The Circuit Breaker\n\nIf the 'Notification Service' is failing, the **Circuit Breaker** 'opens' and stops sending requests to it for a while. This allows the failing service to recover and prevents our 'User Service' from hanging while waiting for a timeout.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Circuit Breaker Task",
+          "type": "coding",
+          "description": "Apply a @CircuitBreaker annotation to a Feign client method with a fallback method.",
+          "coding_language": "java",
+          "coding_starter_code": "// ProjectService.java snippet\n// TODO 1: Add @CircuitBreaker(name = \"userService\", fallbackMethod = \"getDefaultUser\")\n// TODO 2: Implement the getDefaultUser method returning a dummy user"
+        }
+      ]
+    },
+    {
+      "day": 76,
+      "title": "Centralized Configuration: Spring Cloud Config",
+      "tasks": [
+        {
+          "title": "Managing Config in One Place",
+          "type": "reading",
+          "description": "Why we store application.yml files in a Git repo and serve them via a Config Server.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Config Server Quiz",
+          "type": "quiz",
+          "description": "Assess your knowledge of externalized configuration.",
+          "quiz_questions": [
+            {
+              "question": "What is the primary benefit of a Config Server?",
+              "options": ["Faster database queries", "Updating properties across all services without rebuilding the JARs", "Encrypting the frontend code", "Replacing Maven"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 77,
+      "title": "Distributed Tracing with Micrometer & Zipkin",
+      "tasks": [
+        {
+          "title": "Following the Request Path",
+          "type": "reading",
+          "description": "How to debug a request that travels across four different microservices.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Tracing Task",
+          "type": "coding",
+          "description": "Add the Micrometer Tracing and Zipkin reporter dependencies to a pom.xml.",
+          "coding_language": "xml",
+          "coding_starter_code": "\n\n"
+        }
+      ]
+    },
+    {
+      "day": 78,
+      "title": "Asynchronous Communication: Message Brokers",
+      "tasks": [
+        {
+          "title": "Introduction to RabbitMQ",
+          "type": "reading",
+          "description": "When to use 'Fire and Forget' messaging instead of REST calls.",
+          "reading_content_md": "# Messaging with RabbitMQ\n\nWhen a user registers, we need to send a welcome email. We don't want the user to wait for the email server. We push a 'Welcome Message' to a **Queue**, and the 'Email Service' picks it up whenever it is ready.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Message Broker Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of async messaging.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Producer' in a messaging system?",
+              "options": ["The component that reads the message", "The component that sends the message to the exchange", "The database", "The end user"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 79,
+      "title": "Spring Cloud Stream",
+      "tasks": [
+        {
+          "title": "Abstracting the Message Middleware",
+          "type": "reading",
+          "description": "Using Spring Cloud Stream to write code that works with both RabbitMQ and Kafka.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Messaging Task",
+          "type": "coding",
+          "description": "Define a functional 'Supplier' to produce a user-created event.",
+          "coding_language": "java",
+          "coding_starter_code": "// EventProducer.java\n// TODO 1: Define a Bean of type Supplier<UserEvent>\n// TODO 2: Return a new UserEvent object"
+        }
+      ]
+    },
+    {
+      "day": 80,
+      "title": "API Versioning in Microservices",
+      "tasks": [
+        {
+          "title": "Handling Breaking Changes",
+          "type": "reading",
+          "description": "Strategies for running v1 and v2 of an API simultaneously during a migration.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Versioning Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of API lifecycle management.",
+          "quiz_questions": [
+            {
+              "question": "Which is a common way to version a REST API?",
+              "options": ["Changing the server name", "URL path (e.g., /v1/users)", "Changing the database password", "Deleting the old code"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 81,
+      "title": "The Saga Pattern: Distributed Transactions",
+      "tasks": [
+        {
+          "title": "Maintaining Consistency Without 2PC",
+          "type": "reading",
+          "description": "How to manage a transaction that spans multiple databases using compensation logic.",
+          "reading_content_md": "# The Saga Pattern\n\nIn microservices, each service has its own database. If a 'Payment' fails after 'Order' was created, we must trigger a 'Compensating Transaction' to cancel the order. This is the **Saga Pattern**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Saga Logic Task",
+          "type": "coding",
+          "description": "Write pseudocode for a 'cancelOrder' method that acts as a compensation for a failed payment.",
+          "coding_language": "java",
+          "coding_starter_code": "// OrderService.java\n// TODO: Implement a method that sets OrderStatus to CANCELLED and logs the reason"
+        }
+      ]
+    },
+    {
+      "day": 82,
+      "title": "Microservices Testing: Testcontainers",
+      "tasks": [
+        {
+          "title": "Testing with Real Infrastructure",
+          "type": "reading",
+          "description": "Using Docker containers within JUnit tests to run a real PostgreSQL or RabbitMQ instance.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Testcontainers Quiz",
+          "type": "quiz",
+          "description": "Assess your knowledge of integration testing tools.",
+          "quiz_questions": [
+            {
+              "question": "What does Testcontainers provide for your JUnit tests?",
+              "options": ["Automatic UI testing", "Lightweight, throwaway instances of common databases and message brokers", "A way to skip tests", "Better CSS support"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 83,
+      "title": "Contract Testing with Spring Cloud Contract",
+      "tasks": [
+        {
+          "title": "Ensuring Consumer-Provider Compatibility",
+          "type": "reading",
+          "description": "How to prevent breaking the frontend when the backend API changes.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Contract Task",
+          "type": "coding",
+          "description": "Define a simple Groovy contract for a GET /api/users/{id} response.",
+          "coding_language": "groovy",
+          "coding_starter_code": "// userContract.groovy\n// TODO 1: Define request method and path\n// TODO 2: Define expected response status and body"
+        }
+      ]
+    },
+    {
+      "day": 84,
+      "title": "Monitoring with Spring Boot Actuator",
+      "tasks": [
+        {
+          "title": "Exposing Health and Metrics",
+          "type": "reading",
+          "description": "Using the /health and /metrics endpoints to monitor microservice status.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Actuator Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of internal metrics.",
+          "quiz_questions": [
+            {
+              "question": "Which Actuator endpoint shows if the service can connect to its database?",
+              "options": ["/info", "/health", "/beans", "/env"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 85,
+      "title": "Log Aggregation with ELK Stack",
+      "tasks": [
+        {
+          "title": "Centralizing Logs",
+          "type": "reading",
+          "description": "Introduction to Elasticsearch, Logstash, and Kibana for searching logs across all services.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "ELK Task",
+          "type": "coding",
+          "description": "Configure a Logback appender to send logs in JSON format for Logstash consumption.",
+          "coding_language": "xml",
+          "coding_starter_code": "\n\n"
+        }
+      ]
+    },
+    {
+      "day": 86,
+      "title": "Microservices Security Overview",
+      "tasks": [
+        {
+          "title": "Securing the Mesh",
+          "type": "reading",
+          "description": "Why local security isn't enough and how the Gateway handles Auth for the cluster.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Security Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of distributed security.",
+          "quiz_questions": [
+            {
+              "question": "Where should JWT validation ideally happen in our architecture?",
+              "options": ["In every single microservice", "In the API Gateway", "Only in the React frontend", "In the database"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 87,
+      "title": "Month 4 Microservices Milestone Review",
+      "tasks": [
+        {
+          "title": "The Distributed Platform is Live",
+          "type": "reading",
+          "description": "Reviewing the progress from a single API to a resilient, message-driven microservices cluster.",
+          "reading_content_md": "# Month 4 Complete\n\nProject Beta is now a true distributed system. We have Service Discovery, a Gateway, Load Balancing, and Asynchronous messaging. Next month, we focus on the most critical enterprise layer: **Security & JWT Authentication**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 4 Final Quiz",
+          "type": "quiz",
+          "description": "The final exam for the Microservices phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool provides the 'Circuit Breaker' functionality in our stack?",
+              "options": ["Eureka", "Resilience4j", "Feign", "Zipkin"],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the role of an API Gateway in microservices?",
+              "options": ["Database management", "Routing and cross-cutting concerns", "Compiling Java code", "Storing user passwords"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 88,
+      "title": "Phase 2 Handover to Security",
+      "tasks": [
+        {
+          "title": "Documenting the Service Mesh",
+          "type": "reading",
+          "description": "Preparing the service maps and communication protocols for the Security team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Handover Task",
+          "type": "coding",
+          "description": "Write a README for the 'Gateway Service' explaining how it routes traffic to internal services.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# API Gateway Documentation\n## Routes:\n## Filters Used:\n## Load Balancer Config:"
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 89,
+      "title": "Transition to Enterprise Security",
+      "tasks": [
+        {
+          "title": "Security Requirements for Project Beta",
+          "type": "reading",
+          "description": "Understanding the shift from functional features to securing a distributed system.",
+          "reading_content_md": "# Month 5: Security & Integration\n\n## The Mission\nIn Month 4, we built the 'pipes' (Microservices). In Month 5, we lock the doors. We will implement a 'Zero Trust' architecture where every request between the **React** frontend and our **Java** services must be authenticated and authorized.\n\n## Key Deliverables\n1. **Centralized Auth**: A dedicated Identity Service.\n2. **Stateless Security**: Using JSON Web Tokens (JWT) for scalability.\n3. **Role-Based Access Control (RBAC)**: Ensuring users only see the data they are permitted to access.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Security Strategy Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of enterprise security goals.",
+          "quiz_questions": [
+            {
+              "question": "Why do we prefer stateless JWTs over server-side sessions in Project Beta?",
+              "options": ["They are easier to code", "They allow the microservices to scale without sharing session state", "They are required by PostgreSQL", "They make the UI faster"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 90,
+      "title": "Spring Security Foundation",
+      "tasks": [
+        {
+          "title": "The Security Filter Chain",
+          "type": "reading",
+          "description": "How Spring Security intercepts requests to check for credentials.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Security Configuration Task",
+          "type": "coding",
+          "description": "Configure a SecurityFilterChain bean to permit access to Swagger UI while securing all API endpoints.",
+          "coding_language": "java",
+          "coding_starter_code": "// SecurityConfig.java\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    // TODO 1: Create a SecurityFilterChain bean\n    // TODO 2: .authorizeHttpRequests(auth -> auth.requestMatchers(\"/swagger-ui/**\").permitAll())\n    // TODO 3: .anyRequest().authenticated()\n}"
+        }
+      ]
+    },
+    {
+      "day": 91,
+      "title": "Introduction to JSON Web Tokens (JWT)",
+      "tasks": [
+        {
+          "title": "Anatomy of a JWT",
+          "type": "reading",
+          "description": "Understanding Header, Payload, and Signature components.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "JWT Structure Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of token components.",
+          "quiz_questions": [
+            {
+              "question": "Which part of the JWT contains the user's roles and expiration time?",
+              "options": ["Header", "Payload (Claims)", "Signature", "Footer"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 92,
+      "title": "JWT Generation Logic",
+      "tasks": [
+        {
+          "title": "Signing Tokens with JJWT",
+          "type": "reading",
+          "description": "Using the Java JWT library to create secure tokens upon successful login.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Token Utility Task",
+          "type": "coding",
+          "description": "Implement a 'generateToken' method that includes the username and a 24-hour expiration.",
+          "coding_language": "java",
+          "coding_starter_code": "// JwtUtils.java\n// TODO 1: Use Jwts.builder()\n// TODO 2: setSubject(username)\n// TODO 3: setExpiration(new Date(System.currentTimeMillis() + 86400000))\n// TODO 4: signWith(SignatureAlgorithm.HS512, secret)"
+        }
+      ]
+    },
+    {
+      "day": 93,
+      "title": "Implementing JWT Authentication Filter",
+      "tasks": [
+        {
+          "title": "Intercepting the Token",
+          "type": "reading",
+          "description": "Creating a OncePerRequestFilter to extract and validate the 'Bearer' token from the Authorization header.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Filter Logic Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of the authentication flow.",
+          "quiz_questions": [
+            {
+              "question": "What is the standard prefix for a JWT in the Authorization header?",
+              "options": ["Token ", "Basic ", "Bearer ", "Key "],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 94,
+      "title": "Password Hashing with BCrypt",
+      "tasks": [
+        {
+          "title": "Securing Credentials at Rest",
+          "type": "reading",
+          "description": "Why we use salting and slow hashing to prevent rainbow table attacks.",
+          "reading_content_md": "# BCrypt in Project Beta\n\nWe never store plain-text passwords. We use **BCryptPasswordEncoder**, which is a slow-hashing algorithm. Even if our PostgreSQL database is compromised, the 'salt' and 'work factor' make it computationally expensive for attackers to crack passwords.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Hashing Task",
+          "type": "coding",
+          "description": "Configure the PasswordEncoder bean and use it in the UserService.",
+          "coding_language": "java",
+          "coding_starter_code": "// BeanConfig.java\n// TODO 1: Define a BCryptPasswordEncoder bean\n\n// UserService.java\n// TODO 2: Encode the password before saving the User entity"
+        }
+      ]
+    },
+    {
+      "day": 95,
+      "title": "Identity Service Architecture",
+      "tasks": [
+        {
+          "title": "The Dedicated Auth Service",
+          "type": "reading",
+          "description": "Building a specific microservice responsible only for Login, Registration, and Token validation.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Auth Service Quiz",
+          "type": "quiz",
+          "description": "Assess your understanding of service boundaries.",
+          "quiz_questions": [
+            {
+              "question": "Which service should own the 'Users' table in our microservice architecture?",
+              "options": ["Gateway", "Project Service", "Identity (Auth) Service", "Email Service"],
+              "correct_index": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 96,
+      "title": "Securing the API Gateway",
+      "tasks": [
+        {
+          "title": "Gateway as a Security Shield",
+          "type": "reading",
+          "description": "Using Spring Cloud Gateway filters to validate JWTs before forwarding requests to internal services.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Gateway Security Task",
+          "type": "coding",
+          "description": "Implement a GlobalFilter in the Gateway to check for the presence of a JWT.",
+          "coding_language": "java",
+          "coding_starter_code": "// AuthenticationFilter.java\n// TODO 1: Implement GlobalFilter\n// TODO 2: If path is not '/auth/login', check for Authorization header\n// TODO 3: Return 401 Unauthorized if missing"
+        }
+      ]
+    },
+    {
+      "day": 97,
+      "title": "Role-Based Access Control (RBAC)",
+      "tasks": [
+        {
+          "title": "Managing Permissions",
+          "type": "reading",
+          "description": "Defining 'ADMIN' and 'USER' roles and applying @PreAuthorize to controller methods.",
+          "reading_content_md": "# Access Control\n\nNot all employees in the 29-member team have the same rights. We use **RBAC**. Only users with the `ROLE_ADMIN` authority can access the `/api/admin/**` endpoints, ensuring data integrity and privacy.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "RBAC Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of Spring Security authorities.",
+          "quiz_questions": [
+            {
+              "question": "Which annotation is used on a method to restrict access based on user roles?",
+              "options": ["@Secure", "@PreAuthorize", "@RolesAllowed", "All of the above"],
+              "correct_index": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 98,
+      "title": "JWT Refresh Tokens",
+      "tasks": [
+        {
+          "title": "Maintaining Long Sessions Securely",
+          "type": "reading",
+          "description": "Implementing a 2-token system (Access + Refresh) to minimize the risk of token theft.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Refresh Token Task",
+          "type": "coding",
+          "description": "Create a RefreshToken entity to store in PostgreSQL with an expiration and link to the User.",
+          "coding_language": "java",
+          "coding_starter_code": "// RefreshToken.java\n// TODO 1: Create @Entity with 'token' and 'expiryDate'\n// TODO 2: Create a method to verify expiration"
+        }
+      ]
+    },
+    {
+      "day": 99,
+      "title": "Frontend Integration: Auth State",
+      "tasks": [
+        {
+          "title": "Persisting User Sessions in React",
+          "type": "reading",
+          "description": "Using Axios interceptors to automatically attach JWTs to every outgoing request.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Auth Interceptor Task",
+          "type": "coding",
+          "description": "Add an Axios request interceptor to the frontend that pulls the token from the Redux store.",
+          "coding_language": "typescript",
+          "coding_starter_code": "// api.ts snippet\n// TODO 1: axios.interceptors.request.use\n// TODO 2: If token exists, add 'Authorization': 'Bearer ' + token"
+        }
+      ]
+    },
+    {
+      "day": 100,
+      "title": "User Acceptance Testing (UAT) - Security",
+      "tasks": [
+        {
+          "title": "Penetration Testing Basics",
+          "type": "reading",
+          "description": "Conducting UAT specifically targeting security vulnerabilities like IDOR and token replay.",
+          "reading_content_md": "# Security UAT\n\nIn this round of UAT, we play the 'Attacker'. We try to access **Project Service** data using a **User Service** token or attempt to bypass the Gateway. Our goal is to ensure the 29-member team's integration is airtight before the production launch.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Security UAT Quiz",
+          "type": "quiz",
+          "description": "Test your ability to identify common security flaws.",
+          "quiz_questions": [
+            {
+              "question": "What does IDOR stand for in web security?",
+              "options": ["Internal Data Object Reader", "Insecure Direct Object Reference", "Integrated Data Output Registry", "Initial Data Object Request"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 101,
+      "title": "Introduction to Containerization: Docker",
+      "tasks": [
+        {
+          "title": "Packaging the Enterprise App",
+          "type": "reading",
+          "description": "Why we use Docker to ensure 'it works on my machine' applies to everyone on the team.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Dockerfile Task",
+          "type": "coding",
+          "description": "Write a Dockerfile for the User Service using a multi-stage build for a smaller final image.",
+          "coding_language": "dockerfile",
+          "coding_starter_code": "# Dockerfile\n# TODO 1: Use maven:3.9-eclipse-temurin as 'build' stage\n# TODO 2: Copy pom.xml and src, run mvn package\n# TODO 3: Use eclipse-temurin:21 as 'final' stage\n# TODO 4: ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]"
+        }
+      ]
+    },
+    {
+      "day": 102,
+      "title": "Docker Compose for Local Integration",
+      "tasks": [
+        {
+          "title": "Orchestrating the Local Cluster",
+          "type": "reading",
+          "description": "Using Docker Compose to spin up PostgreSQL, Eureka, the Gateway, and Services with one command.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Compose Config Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of service dependencies in Docker.",
+          "quiz_questions": [
+            {
+              "question": "Which Docker Compose property ensures the Gateway only starts after Eureka is ready?",
+              "options": ["links", "depends_on", "networks", "volumes"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 103,
+      "title": "Performance Tuning: API Latency",
+      "tasks": [
+        {
+          "title": "Measuring the Security Overhead",
+          "type": "reading",
+          "description": "How JWT validation and Gateway routing impact total response time.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Latency Analysis Task",
+          "type": "coding",
+          "description": "Write a Python script to calculate the average response time from a collection of API logs.",
+          "coding_language": "python",
+          "coding_starter_code": "# analyze_logs.py\n# TODO 1: Define a list of millisecond latencies\n# TODO 2: Calculate mean and 95th percentile (p95)\n# TODO 3: Print if p95 > 500ms"
+        }
+      ]
+    },
+    {
+      "day": 104,
+      "title": "Load Testing Integrated Services",
+      "tasks": [
+        {
+          "title": "Stress Testing the Gateway",
+          "type": "reading",
+          "description": "Using JMeter to simulate 500 simultaneous login requests to test the Identity Service.",
+          "reading_content_md": "# Load Testing\n\nSecurity logic can be CPU intensive. We perform load tests to ensure our **Identity Service** doesn't become a bottleneck when hundreds of users log in during the 9 AM rush.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Load Test Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of throughput and concurrency.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Throughput' in a load test?",
+              "options": ["Number of concurrent users", "Number of transactions per second (TPS)", "Total amount of data in the DB", "Speed of the internet"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 105,
+      "title": "Integration Debugging: Cross-Service Failures",
+      "tasks": [
+        {
+          "title": "Tracing Security Context",
+          "type": "reading",
+          "description": "Why the security context doesn't automatically propagate from Service A to Service B and how to fix it.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Feign Interceptor Task",
+          "type": "coding",
+          "description": "Implement a RequestInterceptor for Feign to pass the current JWT to downstream services.",
+          "coding_language": "java",
+          "coding_starter_code": "// FeignClientInterceptor.java\n// TODO 1: Implement RequestInterceptor\n// TODO 2: Get token from SecurityContextHolder\n// TODO 3: template.header(\"Authorization\", \"Bearer \" + token)"
+        }
+      ]
+    },
+    {
+      "day": 106,
+      "title": "Schema Migration in Integration",
+      "tasks": [
+        {
+          "title": "Deploying the Security Schema",
+          "type": "reading",
+          "description": "Using Flyway to add the 'roles' and 'user_roles' tables to the production-like integration database.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Flyway Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of SQL versioning.",
+          "quiz_questions": [
+            {
+              "question": "What happens if a Flyway script is modified after it has already been applied?",
+              "options": ["It is ignored", "Flyway fails with a checksum mismatch error", "It is re-run automatically", "The database is deleted"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 107,
+      "title": "Month 5 Security & Integration Milestone Review",
+      "tasks": [
+        {
+          "title": "Integrated Platform: Security Check",
+          "type": "reading",
+          "description": "Reviewing the completed JWT flow, Gateway security, and Docker orchestration.",
+          "reading_content_md": "# Milestone Achieved\n\nProject Beta is now secure and portable. We have a robust authentication system and a containerized environment. We are ready for **Month 6: Deployment & Launch**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Month 5 Final Quiz",
+          "type": "quiz",
+          "description": "Final exam for the Integration phase.",
+          "quiz_questions": [
+            {
+              "question": "Which tool was used to containerize the User Service?",
+              "options": ["Maven", "Docker", "PostgreSQL", "React"],
+              "correct_index": 1
+            },
+            {
+              "question": "What is the primary role of the API Gateway in the security flow?",
+              "options": ["Store passwords", "Centralized JWT validation", "Generate reports", "Host the React app"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 108,
+      "title": "CI/CD Pipeline Design",
+      "tasks": [
+        {
+          "title": "Automating the Build and Test",
+          "type": "reading",
+          "description": "Designing a Jenkins/GitHub Actions pipeline that builds Docker images on every push.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "CI/CD Logic Task",
+          "type": "coding",
+          "description": "Write a pseudocode script for a Jenkinsfile 'Stage' that runs unit tests and only proceeds if they pass.",
+          "coding_language": "groovy",
+          "coding_starter_code": "// Jenkinsfile snippet\n// TODO 1: Create a stage('Test')\n// TODO 2: Run './mvnw test'\n// TODO 3: If exit code != 0, error the build"
+        }
+      ]
+    },
+    {
+      "day": 109,
+      "title": "Handling Secrets: Environment Variables",
+      "tasks": [
+        {
+          "title": "Protecting API Keys and Secrets",
+          "type": "reading",
+          "description": "Why sensitive data like JWT secrets and DB passwords must never be in code.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Secrets Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of configuration security.",
+          "quiz_questions": [
+            {
+              "question": "What is the best way to inject a database password into a Docker container?",
+              "options": ["Hard-code it in application.yml", "Passing it as an environment variable", "Writing it in a text file inside the image", "Telling the team in a meeting"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 110,
+      "title": "Stakeholder UAT Demo",
+      "tasks": [
+        {
+          "title": "Demonstrating Platform Integrity",
+          "type": "reading",
+          "description": "Presenting the secure, integrated platform to the business leads.",
+          "reading_content_md": "# Stakeholder Review\n\nWe demonstrate the full flow: User Registration -> Email Verification (async via RabbitMQ) -> Login -> Dashboard Access. This proves that the complex back-end logic and front-end UI are working in unison.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "UAT Demo Task",
+          "type": "coding",
+          "description": "Draft a 'Test Script' (step-by-step instructions) for a non-technical stakeholder to verify the login flow.",
+          "coding_language": "markdown",
+          "coding_starter_code": "# UAT Test: Secure Login\n1. Go to URL: http://localhost:5173\n2. Enter invalid credentials -> Observe Error\n3. Enter valid credentials -> Observe Dashboard redirect"
+        }
+      ]
+    },
+    {
+      "day": 111,
+      "title": "Month 5 Retrospective: Final Polish",
+      "tasks": [
+        {
+          "title": "Reflecting on Integration Challenges",
+          "type": "reading",
+          "description": "Identifying the final bugs to fix before the Month 6 Go-Live.",
+          "reading_content_md": "# Final Retrospective\n\nMonth 5 was about endurance. We moved from isolated code to a live system. We solved complex issues like token propagation and container networking. We are now ready for the final stage: **Production Launch**.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Phase 3 Final Quiz",
+          "type": "quiz",
+          "description": "Final check on the completion of Phase 3.",
+          "quiz_questions": [
+            {
+              "question": "Which phase begins in Month 6?",
+              "options": ["Setup", "Build", "Integrate", "Launch"],
+              "correct_index": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "days": [
+    {
+      "day": 112,
+      "title": "Production Infrastructure: Kubernetes Basics",
+      "tasks": [
+        {
+          "title": "Orchestrating at Scale",
+          "type": "reading",
+          "description": "Understanding why we move from Docker Compose to Kubernetes (K8s) for the enterprise launch.",
+          "reading_content_md": "# Transition to Production\n\nWhile Docker Compose was excellent for Month 5 integration, our production environment requires **Kubernetes**. K8s provides the self-healing, auto-scaling, and rolling update capabilities necessary for a 29-member team to maintain a high-availability enterprise application.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "K8s Concepts Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of Kubernetes components.",
+          "quiz_questions": [
+            {
+              "question": "What is the smallest deployable unit in Kubernetes?",
+              "options": ["Container", "Pod", "Node", "Service"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 113,
+      "title": "Defining Kubernetes Deployments",
+      "tasks": [
+        {
+          "title": "Declarative Infrastructure",
+          "type": "reading",
+          "description": "Writing YAML manifests to define the desired state of our User and Project services.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Deployment Manifest Task",
+          "type": "coding",
+          "description": "Create a deployment.yaml for the 'user-service' with 3 replicas and resource limits.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# user-deployment.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: user-service\n# TODO 1: Set replicas to 3\n# TODO 2: Define container image and port 8080\n# TODO 3: Add CPU/Memory limits"
+        }
+      ]
+    },
+    {
+      "day": 114,
+      "title": "Kubernetes Services & Ingress",
+      "tasks": [
+        {
+          "title": "Exposing the Cluster",
+          "type": "reading",
+          "description": "Using K8s Services for internal load balancing and Ingress for external traffic routing.",
+          "reading_content_md": "# Networking in K8s\n\nWe use **ClusterIP** for internal communication between microservices and an **Ingress Controller** (like NGINX) to route external traffic from the web to our API Gateway. This ensures a single, secure entry point for the **React** frontend.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Networking Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of K8s service types.",
+          "quiz_questions": [
+            {
+              "question": "Which service type exposes the service on a static port on each Node's IP?",
+              "options": ["ClusterIP", "NodePort", "LoadBalancer", "ExternalName"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 115,
+      "title": "ConfigMaps and Secrets in K8s",
+      "tasks": [
+        {
+          "title": "Injecting Configuration",
+          "type": "reading",
+          "description": "How to pass database URLs and JWT secrets into pods without baking them into images.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "K8s Secrets Task",
+          "type": "coding",
+          "description": "Write a command to create a Kubernetes secret for the PostgreSQL password.",
+          "coding_language": "bash",
+          "coding_starter_code": "# Terminal Command\n# TODO: use 'kubectl create secret generic db-secret' with --from-literal"
+        }
+      ]
+    },
+    {
+      "day": 116,
+      "title": "Continuous Deployment (CD) Pipelines",
+      "tasks": [
+        {
+          "title": "Automating the Rollout",
+          "type": "reading",
+          "description": "Integrating K8s deployment into our Jenkins/GitHub Actions pipeline.",
+          "reading_content_md": "# Automated Rollouts\n\nWhen a **Java Developer** pushes code, the CI pipeline builds the image, and the CD pipeline updates the K8s deployment. We use **Rolling Updates** to ensure there is zero downtime for our users during a release.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "CD Logic Quiz",
+          "type": "quiz",
+          "description": "Test your knowledge of deployment strategies.",
+          "quiz_questions": [
+            {
+              "question": "What is a 'Blue-Green' deployment?",
+              "options": ["A colorful UI update", "Running two identical environments and switching traffic between them", "Deleting the old version before starting the new one", "Testing in production"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 117,
+      "title": "Centralized Logging with Fluentd",
+      "tasks": [
+        {
+          "title": "Aggregating Pod Logs",
+          "type": "reading",
+          "description": "Setting up log collection from ephemeral containers into the ELK stack.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Logging Logic Task",
+          "type": "coding",
+          "description": "Write a Java logging statement that includes a 'Correlation ID' to trace requests across K8s pods.",
+          "coding_language": "java",
+          "coding_starter_code": "// LoggingAspect.java snippet\n// TODO: Use MDC (Mapped Diagnostic Context) to put a correlationId into every log entry"
+        }
+      ]
+    },
+    {
+      "day": 118,
+      "title": "Monitoring with Prometheus & Grafana",
+      "tasks": [
+        {
+          "title": "Visualizing System Health",
+          "type": "reading",
+          "description": "Building dashboards to monitor CPU, Memory, and Request Latency across the cluster.",
+          "reading_content_md": "# Observability\n\nWe use **Prometheus** to scrape metrics from our Spring Boot Actuator endpoints and **Grafana** to visualize them. This allows the operations team to see real-time traffic spikes and potential memory leaks.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Metrics Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of time-series monitoring.",
+          "quiz_questions": [
+            {
+              "question": "Which tool is primarily used for 'scraping' and storing metrics data?",
+              "options": ["Grafana", "Prometheus", "Logstash", "Jenkins"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 119,
+      "title": "Alerting Strategy for Production",
+      "tasks": [
+        {
+          "title": "Configuring Alertmanager",
+          "type": "reading",
+          "description": "Setting up rules to notify the 29-member team via Slack when a service is down or latency is too high.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Alerting Rules Task",
+          "type": "coding",
+          "description": "Draft a Prometheus alerting rule that triggers if the 'user-service' success rate drops below 95%.",
+          "coding_language": "yaml",
+          "coding_starter_code": "# alert-rules.yaml\n# TODO: Define an alert 'LowSuccessRate'\n# TODO: Use an expression to check the percentage of 2xx responses"
+        }
+      ]
+    },
+    {
+      "day": 120,
+      "title": "Auto-scaling in Kubernetes (HPA)",
+      "tasks": [
+        {
+          "title": "Handling Traffic Spikes",
+          "type": "reading",
+          "description": "Configuring the Horizontal Pod Autoscaler to add replicas when CPU usage exceeds 70%.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Auto-scaling Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of dynamic scaling.",
+          "quiz_questions": [
+            {
+              "question": "What metric does HPA typically use to decide when to scale?",
+              "options": ["Line count", "CPU or Memory utilization", "Time of day", "Number of database tables"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 121,
+      "title": "Database Performance: Connection Pooling",
+      "tasks": [
+        {
+          "title": "Optimizing PostgreSQL Links",
+          "type": "reading",
+          "description": "Tuning HikariCP settings for the production microservices cluster.",
+          "reading_content_md": "# Database Tuning\n\nIn production, creating a new DB connection for every request is too slow. We use **HikariCP** for connection pooling, ensuring that each microservice instance maintains a 'warm' set of connections for immediate use.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Pool Config Task",
+          "type": "coding",
+          "description": "Set the maximum pool size and connection timeout in application.properties.",
+          "coding_language": "properties",
+          "coding_starter_code": "# application-prod.properties\n# TODO 1: spring.datasource.hikari.maximum-pool-size=20\n# TODO 2: spring.datasource.hikari.connection-timeout=30000"
+        }
+      ]
+    },
+    {
+      "day": 122,
+      "title": "Production Security: Network Policies",
+      "tasks": [
+        {
+          "title": "Hardening the Cluster",
+          "type": "reading",
+          "description": "Using K8s Network Policies to restrict which pods can talk to the PostgreSQL database.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Security Policy Quiz",
+          "type": "quiz",
+          "description": "Check your knowledge of pod-to-pod security.",
+          "quiz_questions": [
+            {
+              "question": "Which principle suggests that pods should only have the minimum network access required?",
+              "options": ["Principle of Least Privilege", "Defense in Depth", "Zero Trust", "All of the above"],
+              "correct_index": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 123,
+      "title": "User Training Workshop: Session 1",
+      "tasks": [
+        {
+          "title": "Handover to Operations",
+          "type": "reading",
+          "description": "Conducting the first workshop on managing and monitoring the live K8s cluster.",
+          "reading_time_minutes": 14
+        },
+        {
+          "title": "Workshop Demo Task",
+          "type": "coding",
+          "description": "Create a bash script for the operations team to quickly check the health of all microservices.",
+          "coding_language": "bash",
+          "coding_starter_code": "# check_health.sh\n# TODO: Loop through service URLs and use 'curl -f' to check /actuator/health"
+        }
+      ]
+    },
+    {
+      "day": 124,
+      "title": "User Training Workshop: Session 2",
+      "tasks": [
+        {
+          "title": "Handover to Full-Stack Teams",
+          "type": "reading",
+          "description": "Training the 29-member team on how to debug production issues using Zipkin and Kibana.",
+          "reading_content_md": "# Supportability\n\nWe teach the team how to trace a failed frontend request ID back through the Gateway and into the specific microservice logs using the correlation IDs we established on Day 117.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Debugging Quiz",
+          "type": "quiz",
+          "description": "Verify knowledge of distributed tracing.",
+          "quiz_questions": [
+            {
+              "question": "Which tool allows you to see the timing and path of a request across services?",
+              "options": ["PostgreSQL", "Zipkin", "Vite", "Maven"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 125,
+      "title": "Backup and Disaster Recovery",
+      "tasks": [
+        {
+          "title": "Protecting Enterprise Data",
+          "type": "reading",
+          "description": "Implementing automated daily backups for the production PostgreSQL database.",
+          "reading_time_minutes": 11
+        },
+        {
+          "title": "Backup Logic Task",
+          "type": "coding",
+          "description": "Write a simple crontab-style logic to trigger a 'pg_dump' command every night at 2 AM.",
+          "coding_language": "bash",
+          "coding_starter_code": "# backup_cron.txt\n# TODO: Define the schedule and the pg_dump command pointing to an S3 bucket"
+        }
+      ]
+    },
+    {
+      "day": 126,
+      "title": "Final Performance Audit",
+      "tasks": [
+        {
+          "title": "Validating the Scale",
+          "type": "reading",
+          "description": "Conducting one last load test to ensure the cluster scales correctly under the 10,000 user target.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Audit Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of capacity planning.",
+          "quiz_questions": [
+            {
+              "question": "What is the goal of a final performance audit?",
+              "options": ["To find new bugs", "To confirm the system meets its high-load requirements", "To rewrite the code", "To change the database"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 127,
+      "title": "Finalizing the Infrastructure Runbook",
+      "tasks": [
+        {
+          "title": "The Production Manual",
+          "type": "reading",
+          "description": "Completing the step-by-step guide for restarting, scaling, and troubleshooting the entire platform.",
+          "reading_content_md": "# The Runbook\n\nCode is not enough; we need a **Runbook**. This document covers everything from secret rotation to how to handle a total regional cloud outage, ensuring the business can maintain operations indefinitely.",
+          "reading_time_minutes": 13
+        },
+        {
+          "title": "Runbook Task",
+          "type": "coding",
+          "description": "Draft the 'Secret Rotation' section of the runbook in Markdown.",
+          "coding_language": "markdown",
+          "coding_starter_code": "## Secret Rotation Procedure\n### 1. Generate new JWT secret\n### 2. Update K8s Secret\n### 3. Restart Gateway"
+        }
+      ]
+    },
+    {
+      "day": 128,
+      "title": "Stakeholder UAT: Final Sign-off",
+      "tasks": [
+        {
+          "title": "Demonstrating the Production Cluster",
+          "type": "reading",
+          "description": "Conducting the final UAT session where business stakeholders approve the live production environment.",
+          "reading_time_minutes": 12
+        },
+        {
+          "title": "Sign-off Quiz",
+          "type": "quiz",
+          "description": "Verify your understanding of project closure.",
+          "quiz_questions": [
+            {
+              "question": "What does a formal sign-off indicate?",
+              "options": ["The project is just starting", "The product meets all requirements and is ready for the business", "The code is being deleted", "A meeting with HR"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 129,
+      "title": "Project Beta: The Go-Live Day",
+      "tasks": [
+        {
+          "title": "Flipping the Switch",
+          "type": "reading",
+          "description": "Executing the final DNS switch to point the production domain to our K8s Ingress.",
+          "reading_content_md": "# The Launch\n\nToday we move from 'Pre-Production' to **Production**. We monitor the traffic logs and real-time dashboards as the first wave of real users enters the system. The 29-member team is on high alert for any 'Day 1' issues.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Launch Verification Task",
+          "type": "coding",
+          "description": "Write a Python script that tail-logs the Gateway and filters for any 500-level error codes in real-time.",
+          "coding_language": "python",
+          "coding_starter_code": "# live_monitor.py\n# TODO: Use subprocess to run 'kubectl logs -f gateway'\n# TODO: If line contains ' 500 ', print in red"
+        }
+      ]
+    },
+    {
+      "day": 130,
+      "title": "Hypercare Support: Day 1",
+      "tasks": [
+        {
+          "title": "Post-Launch Stability",
+          "type": "reading",
+          "description": "Starting the 30-day hypercare support phase to address immediate production feedback.",
+          "reading_time_minutes": 10
+        },
+        {
+          "title": "Support Logic Quiz",
+          "type": "quiz",
+          "description": "Check your understanding of post-launch support.",
+          "quiz_questions": [
+            {
+              "question": "What is 'Hypercare'?",
+              "options": ["Advanced medical insurance", "Intensive support period immediately following a production launch", "A type of fast-running code", "A hardware maintenance plan"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 131,
+      "title": "Project Beta: Lessons Learned",
+      "tasks": [
+        {
+          "title": "The Post-Mortem Retrospective",
+          "type": "reading",
+          "description": "Reviewing the 6-month journey of Project Beta and identifying key technical successes.",
+          "reading_content_md": "# Retrospective\n\nWe celebrate the delivery of a scalable, microservices-based enterprise app. We successfully integrated **Java/Spring Boot**, **React**, and **Kubernetes**. Lessons from this project will inform the next enterprise venture.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Retrospective Task",
+          "type": "coding",
+          "description": "Generate a 'Project Beta Summary' report as a JSON object.",
+          "coding_language": "json",
+          "coding_starter_code": "{\n  \"projectName\": \"Project Beta\",\n  \"duration\": \"6 Months\",\n  \"status\": \"COMPLETED\",\n  \"keyTechnologies\": [\"Java 21\", \"React\", \"K8s\"]\n}"
+        }
+      ]
+    },
+    {
+      "day": 132,
+      "title": "Official Handover & Project Closure",
+      "tasks": [
+        {
+          "title": "The 6-Month Finish Line",
+          "type": "reading",
+          "description": "Official project closure and handover of all repositories and documentation.",
+          "reading_content_md": "# Project Beta: Mission Accomplished\n\nThe Enterprise Web Application is live, stable, and supporting 10,000 users. The mission from Day 1—to build a scalable full-stack system—is complete. The team is now prepared for advanced features like AI-driven search and multi-cloud deployment.",
+          "reading_time_minutes": 15
+        },
+        {
+          "title": "Final Mastery Quiz",
+          "type": "quiz",
+          "description": "The ultimate final exam for the Project Beta full-stack curriculum.",
+          "quiz_questions": [
+            {
+              "question": "Which architecture pattern allowed us to scale services independently?",
+              "options": ["Monolithic", "Microservices", "Single-tier", "Mainframe"],
+              "correct_index": 1
+            },
+            {
+              "question": "What was the final environment used for production orchestration?",
+              "options": ["Docker Compose", "Kubernetes", "Vite", "Windows Server"],
+              "correct_index": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

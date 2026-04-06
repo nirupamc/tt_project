@@ -142,7 +142,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
         {(project.enrollment_start_date || project.start_date) && (
           <div className="flex items-center gap-2 mt-3 font-space text-[13px] text-[rgba(10,10,10,0.65)] font-medium">
             <Calendar className="h-4 w-4 text-[rgba(10,10,10,0.5)]" />
-            <span>Started {format(new Date(project.enrollment_start_date || project.start_date), 'MMMM d, yyyy')}</span>
+            <span>Started {format(new Date(project.enrollment_start_date || project.start_date || new Date()), 'MMMM d, yyyy')}</span>
           </div>
         )}
       </div>
