@@ -50,7 +50,18 @@ export default function EmployeeLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">TanTech Upskill</CardTitle>
+          <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center gap-3">
+              <img 
+                src="/logo.png" 
+                alt="Archway Logo" 
+                className="w-8 h-8 object-contain"
+              />
+              <div>
+                <CardTitle className="text-2xl font-bold font-bebas">ARCHWAY</CardTitle>
+              </div>
+            </div>
+          </div>
           <CardDescription>Sign in to your employee account</CardDescription>
         </CardHeader>
         <CardContent>

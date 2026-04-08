@@ -65,7 +65,7 @@ export default async function AdminOverviewPage() {
       <div className="mb-8">
         <h1 className="font-bebas text-4xl text-[#F5F5F0]">Overview</h1>
         <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">
-          Welcome to the TanTech Upskill admin panel
+          Welcome to the Archway admin panel
         </p>
       </div>
 

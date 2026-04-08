@@ -50,9 +50,20 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
       <Card className="w-full max-w-md bg-gray-800 border-gray-700">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-white">
-            TanTech Admin
-          </CardTitle>
+          <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center gap-3">
+              <img 
+                src="/logo.png" 
+                alt="Archway Logo" 
+                className="w-8 h-8 object-contain"
+              />
+              <div>
+                <CardTitle className="text-2xl font-bold text-white font-bebas">
+                  ARCHWAY
+                </CardTitle>
+              </div>
+            </div>
+          </div>
           <CardDescription className="text-gray-400">
             Sign in to the admin panel
           </CardDescription>
@@ -71,7 +82,7 @@ export default function AdminLoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@tantechllc.com"
+                placeholder="admin@archway.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

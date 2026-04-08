@@ -33,7 +33,7 @@ export function CreateEmployeeModal({
     password: "",
     hours_per_day: "8",
     hourly_rate: "0",
-    default_start_date: format(new Date(), 'yyyy-MM-dd'),
+    joining_date: format(new Date(), 'yyyy-MM-dd'),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,7 +54,7 @@ export function CreateEmployeeModal({
 
       toast.success("Employee created successfully");
       onOpenChange(false);
-      setFormData({ name: "", email: "", password: "", hours_per_day: "8", hourly_rate: "0", default_start_date: format(new Date(), 'yyyy-MM-dd') });
+      setFormData({ name: "", email: "", password: "", hours_per_day: "8", hourly_rate: "0", joining_date: format(new Date(), 'yyyy-MM-dd') });
       router.refresh();
     } catch (error) {
       toast.error(
@@ -153,19 +153,20 @@ export function CreateEmployeeModal({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="default_start_date" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Default Start Date</Label>
+              <Label htmlFor="joining_date" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Joining Date</Label>
               <Input
-                id="default_start_date"
+                id="joining_date"
                 type="date"
-                value={formData.default_start_date}
+                value={formData.joining_date}
                 onChange={(e) =>
-                  setFormData({ ...formData, default_start_date: e.target.value })
+                  setFormData({ ...formData, joining_date: e.target.value })
                 }
+                max={format(new Date(), 'yyyy-MM-dd')}
                 required
                 className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
               />
               <p className="font-space text-xs text-[rgba(245,245,240,0.4)]">
-                Used as default when assigning to projects
+                Date employee joined the company (used for tenure calculation)
               </p>
             </div>
           </div>

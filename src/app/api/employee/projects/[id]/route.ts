@@ -45,10 +45,11 @@ export async function GET(
       );
     }
 
-    // Add enrollment start_date to the response
+    // FEATURE 1: Add enrollment start_date to the response
+    // This is the assigned_date (when admin assigned the project)
     const projectWithEnrollment = {
       ...project,
-      enrollment_start_date: enrollment.start_date,
+      enrollment_start_date: enrollment.start_date, // This is the assigned_date
     };
 
     // Get days with tasks

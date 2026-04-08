@@ -35,8 +35,16 @@ export function Sidebar() {
   const NavContent = () => (
     <>
       <div className="px-6 py-6 border-b border-[rgba(255,215,0,0.2)]">
-        <h1 className="font-bebas text-[28px] text-[#FFD700] leading-none">TANTECH</h1>
-        <p className="font-space text-[11px] tracking-[4px] text-[rgba(245,245,240,0.4)] mt-1">UPSKILL</p>
+        <div className="flex items-center gap-3">
+          <img 
+            src="/logo.png" 
+            alt="Archway Logo" 
+            className="w-8 h-8 object-contain"
+          />
+          <div>
+            <h1 className="font-bebas text-[28px] text-[#FFD700] leading-none">ARCHWAY</h1>
+          </div>
+        </div>
       </div>
       <ScrollArea className="flex-1 px-3">
         <nav className="space-y-1">
@@ -79,7 +87,14 @@ export function Sidebar() {
     <>
       {/* Mobile header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A] border-b border-[rgba(255,215,0,0.2)] px-4 py-3 flex items-center justify-between">
-        <h1 className="font-bebas text-[22px] text-[#FFD700]">TANTECH</h1>
+        <div className="flex items-center gap-2">
+          <img 
+            src="/logo.png" 
+            alt="Archway Logo" 
+            className="w-6 h-6 object-contain"
+          />
+          <h1 className="font-bebas text-[22px] text-[#FFD700]">ARCHWAY</h1>
+        </div>
         <Button
           variant="ghost"
           size="icon"

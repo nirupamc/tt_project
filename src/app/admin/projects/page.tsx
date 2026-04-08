@@ -43,12 +43,17 @@ export default function ProjectsPage() {
     <div className="p-6 lg:p-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-bebas text-4xl text-[#F5F5F0]">Project Builder</h1>
+          <h1 className="font-bebas text-4xl text-[#F5F5F0]">
+            Project Builder
+          </h1>
           <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">
             Create and manage learning projects
           </p>
         </div>
-        <Button onClick={() => setCreateModalOpen(true)} className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150">
+        <Button
+          onClick={() => setCreateModalOpen(true)}
+          className="bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150"
+        >
           <Plus className="h-4 w-4 mr-2" />
           New Project
         </Button>
@@ -80,7 +85,10 @@ export default function ProjectsPage() {
               : "No projects yet."}
           </p>
           {!search && (
-            <Button className="mt-4 bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150" onClick={() => setCreateModalOpen(true)}>
+            <Button
+              className="mt-4 bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150"
+              onClick={() => setCreateModalOpen(true)}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Create Your First Project
             </Button>
@@ -89,7 +97,11 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onUpdate={fetchProjects}
+            />
           ))}
         </div>
       )}

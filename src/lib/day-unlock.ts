@@ -1,5 +1,5 @@
 /**
- * Day unlock logic for TanTech Upskill projects
+ * Day unlock logic for Archway projects
  * Days unlock at 9:00 AM Central Time (CT) based on project start date
  */
 

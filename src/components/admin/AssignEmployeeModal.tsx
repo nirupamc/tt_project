@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
@@ -38,12 +39,17 @@ export function AssignEmployeeModal({
   const [employees, setEmployees] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [customStartDate, setCustomStartDate] = useState<string>(
+    format(new Date(), 'yyyy-MM-dd')
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (open) {
       fetchEmployees();
       setSelectedIds([]);
+      // Reset to today's date when modal opens
+      setCustomStartDate(format(new Date(), 'yyyy-MM-dd'));
     }
   }, [open]);
 
@@ -74,14 +80,12 @@ export function AssignEmployeeModal({
     setIsSubmitting(true);
 
     try {
-      // Create enrollments with each employee's default_start_date
-      const enrollmentsToCreate = selectedIds.map(userId => {
-        const employee = employees.find(e => e.id === userId);
-        return {
-          user_id: userId,
-          start_date: employee?.default_start_date || format(new Date(), 'yyyy-MM-dd'),
-        };
-      });
+      // Use the custom start date selected by admin
+      // If admin sets a past date, all days from that date to today will be unlocked
+      const enrollmentsToCreate = selectedIds.map(userId => ({
+        user_id: userId,
+        start_date: customStartDate, // Custom start date from date picker
+      }));
 
       const res = await fetch(`/api/admin/projects/${projectId}/enrollments`, {
         method: "POST",
@@ -94,7 +98,7 @@ export function AssignEmployeeModal({
         throw new Error(error.message || "Failed to assign employees");
       }
 
-      toast.success(`${selectedIds.length} employee(s) assigned successfully`);
+      toast.success(`${selectedIds.length} employee(s) assigned successfully with start date ${customStartDate}`);
       onOpenChange(false);
       onSuccess?.();
       router.refresh();
@@ -119,11 +123,30 @@ export function AssignEmployeeModal({
         <DialogHeader className="border-b border-[rgba(255,215,0,0.1)] pb-4">
           <DialogTitle className="font-space text-lg font-semibold text-[#F5F5F0]">Assign Employees</DialogTitle>
           <DialogDescription className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">
-            Select employees to enroll. Each will use their default start date.
+            Select employees to enroll and set their project start date.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="py-4">
+        <div className="py-4 space-y-4">
+          {/* Custom Start Date Picker */}
+          <div className="space-y-2">
+            <Label htmlFor="start-date" className="font-space text-[14px] font-medium text-[#F5F5F0]">
+              Project Start Date
+            </Label>
+            <Input
+              id="start-date"
+              type="date"
+              value={customStartDate}
+              onChange={(e) => setCustomStartDate(e.target.value)}
+              max={format(new Date(), 'yyyy-MM-dd')}
+              className="bg-[#1A1A1A] border-[rgba(255,215,0,0.2)] text-[#F5F5F0] font-space focus:border-[#FFD700] focus:ring-[#FFD700]"
+            />
+            <p className="font-space text-[11px] text-[rgba(245,245,240,0.4)] italic">
+              All days from this date until today will be unlocked immediately.
+            </p>
+          </div>
+
+          {/* Employee Selection */}
           {loading ? (
             <div className="space-y-2">
               {[...Array(5)].map((_, i) => (

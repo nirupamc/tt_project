@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
+import { getCompletedDummyProjects } from "@/lib/completed-projects";
 
-// GET employee's enrolled projects
+// GET employee's enrolled projects (including dummy completed projects)
 export async function GET() {
   try {
     const session = await auth();
@@ -11,6 +12,13 @@ export async function GET() {
     }
 
     const supabase = createAdminClient();
+
+    // First, get user's joining_date for dummy projects calculation
+    const { data: userData } = await supabase
+      .from("users")
+      .select("joining_date")
+      .eq("id", session.user.id)
+      .single();
 
     // Get enrollments with project details
     const { data: enrollments, error } = await supabase
@@ -25,11 +33,18 @@ export async function GET() {
 
     if (error) throw error;
 
-    // For each project, calculate progress
+    // For each project, calculate progress and add assigned_date
     const projectsWithProgress = await Promise.all(
       (enrollments || []).map(async (enrollment) => {
         const project = enrollment.project;
         if (!project) return null;
+
+        // FEATURE 1: Use assigned_date from enrollment (this is start_date field)
+        const assignedDate = enrollment.start_date;
+        
+        if (!assignedDate) {
+          console.warn(`Missing assigned_date for enrollment ${enrollment.id}, falling back to today`);
+        }
 
         // Get total days with tasks
         const { count: totalDays } = await supabase
@@ -49,15 +64,26 @@ export async function GET() {
 
         return {
           ...project,
+          assigned_date: assignedDate || new Date().toISOString().split('T')[0], // Fallback to today
           progress: {
             completed_days: completedDayIds.size,
             total_days: totalDays || project.total_days,
           },
+          is_dummy: false,
         };
       }),
     );
 
-    return NextResponse.json(projectsWithProgress.filter(Boolean));
+    // FEATURE 2: Get dummy completed projects based on tenure
+    const dummyProjects = getCompletedDummyProjects(userData?.joining_date || null);
+
+    // Merge dummy and real projects
+    const allProjects = [
+      ...dummyProjects,
+      ...projectsWithProgress.filter(Boolean),
+    ];
+
+    return NextResponse.json(allProjects);
   } catch (error) {
     console.error("Error fetching employee projects:", error);
     return NextResponse.json(

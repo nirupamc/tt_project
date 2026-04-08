@@ -43,9 +43,16 @@ export function EmployeeNav() {
           <div className="flex items-center gap-8">
             <Link
               href="/dashboard"
-              className="font-bebas text-[22px] text-[#FFD700]"
+              className="flex items-center gap-2"
             >
-              TANTECH UPSKILL
+              <img 
+                src="/logo.png" 
+                alt="Archway Logo" 
+                className="w-6 h-6 object-contain"
+              />
+              <span className="font-bebas text-[22px] text-[#FFD700]">
+                ARCHWAY
+              </span>
             </Link>
             <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => {

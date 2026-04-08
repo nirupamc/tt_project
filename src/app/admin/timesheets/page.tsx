@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from "react";
+import { format, addMonths, subMonths, isFuture } from "date-fns";
+import { ChevronLeft, ChevronRight, Clock, User, Eye, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -15,476 +18,276 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import type { Timesheet, User, Project } from '@/types';
-import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO } from 'date-fns';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Clock, Download, Flame, Target, TrendingUp, Users } from 'lucide-react';
-import { toast } from 'sonner';
+  generateTimesheetEntries,
+  calculateSummary,
+} from "@/lib/timesheet";
 
-interface TimesheetWithRelations extends Timesheet {
-  user: User;
-  project: Project;
+interface Employee {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  joining_date: string;
+  hours_per_day: number;
 }
 
-type DateRange = 'thisWeek' | 'lastWeek' | 'thisMonth';
+interface EmployeeTimesheetSummary extends Employee {
+  weekHours: number;
+  monthHours: number;
+}
 
 export default function AdminTimesheetsPage() {
-  const [timesheets, setTimesheets] = useState<TimesheetWithRelations[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [employees, setEmployees] = useState<EmployeeTimesheetSummary[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedUserId, setSelectedUserId] = useState<string>('');
-  const [dateRange, setDateRange] = useState<DateRange>('thisWeek');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const fetchUsers = async () => {
+  useEffect(() => {
+    fetchEmployees();
+  }, [selectedDate]);
+
+  const fetchEmployees = async () => {
     try {
-      const res = await fetch('/api/admin/employees');
+      const res = await fetch("/api/admin/employees");
       if (res.ok) {
         const data = await res.json();
-        setUsers(data);
+        
+        // Calculate timesheet summaries for each employee
+        const summaries: EmployeeTimesheetSummary[] = data.map((emp: Employee) => {
+          // Generate timesheet entries for each employee
+          const entries = generateTimesheetEntries(
+            emp.joining_date,
+            emp.hours_per_day || 8
+          );
+
+          // Calculate summaries
+          const weekSummary = calculateSummary(entries, "week");
+          const monthSummary = calculateSummary(entries, "month");
+
+          return {
+            ...emp,
+            weekHours: weekSummary.total_hours_worked,
+            monthHours: monthSummary.total_hours_worked,
+          };
+        });
+
+        setEmployees(summaries);
       }
     } catch (error) {
-      console.error('Failed to fetch users:', error);
-    }
-  };
-
-  const fetchProjects = async () => {
-    try {
-      const res = await fetch('/api/admin/projects');
-      if (res.ok) {
-        const data = await res.json();
-        setProjects(data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch projects:', error);
-    }
-  };
-
-  const getDateRangeParams = () => {
-    const now = new Date();
-    let start: Date, end: Date;
-
-    switch (dateRange) {
-      case 'thisWeek':
-        start = startOfWeek(now, { weekStartsOn: 1 });
-        end = endOfWeek(now, { weekStartsOn: 1 });
-        break;
-      case 'lastWeek':
-        const lastWeek = subDays(now, 7);
-        start = startOfWeek(lastWeek, { weekStartsOn: 1 });
-        end = endOfWeek(lastWeek, { weekStartsOn: 1 });
-        break;
-      case 'thisMonth':
-        start = startOfMonth(now);
-        end = endOfMonth(now);
-        break;
-      default:
-        start = startOfWeek(now, { weekStartsOn: 1 });
-        end = endOfWeek(now, { weekStartsOn: 1 });
-    }
-
-    return {
-      startDate: format(start, 'yyyy-MM-dd'),
-      endDate: format(end, 'yyyy-MM-dd'),
-    };
-  };
-
-  const fetchTimesheets = async () => {
-    setLoading(true);
-    try {
-      const { startDate, endDate } = getDateRangeParams();
-      const params = new URLSearchParams();
-      params.set('startDate', startDate);
-      params.set('endDate', endDate);
-
-      const res = await fetch(`/api/admin/timesheets?${params}`);
-      if (res.ok) {
-        const data = await res.json();
-        setTimesheets(data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch timesheets:', error);
+      console.error("Failed to fetch employees:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-    fetchProjects();
-  }, []);
+  const filteredEmployees = employees.filter((emp) =>
+    emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    emp.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  useEffect(() => {
-    fetchTimesheets();
-  }, [dateRange]);
-
-  const exportCSV = () => {
-    const headers = ['Employee', 'Email', 'Date', 'Project', 'Hours', 'Notes'];
-    const rows = filteredTimesheets.map(ts => [
-      ts.user?.name || 'Unknown',
-      ts.user?.email || '',
-      format(parseISO(ts.work_date as any), 'yyyy-MM-dd'),
-      ts.project?.title || 'N/A',
-      Number(ts.hours_logged).toFixed(1),
-      ts.notes || ''
-    ]);
-
-    const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `timesheets-${format(new Date(), 'yyyy-MM-dd')}.csv`;
-    a.click();
-    toast.success('Timesheet exported successfully');
-  };
-
-  const filteredTimesheets = selectedUserId
-    ? timesheets.filter(ts => ts.user?.id === selectedUserId)
-    : timesheets;
-
-  // Calculate stats
-  const totalHours = filteredTimesheets.reduce((sum, t) => sum + Number(t.hours_logged), 0);
-  const uniqueDays = new Set(filteredTimesheets.map(t => t.work_date)).size;
-  const dailyAverage = uniqueDays > 0 ? totalHours / uniqueDays : 0;
-  const targetHours = dateRange === 'thisMonth' ? 140 : 35; // 35h/week, 140h/month
-  const targetMet = totalHours >= targetHours;
-
-  // Calculate streak for selected user
-  let streak = 0;
-  if (selectedUserId) {
-    const userTimesheets = timesheets.filter(ts => ts.user?.id === selectedUserId);
-    const sortedDates = [...new Set(userTimesheets.map(t => t.work_date))].sort().reverse();
-    let lastDate = new Date();
-    for (const dateStr of sortedDates) {
-      const date = parseISO(dateStr as any);
-      const diffDays = Math.floor((lastDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-      if (diffDays <= 1) {
-        streak++;
-        lastDate = date;
-      } else {
-        break;
-      }
-    }
-  }
-
-  // Chart data for selected user
-  const chartData = selectedUserId
-    ? (() => {
-        const days = Array.from(new Set(filteredTimesheets.map(ts => ts.work_date))).sort();
-        return days.map(day => ({
-          date: format(parseISO(day as any), 'MMM d'),
-          hours: filteredTimesheets
-            .filter(ts => ts.work_date === day)
-            .reduce((sum, ts) => sum + Number(ts.hours_logged), 0),
-        }));
-      })()
-    : [];
-
-  // User summary data
-  const userSummaries = users.map(user => {
-    const userSheets = timesheets.filter(ts => ts.user?.id === user.id);
-    const hours = userSheets.reduce((sum, ts) => sum + Number(ts.hours_logged), 0);
-    const userDays = new Set(userSheets.map(ts => ts.work_date)).size;
-    
-    // Calculate streak
-    const sortedDates = [...new Set(userSheets.map(t => t.work_date))].sort().reverse();
-    let userStreak = 0;
-    let lastDate = new Date();
-    for (const dateStr of sortedDates) {
-      const date = parseISO(dateStr as any);
-      const diffDays = Math.floor((lastDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-      if (diffDays <= 1) {
-        userStreak++;
-        lastDate = date;
-      } else {
-        break;
-      }
-    }
-
-    return {
-      user,
-      hours,
-      target: targetHours,
-      streak: userStreak,
-      status: hours >= targetHours ? 'On Track' : 'Behind',
-    };
-  });
+  const totalWeekHours = filteredEmployees.reduce((sum, emp) => sum + emp.weekHours, 0);
+  const totalMonthHours = filteredEmployees.reduce((sum, emp) => sum + emp.monthHours, 0);
 
   return (
-    <div className="p-6 lg:p-8">
+    <div className="p-8">
+      {/* Header */}
       <div className="mb-8">
-        <h1 className="font-bebas text-4xl text-[#F5F5F0]">Timesheets</h1>
-        <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">Track employee work hours across all projects</p>
+        <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">
+          TIMESHEETS
+        </h1>
+        <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] mt-1 font-medium">
+          Monitor employee hours and attendance
+        </p>
       </div>
 
-      {/* Controls Bar */}
-      <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl mb-6">
-        <CardContent className="pt-6">
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="space-y-2">
-              <Label className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Employee</Label>
-              <Select value={selectedUserId} onValueChange={(value) => setSelectedUserId(value || '')}>
-                <SelectTrigger className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
-                  <SelectValue placeholder="All Employees" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1A1A1A] border-[rgba(255,215,0,0.15)]">
-                  <SelectItem value="">All Employees</SelectItem>
-                  {users.map((u) => (
-                    <SelectItem key={u.id} value={u.id}>
-                      {u.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card className="bg-gradient-to-br from-[#FFD700] to-[#C8A800] text-[#0A0A0A] border-0">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80 flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              This Week Total
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl tracking-wider">
+              {totalWeekHours}hrs
             </div>
-
-            <div className="space-y-2">
-              <Label className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Date Range</Label>
-              <Select value={dateRange} onValueChange={(v) => setDateRange(v as DateRange)}>
-                <SelectTrigger className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1A1A1A] border-[rgba(255,215,0,0.15)]">
-                  <SelectItem value="thisWeek">This Week</SelectItem>
-                  <SelectItem value="lastWeek">Last Week</SelectItem>
-                  <SelectItem value="thisMonth">This Month</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="font-space text-[12px] opacity-70 mt-1">
+              Across {filteredEmployees.length} employees
             </div>
+          </CardContent>
+        </Card>
 
-            <div className="space-y-2">
-              <Label className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">Actions</Label>
-              <Button
-                onClick={exportCSV}
-                disabled={filteredTimesheets.length === 0}
-                className="w-full bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold tracking-wider rounded-md px-5 py-2.5 hover:bg-[#FFE44D] hover:-translate-y-0.5 active:bg-[#C8A800] active:scale-[0.97] transition-all duration-150"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Export CSV
-              </Button>
+        <Card className="bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] text-[#FFD700] border-0">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80 flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              This Month Total
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl tracking-wider">
+              {totalMonthHours}hrs
             </div>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="font-space text-[12px] opacity-70 mt-1">
+              {format(selectedDate, "MMMM yyyy")}
+            </div>
+          </CardContent>
+        </Card>
 
-      {loading ? (
-        <div className="space-y-4">
-          {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-32 bg-[#2A2A2A]" />
-          ))}
+        <Card className="bg-white border border-[rgba(10,10,10,0.08)]">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase text-[rgba(10,10,10,0.7)] flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Active Employees
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl tracking-wider text-[#0A0A0A]">
+              {filteredEmployees.length}
+            </div>
+            <div className="font-space text-[12px] text-[rgba(10,10,10,0.6)] mt-1">
+              Total in system
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <Input
+          placeholder="Search employees..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="max-w-sm font-space text-[14px]"
+        />
+
+        <div className="flex items-center gap-2 ml-auto">
+          <Button 
+            onClick={() => setSelectedDate(subMonths(selectedDate, 1))} 
+            variant="outline" 
+            size="sm"
+            className="font-space text-[12px]"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <span className="font-space text-[14px] font-medium text-[#0A0A0A] min-w-[120px] text-center">
+            {format(selectedDate, "MMMM yyyy")}
+          </span>
+          <Button 
+            onClick={() => setSelectedDate(addMonths(selectedDate, 1))} 
+            variant="outline" 
+            size="sm"
+            disabled={isFuture(addMonths(selectedDate, 1))}
+            className="font-space text-[12px]"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
-      ) : selectedUserId ? (
-        <>
-          {/* Selected Employee View - Two Panels */}
-          <div className="grid gap-6 md:grid-cols-2 mb-6">
-            {/* Left: Summary Stats */}
-            <div className="space-y-4">
-              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
-                <CardHeader className="pb-2">
-                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-[#FFD700]" />
-                    Total Hours
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{totalHours.toFixed(1)}h</div>
-                  <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)] mt-1">of {targetHours}h target</p>
-                </CardContent>
-              </Card>
+      </div>
 
-              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
-                <CardHeader className="pb-2">
-                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-[#FFD700]" />
-                    Daily Average
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{dailyAverage.toFixed(1)}h</div>
-                  <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)] mt-1">per day</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
-                <CardHeader className="pb-2">
-                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
-                    <Target className="h-5 w-5 text-[#FFD700]" />
-                    Target Status
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant={targetMet ? "default" : "secondary"} className={targetMet ? "bg-[rgba(34,197,94,0.12)] text-[#4ade80] border border-[rgba(74,222,128,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
-                    {targetMet ? '✓ On Track' : 'Behind'}
-                  </Badge>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl hover:border-[rgba(255,215,0,0.3)] hover:bg-[#2A2A2A] hover:-translate-y-0.5 transition-all duration-200 border-l-[3px] border-l-[#FFD700]">
-                <CardHeader className="pb-2">
-                  <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(245,245,240,0.5)] flex items-center gap-2">
-                    <Flame className="h-5 w-5 text-[#FFD700]" />
-                    Streak
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="font-bebas text-[42px] text-[#F5F5F0] leading-none">{streak}</div>
-                  <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)] mt-1">consecutive days</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right: Area Chart */}
-            <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
-              <CardHeader>
-                <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Hours Trend</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {chartData.length === 0 ? (
-                  <div className="h-[400px] flex items-center justify-center">
-                    <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No data available</p>
+      {/* Employee Table */}
+      <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-[rgba(10,10,10,0.03)] border-b border-[rgba(10,10,10,0.08)]">
+              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A]">
+                Employee Name
+              </TableHead>
+              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A]">
+                Role
+              </TableHead>
+              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A]">
+                Joining Date
+              </TableHead>
+              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
+                Hours/Day
+              </TableHead>
+              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
+                This Week (hrs)
+              </TableHead>
+              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
+                This Month (hrs)
+              </TableHead>
+              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
+                Action
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              [...Array(5)].map((_, idx) => (
+                <TableRow key={idx}>
+                  <TableCell><Skeleton className="h-4 w-32 bg-[rgba(10,10,10,0.05)]" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-24 bg-[rgba(10,10,10,0.05)]" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-20 bg-[rgba(10,10,10,0.05)]" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-12 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-12 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-12 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
+                  <TableCell><Skeleton className="h-8 w-16 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
+                </TableRow>
+              ))
+            ) : filteredEmployees.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-8">
+                  <div className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
+                    {searchTerm ? "No employees found matching your search." : "No employees found."}
                   </div>
-                ) : (
-                  <ResponsiveContainer width="100%" height={400}>
-                    <AreaChart data={chartData}>
-                      <defs>
-                        <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#FFD700" stopOpacity={0.3} />
-                          <stop offset="95%" stopColor="#FFD700" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,215,0,0.1)" />
-                      <XAxis dataKey="date" stroke="rgba(245,245,240,0.5)" style={{ fontFamily: 'var(--font-space)', fontSize: 11 }} />
-                      <YAxis stroke="rgba(245,245,240,0.5)" style={{ fontFamily: 'var(--font-space)', fontSize: 11 }} />
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: '#1A1A1A',
-                          border: '1px solid rgba(255,215,0,0.15)',
-                          borderRadius: '8px',
-                          color: '#F5F5F0',
-                          fontFamily: 'var(--font-space)',
-                        }}
-                        formatter={(value: any) => [`${value}h`, 'Hours']}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="hours"
-                        stroke="#FFD700"
-                        strokeWidth={2}
-                        fillOpacity={1}
-                        fill="url(#colorHours)"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sessions Table */}
-          <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
-            <CardHeader>
-              <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Work Sessions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-[rgba(255,215,0,0.08)] hover:bg-transparent">
-                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Date</TableHead>
-                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Project</TableHead>
-                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Hours</TableHead>
-                    <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Notes</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredTimesheets.map((ts) => (
-                    <TableRow key={ts.id} className="border-b border-[rgba(255,215,0,0.06)] hover:bg-[rgba(255,215,0,0.03)]">
-                      <TableCell className="font-space text-[13px] text-[#F5F5F0]">
-                        {format(parseISO(ts.work_date as any), 'EEE, MMM d, yyyy')}
-                      </TableCell>
-                      <TableCell className="font-space text-[13px] text-[#F5F5F0]">{ts.project?.title || 'N/A'}</TableCell>
-                      <TableCell className="font-space text-[13px] text-[#F5F5F0] font-medium">
-                        {Number(ts.hours_logged).toFixed(1)}h
-                      </TableCell>
-                      <TableCell className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">{ts.notes || '-'}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </>
-      ) : (
-        <>
-          {/* All Employees Table */}
-          <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
-            <CardHeader>
-              <CardTitle className="font-bebas text-2xl text-[#F5F5F0] flex items-center gap-2">
-                <Users className="h-5 w-5 text-[#FFD700]" />
-                All Employees
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {userSummaries.length === 0 ? (
-                <div className="py-12 text-center">
-                  <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No timesheet data available</p>
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-[rgba(255,215,0,0.08)] hover:bg-transparent">
-                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Employee</TableHead>
-                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Period Hours</TableHead>
-                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Target</TableHead>
-                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Streak</TableHead>
-                      <TableHead className="bg-[rgba(255,215,0,0.05)] text-[#FFD700] uppercase text-[11px] tracking-[2px] font-space">Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {userSummaries.map(({ user, hours, target, streak, status }) => {
-                      const initials = user.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || '?';
-                      return (
-                        <TableRow key={user.id} className="border-b border-[rgba(255,215,0,0.06)] hover:bg-[rgba(255,215,0,0.03)]">
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <Avatar className="h-8 w-8 border-2 border-[#FFD700]">
-                                <AvatarImage src={user.avatar_url || undefined} />
-                                <AvatarFallback className="bg-[#1A1A1A] text-[#F5F5F0] font-space text-xs">{initials}</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className="font-space font-medium text-[#F5F5F0]">{user.name}</p>
-                                <p className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">{user.email}</p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell className="font-space text-[13px] text-[#F5F5F0] font-medium">{hours.toFixed(1)}h</TableCell>
-                          <TableCell className="font-space text-[13px] text-[#F5F5F0]">{target}h</TableCell>
-                          <TableCell className="font-space text-[13px] text-[#F5F5F0]">
-                            {streak >= 3 ? '🔥 ' : ''}{streak} days
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant={status === 'On Track' ? 'default' : 'secondary'} className={status === 'On Track' ? "bg-[rgba(34,197,94,0.12)] text-[#4ade80] border border-[rgba(74,222,128,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
-                              {status}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
-        </>
-      )}
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredEmployees.map((emp) => (
+                <TableRow 
+                  key={emp.id}
+                  className="border-b border-[rgba(10,10,10,0.08)] hover:bg-[rgba(255,215,0,0.02)]"
+                >
+                  <TableCell className="font-space text-[14px] text-[#0A0A0A] font-medium">
+                    <div>
+                      <div>{emp.name}</div>
+                      <div className="font-space text-[12px] text-[rgba(10,10,10,0.6)] mt-1">
+                        {emp.email}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-space text-[14px] text-[rgba(10,10,10,0.7)]">
+                    <span className="inline-block px-2 py-1 bg-[rgba(10,10,10,0.05)] rounded text-[12px] font-medium">
+                      {emp.role}
+                    </span>
+                  </TableCell>
+                  <TableCell className="font-space text-[14px] text-[rgba(10,10,10,0.7)]">
+                    {emp.joining_date ? format(new Date(emp.joining_date), "MMM d, yyyy") : "—"}
+                  </TableCell>
+                  <TableCell className="font-space text-[14px] text-[#0A0A0A] font-semibold text-center">
+                    {emp.hours_per_day || 8}
+                  </TableCell>
+                  <TableCell className="font-space text-[14px] text-[#FFD700] font-semibold text-center">
+                    {emp.weekHours}
+                  </TableCell>
+                  <TableCell className="font-space text-[14px] text-[#FFD700] font-semibold text-center">
+                    {emp.monthHours}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <a href={`/admin/timesheets/${emp.id}`}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="font-space text-[12px] hover:bg-[rgba(255,215,0,0.1)] hover:border-[#FFD700]"
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        View
+                      </Button>
+                    </a>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </Card>
     </div>
   );
 }

@@ -92,6 +92,38 @@ export async function PUT(
   }
 }
 
+// PATCH partial update project (for publish/unpublish)
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id } = await params;
+    const body = await request.json();
+    const supabase = createAdminClient();
+
+    const { data: project, error } = await supabase
+      .from("projects")
+      .update({
+        ...body,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json(project);
+  } catch (error) {
+    console.error("Error updating project:", error);
+    return NextResponse.json(
+      { message: "Failed to update project" },
+      { status: 500 },
+    );
+  }
+}
+
 // DELETE project
 export async function DELETE(
   request: Request,

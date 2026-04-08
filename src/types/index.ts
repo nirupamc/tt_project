@@ -1,4 +1,4 @@
-// Database types for TanTech Upskill
+// Database types for Archway
 
 export type UserRole = "admin" | "employee";
 export type TaskType = "reading" | "coding" | "quiz" | "video";
@@ -13,6 +13,7 @@ export interface User {
   hours_per_day: number;
   hourly_rate: number;
   default_start_date: string | null;
+  joining_date: string | null; // Added for tenure calculation
   created_at: string;
 }
 
@@ -68,8 +69,19 @@ export interface Enrollment {
   id: string;
   user_id: string;
   project_id: string;
-  start_date: string;
+  start_date: string; // This is the assigned_date (when admin assigned it)
   enrolled_at: string;
+}
+
+// Dummy completed project (not in database)
+export interface CompletedDummyProject {
+  id: string;
+  title: string;
+  description: string;
+  duration_months: number;
+  status: 'completed';
+  progress: number; // Always 100
+  is_dummy: true;
 }
 
 export interface TaskCompletion {

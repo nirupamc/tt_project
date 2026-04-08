@@ -3,17 +3,22 @@
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmployeeProjectCard } from "@/components/employee/ProjectCard";
-import type { Project } from "@/types";
+import type { Project, CompletedDummyProject } from "@/types";
 
 interface ProjectWithProgress extends Project {
   progress?: {
     completed_days: number;
     total_days: number;
   };
+  assigned_date?: string;
+  is_dummy?: boolean;
 }
 
+// Union type for both real and dummy projects
+type DashboardProject = ProjectWithProgress | CompletedDummyProject;
+
 export default function EmployeeDashboardPage() {
-  const [projects, setProjects] = useState<ProjectWithProgress[]>([]);
+  const [projects, setProjects] = useState<DashboardProject[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,7 +27,27 @@ export default function EmployeeDashboardPage() {
         const res = await fetch("/api/employee/projects");
         if (res.ok) {
           const data = await res.json();
-          setProjects(data);
+          
+          // FEATURE 2: Sort projects - completed first (oldest first), then active
+          const sortedProjects = data.sort((a: DashboardProject, b: DashboardProject) => {
+            // Check if projects are dummy completed projects
+            const aIsDummy = 'is_dummy' in a && a.is_dummy;
+            const bIsDummy = 'is_dummy' in b && b.is_dummy;
+            
+            // Completed projects first
+            if (aIsDummy && !bIsDummy) return -1;
+            if (!aIsDummy && bIsDummy) return 1;
+            
+            // Both completed - maintain order (already ordered by tenure)
+            if (aIsDummy && bIsDummy) return 0;
+            
+            // Both active - sort by assigned_date (newest first)
+            const aDate = 'assigned_date' in a ? a.assigned_date : '';
+            const bDate = 'assigned_date' in b ? b.assigned_date : '';
+            return (bDate || '').localeCompare(aDate || '');
+          });
+          
+          setProjects(sortedProjects);
         }
       } catch (error) {
         console.error("Failed to fetch projects:", error);
@@ -63,13 +88,23 @@ export default function EmployeeDashboardPage() {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <EmployeeProjectCard
-              key={project.id}
-              project={project}
-              progress={project.progress}
-            />
-          ))}
+          {projects.map((project) => {
+            // Extract progress - handle both dummy and real projects
+            const isDummy = 'is_dummy' in project && project.is_dummy;
+            const progressData = isDummy 
+              ? undefined 
+              : 'progress' in project && typeof project.progress === 'object' 
+                ? project.progress 
+                : undefined;
+            
+            return (
+              <EmployeeProjectCard
+                key={project.id}
+                project={project}
+                progress={progressData}
+              />
+            );
+          })}
         </div>
       )}
     </div>

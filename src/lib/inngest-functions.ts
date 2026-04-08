@@ -5,8 +5,8 @@ import { getUnlockedDayCount } from "./day-unlock";
 
 // Create a local Inngest client instance to avoid circular dependency
 const inngest = new Inngest({
-  id: "tantech-upskill",
-  name: "TanTech Upskill",
+  id: "archway",
+  name: "Archway",
 });
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -51,17 +51,32 @@ export const dailyReminder = inngest.createFunction(
       }
 
       let emailsSent = 0;
-      const today = new Date().toISOString().split('T')[0];
 
       for (const enrollment of enrollments) {
         try {
-          const user = enrollment.users as any;
-          const project = enrollment.projects as any;
+          // Supabase returns related data, but TypeScript needs proper typing
+          const enrollmentData = enrollment as unknown as {
+            id: string;
+            user_id: string;
+            project_id: string;
+            start_date: string | null;
+            users: { id: string; name: string; email: string };
+            projects: { 
+              id: string; 
+              title: string; 
+              total_days: number;
+              is_active: boolean;
+              daily_reminder_emails: boolean;
+            };
+          };
           
-          if (!enrollment.start_date) continue;
+          const user = enrollmentData.users;
+          const project = enrollmentData.projects;
+          
+          if (!enrollmentData.start_date) continue;
 
           // Calculate which day should be unlocked today
-          const unlockedDays = getUnlockedDayCount(enrollment.start_date, project.total_days);
+          const unlockedDays = getUnlockedDayCount(enrollmentData.start_date, project.total_days);
           
           if (unlockedDays === 0) {
             // Project hasn't started yet for this employee
@@ -101,7 +116,12 @@ export const dailyReminder = inngest.createFunction(
             .eq("project_day_id", projectDay.id);
 
           const completedTaskIds = new Set(completions?.map(c => c.task_id) || []);
-          const remainingTasks = (projectDay.tasks as any[]).filter(
+          const remainingTasks = (projectDay.tasks as Array<{
+            id: string;
+            title: string;
+            task_type: string;
+            is_required: boolean;
+          }>).filter(
             task => task.is_required && !completedTaskIds.has(task.id)
           );
 
@@ -150,7 +170,11 @@ function generateEmailHTML({
   projectTitle: string;
   dayNumber: number;
   dayTitle: string | null;
-  tasks: any[];
+  tasks: Array<{
+    title: string;
+    task_type: string;
+    is_required: boolean;
+  }>;
   projectId: string;
 }) {
   const taskList = tasks.map(task => {

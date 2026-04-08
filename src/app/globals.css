@@ -50,7 +50,7 @@
 }
 
 :root {
-  /* TanTech Brand Colors */
+  /* Archway Brand Colors */
   --tt-black: #0a0a0a;
   --tt-yellow: #ffd700;
   --tt-yellow-light: #ffe44d;
@@ -96,7 +96,7 @@
 }
 
 .dark {
-  /* TanTech Dark Theme */
+  /* Archway Dark Theme */
   --background: #0a0a0a;
   --foreground: #f5f5f0;
   --card: #1a1a1a;

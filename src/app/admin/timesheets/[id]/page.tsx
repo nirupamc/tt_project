@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { format, startOfWeek, addWeeks, subWeeks, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isWeekend, isFuture, isSameWeek, parseISO } from "date-fns";
-import { ChevronLeft, ChevronRight, Calendar, Clock, Target, Flame } from "lucide-react";
+import { useState, useEffect, use } from "react";
+import { notFound } from "next/navigation";
+import { format, startOfWeek, addWeeks, subWeeks, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isWeekend, isFuture } from "date-fns";
+import { ChevronLeft, ChevronRight, Calendar, User, ArrowLeft, Clock, Target, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
+import Link from "next/link";
 import {
   generateTimesheetEntries,
   calculateSummary,
@@ -16,42 +18,199 @@ import {
   type TimesheetEntry,
 } from "@/lib/timesheet";
 
-type ViewMode = "day" | "week" | "month" | "chart";
+type ViewMode = "chart" | "day" | "week" | "month";
 
-export default function EmployeeTimesheetPage() {
+interface Employee {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  joining_date: string;
+  hours_per_day: number;
+}
+
+export default function AdminEmployeeTimesheetPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
   const [loading, setLoading] = useState(true);
+  const [employee, setEmployee] = useState<Employee | null>(null);
   const [entries, setEntries] = useState<TimesheetEntry[]>([]);
   const [viewMode, setViewMode] = useState<ViewMode>("chart");
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [joiningDate, setJoiningDate] = useState<string | null>(null);
-  const [hoursPerDay, setHoursPerDay] = useState<number>(8);
 
   useEffect(() => {
     fetchEmployeeData();
-  }, []);
+  }, [resolvedParams.id]);
 
   const fetchEmployeeData = async () => {
     try {
-      const res = await fetch("/api/employee/profile");
-      if (res.ok) {
-        const data = await res.json();
-        setJoiningDate(data.joining_date);
-        setHoursPerDay(data.hours_per_day || 8);
-        
-        // Generate timesheet entries
-        const generated = generateTimesheetEntries(
-          data.joining_date,
-          data.hours_per_day
-        );
-        setEntries(generated);
+      const res = await fetch(`/api/admin/employees/${resolvedParams.id}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          notFound();
+        }
+        throw new Error("Failed to fetch employee");
       }
+
+      const data = await res.json();
+      setEmployee(data);
+
+      // Generate timesheet entries
+      const generated = generateTimesheetEntries(
+        data.joining_date,
+        data.hours_per_day || 8
+      );
+      setEntries(generated);
     } catch (error) {
       console.error("Failed to fetch employee data:", error);
+      notFound();
     } finally {
       setLoading(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="p-8 space-y-6">
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-6 w-6 bg-[rgba(10,10,10,0.05)]" />
+          <Skeleton className="h-8 w-48 bg-[rgba(10,10,10,0.05)]" />
+        </div>
+        <Skeleton className="h-32 w-full bg-[rgba(10,10,10,0.05)]" />
+        <Skeleton className="h-96 w-full bg-[rgba(10,10,10,0.05)]" />
+      </div>
+    );
+  }
+
+  if (!employee) {
+    notFound();
+  }
+
+  const weekSummary = calculateSummary(entries, "week");
+  const monthSummary = calculateSummary(entries, "month");
+
+  // Empty state
+  if (entries.length === 0) {
+    return (
+      <div className="p-8">
+        <div className="flex items-center gap-4 mb-8">
+          <Link href="/admin/timesheets">
+            <Button variant="ghost" size="sm">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div>
+            <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">
+              {employee.name.toUpperCase()}
+            </h1>
+            <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)]">
+              {employee.role} • {employee.email}
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl p-12 text-center">
+          <Calendar className="h-16 w-16 text-[rgba(10,10,10,0.3)] mx-auto mb-4" />
+          <h3 className="font-space text-lg font-medium text-[#0A0A0A] mb-2">
+            No Timesheet Data Yet
+          </h3>
+          <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
+            This employee's timesheet will appear here from their first working day.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-8">
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-8">
+        <Link href="/admin/timesheets">
+          <Button variant="ghost" size="sm">
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+        </Link>
+        <div>
+          <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">
+            {employee.name.toUpperCase()}
+          </h1>
+          <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)]">
+            {employee.role} • {employee.email}
+          </p>
+        </div>
+      </div>
+
+      {/* Summary Bar */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="bg-gradient-to-br from-[#FFD700] to-[#C8A800] rounded-xl p-6 text-[#0A0A0A]">
+          <div className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80 mb-2">
+            This Week
+          </div>
+          <div className="font-bebas text-4xl tracking-wider">
+            {weekSummary.total_hours_worked}hrs
+          </div>
+          <div className="font-space text-[12px] opacity-70 mt-1">
+            {weekSummary.working_days_so_far} of {weekSummary.expected_working_days} days
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] rounded-xl p-6 text-[#FFD700]">
+          <div className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80 mb-2">
+            This Month
+          </div>
+          <div className="font-bebas text-4xl tracking-wider">
+            {monthSummary.total_hours_worked}hrs
+          </div>
+          <div className="font-space text-[12px] opacity-70 mt-1">
+            {monthSummary.working_days_so_far} of {monthSummary.expected_working_days} days
+          </div>
+        </div>
+      </div>
+
+      {/* View Toggle */}
+      <div className="flex gap-2 mb-6">
+        {(["chart", "day", "week", "month"] as ViewMode[]).map((mode) => (
+          <Button
+            key={mode}
+            onClick={() => setViewMode(mode)}
+            className={`font-space text-[13px] font-semibold tracking-wider uppercase ${
+              viewMode === mode
+                ? "bg-[#0A0A0A] text-[#FFD700] hover:bg-[#1A1A1A]"
+                : "bg-white text-[#0A0A0A] border border-[rgba(10,10,10,0.08)] hover:bg-[rgba(10,10,10,0.03)]"
+            }`}
+          >
+            {mode}
+          </Button>
+        ))}
+      </div>
+
+      {/* Views */}
+      {viewMode === "chart" && (
+        <ChartView entries={entries} employee={employee} />
+      )}
+      {viewMode === "day" && <DayView entries={entries} />}
+      {viewMode === "week" && (
+        <WeekView
+          entries={entries}
+          currentDate={currentDate}
+          onPrevWeek={() => setCurrentDate(subWeeks(currentDate, 1))}
+          onNextWeek={() => setCurrentDate(addWeeks(currentDate, 1))}
+        />
+      )}
+      {viewMode === "month" && (
+        <MonthView
+          entries={entries}
+          currentDate={currentDate}
+          onPrevMonth={() => setCurrentDate(subMonths(currentDate, 1))}
+          onNextMonth={() => setCurrentDate(addMonths(currentDate, 1))}
+        />
+      )}
+    </div>
+  );
+}
+
+// Chart View Component
+function ChartView({ entries, employee }: { entries: TimesheetEntry[]; employee: Employee }) {
   const weekSummary = calculateSummary(entries, "week");
   const monthSummary = calculateSummary(entries, "month");
 
@@ -86,236 +245,161 @@ export default function EmployeeTimesheetPage() {
     }
   }
 
-  const targetMet = weekSummary.total_hours_worked >= (hoursPerDay * 5);
-
-  if (loading) {
-    return (
-      <div className="p-8 space-y-6">
-        <Skeleton className="h-12 w-64 bg-[rgba(10,10,10,0.05)]" />
-        <Skeleton className="h-32 w-full bg-[rgba(10,10,10,0.05)]" />
-        <Skeleton className="h-96 w-full bg-[rgba(10,10,10,0.05)]" />
-      </div>
-    );
-  }
-
-  // Empty state
-  if (entries.length === 0) {
-    return (
-      <div className="p-8">
-        <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider mb-8">
-          MY TIMESHEET
-        </h1>
-        <div className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl p-12 text-center">
-          <Calendar className="h-16 w-16 text-[rgba(10,10,10,0.3)] mx-auto mb-4" />
-          <h3 className="font-space text-lg font-medium text-[#0A0A0A] mb-2">
-            No Timesheet Data Yet
-          </h3>
-          <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
-            Your timesheet will appear here from your first working day.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const targetMet = weekSummary.total_hours_worked >= (employee.hours_per_day * 5);
 
   return (
-    <div className="p-8">
-      <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider mb-8">
-        MY TIMESHEET
-      </h1>
+    <div className="space-y-6">
+      {/* Stats Row */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
+          <CardHeader className="pb-2">
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
+              <Clock className="h-4 w-4 text-[#0A0A0A]" />
+              Weekly Total
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl text-[#0A0A0A]">{weekSummary.total_hours_worked}h</div>
+            <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-1">
+              of {employee.hours_per_day * 5}h target
+            </p>
+          </CardContent>
+        </Card>
 
-      {/* View Toggle */}
-      <div className="flex gap-2 mb-6">
-        {(["chart", "day", "week", "month"] as ViewMode[]).map((mode) => (
-          <Button
-            key={mode}
-            onClick={() => setViewMode(mode)}
-            className={`font-space text-[13px] font-semibold tracking-wider uppercase ${
-              viewMode === mode
-                ? "bg-[#0A0A0A] text-[#FFD700] hover:bg-[#1A1A1A]"
-                : "bg-white text-[#0A0A0A] border border-[rgba(10,10,10,0.08)] hover:bg-[rgba(10,10,10,0.03)]"
-            }`}
-          >
-            {mode}
-          </Button>
-        ))}
+        <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
+          <CardHeader className="pb-2">
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-[#0A0A0A]" />
+              Daily Average
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl text-[#0A0A0A]">
+              {weekSummary.working_days_so_far > 0 ? (weekSummary.total_hours_worked / weekSummary.working_days_so_far).toFixed(1) : 0}h
+            </div>
+            <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-1">per day</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
+          <CardHeader className="pb-2">
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
+              <Target className="h-4 w-4 text-[#0A0A0A]" />
+              Target Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Badge 
+              variant={targetMet ? "default" : "secondary"} 
+              className={`font-space text-[10px] font-semibold tracking-[1.5px] uppercase ${
+                targetMet 
+                  ? "bg-[#0A0A0A] text-[#FFD700] hover:bg-[#1A1A1A]" 
+                  : "bg-[rgba(10,10,10,0.1)] text-[rgba(10,10,10,0.7)]"
+              }`}
+            >
+              {targetMet ? '✓ Met' : 'Not Met'}
+            </Badge>
+            <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-2">
+              {targetMet ? 'Keep it up!' : 'Keep going!'}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
+          <CardHeader className="pb-2">
+            <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
+              <Flame className="h-4 w-4 text-[#0A0A0A]" />
+              Streak
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl text-[#0A0A0A]">{streak}</div>
+            <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-1">consecutive days</p>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Chart View */}
-      {viewMode === "chart" && (
-        <div className="space-y-6">
-          {/* Stats Row */}
-          <div className="grid gap-4 md:grid-cols-4">
-            <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-[#0A0A0A]" />
-                  Weekly Total
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="font-bebas text-4xl text-[#0A0A0A]">{weekSummary.total_hours_worked}h</div>
-                <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-1">
-                  of {hoursPerDay * 5}h target
-                </p>
-              </CardContent>
-            </Card>
+      {/* Bar Chart */}
+      <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl">
+        <CardHeader>
+          <CardTitle className="font-space text-lg font-semibold text-[#0A0A0A]">Weekly Hours</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(10,10,10,0.1)" />
+              <XAxis 
+                dataKey="name" 
+                stroke="rgba(10,10,10,0.5)" 
+                style={{ 
+                  fontFamily: 'var(--font-space)', 
+                  fontSize: 11, 
+                  fill: 'rgba(10,10,10,0.7)' 
+                }} 
+              />
+              <YAxis 
+                stroke="rgba(10,10,10,0.5)" 
+                style={{ 
+                  fontFamily: 'var(--font-space)', 
+                  fontSize: 11, 
+                  fill: 'rgba(10,10,10,0.7)' 
+                }} 
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
+                  border: '1px solid rgba(10,10,10,0.08)',
+                  borderRadius: '8px',
+                  color: '#0A0A0A'
+                }}
+                formatter={(value: any) => [`${value}h`, 'Hours']}
+              />
+              <ReferenceLine 
+                y={employee.hours_per_day} 
+                stroke="#0A0A0A" 
+                strokeDasharray="3 3" 
+                label={{ value: "Target", style: { fill: '#0A0A0A' } }}
+              />
+              <Bar dataKey="hours" fill="#0A0A0A" radius={[8, 8, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
-            <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-[#0A0A0A]" />
-                  Daily Average
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="font-bebas text-4xl text-[#0A0A0A]">
-                  {weekSummary.working_days_so_far > 0 ? (weekSummary.total_hours_worked / weekSummary.working_days_so_far).toFixed(1) : 0}h
-                </div>
-                <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-1">per day</p>
-              </CardContent>
-            </Card>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 gap-4">
+        <Card className="bg-gradient-to-br from-[#0A0A0A] to-[#2A2A2A] text-white">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80">
+              This Week
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl tracking-wider text-[#FFD700]">
+              {weekSummary.total_hours_worked}hrs
+            </div>
+            <div className="font-space text-[12px] opacity-70 mt-1">
+              {weekSummary.working_days_so_far} of {weekSummary.expected_working_days} days
+            </div>
+          </CardContent>
+        </Card>
 
-            <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
-                  <Target className="h-4 w-4 text-[#0A0A0A]" />
-                  Target Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Badge 
-                  variant={targetMet ? "default" : "secondary"} 
-                  className={`font-space text-[10px] font-semibold tracking-[1.5px] uppercase ${
-                    targetMet 
-                      ? "bg-[#0A0A0A] text-[#FFD700] hover:bg-[#1A1A1A]" 
-                      : "bg-[rgba(10,10,10,0.1)] text-[rgba(10,10,10,0.7)]"
-                  }`}
-                >
-                  {targetMet ? '✓ Met' : 'Not Met'}
-                </Badge>
-                <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-2">
-                  {targetMet ? 'Keep it up!' : 'Keep going!'}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white border-l-[3px] border-l-[#0A0A0A] border border-[rgba(10,10,10,0.08)] rounded-xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] flex items-center gap-2">
-                  <Flame className="h-4 w-4 text-[#0A0A0A]" />
-                  Streak
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="font-bebas text-4xl text-[#0A0A0A]">{streak}</div>
-                <p className="font-space text-[12px] tracking-[2px] uppercase text-[rgba(10,10,10,0.5)] mt-1">consecutive days</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Bar Chart */}
-          <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl">
-            <CardHeader>
-              <CardTitle className="font-space text-lg font-semibold text-[#0A0A0A]">Weekly Hours</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(10,10,10,0.1)" />
-                  <XAxis 
-                    dataKey="name" 
-                    stroke="rgba(10,10,10,0.5)" 
-                    style={{ 
-                      fontFamily: 'var(--font-space)', 
-                      fontSize: 11, 
-                      fill: 'rgba(10,10,10,0.7)' 
-                    }} 
-                  />
-                  <YAxis 
-                    stroke="rgba(10,10,10,0.5)" 
-                    style={{ 
-                      fontFamily: 'var(--font-space)', 
-                      fontSize: 11, 
-                      fill: 'rgba(10,10,10,0.7)' 
-                    }} 
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid rgba(10,10,10,0.08)',
-                      borderRadius: '8px',
-                      color: '#0A0A0A'
-                    }}
-                    formatter={(value: any) => [`${value}h`, 'Hours']}
-                  />
-                  <ReferenceLine 
-                    y={hoursPerDay} 
-                    stroke="#0A0A0A" 
-                    strokeDasharray="3 3" 
-                    label={{ value: "Target", style: { fill: '#0A0A0A' } }}
-                  />
-                  <Bar dataKey="hours" fill="#0A0A0A" radius={[8, 8, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Summary Cards */}
-          <div className="grid grid-cols-2 gap-4">
-            <Card className="bg-gradient-to-br from-[#0A0A0A] to-[#2A2A2A] text-white">
-              <CardHeader className="pb-3">
-                <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80">
-                  This Week
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="font-bebas text-4xl tracking-wider text-[#FFD700]">
-                  {weekSummary.total_hours_worked}hrs
-                </div>
-                <div className="font-space text-[12px] opacity-70 mt-1">
-                  {weekSummary.working_days_so_far} of {weekSummary.expected_working_days} days
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-[#F8F8F8] to-[#E8E8E8] text-[#0A0A0A] border">
-              <CardHeader className="pb-3">
-                <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80">
-                  This Month
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="font-bebas text-4xl tracking-wider text-[#0A0A0A]">
-                  {monthSummary.total_hours_worked}hrs
-                </div>
-                <div className="font-space text-[12px] opacity-70 mt-1">
-                  {monthSummary.working_days_so_far} of {monthSummary.expected_working_days} days
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      )}
-
-      {/* Other Views */}
-      {viewMode === "day" && <DayView entries={entries} />}
-      {viewMode === "week" && (
-        <WeekView
-          entries={entries}
-          currentDate={currentDate}
-          onPrevWeek={() => setCurrentDate(subWeeks(currentDate, 1))}
-          onNextWeek={() => setCurrentDate(addWeeks(currentDate, 1))}
-        />
-      )}
-      {viewMode === "month" && (
-        <MonthView
-          entries={entries}
-          currentDate={currentDate}
-          onPrevMonth={() => setCurrentDate(subMonths(currentDate, 1))}
-          onNextMonth={() => setCurrentDate(addMonths(currentDate, 1))}
-        />
-      )}
+        <Card className="bg-gradient-to-br from-[#F8F8F8] to-[#E8E8E8] text-[#0A0A0A] border">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80">
+              This Month
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bebas text-4xl tracking-wider text-[#0A0A0A]">
+              {monthSummary.total_hours_worked}hrs
+            </div>
+            <div className="font-space text-[12px] opacity-70 mt-1">
+              {monthSummary.working_days_so_far} of {monthSummary.expected_working_days} days
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
