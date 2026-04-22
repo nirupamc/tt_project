@@ -29,7 +29,7 @@ export async function GET(
       .select(
         `
         *,
-        user:users(id, name, email, avatar_url)
+        user:users(id, name, email, avatar_url, role)
       `,
       )
       .eq("project_id", id);
@@ -46,10 +46,17 @@ export async function GET(
       .eq("project_id", id)
       .order("day_number", { ascending: true });
 
+    const { data: payment_logs } = await supabase
+      .from("payment_logs")
+      .select("*")
+      .eq("project_id", id)
+      .order("payment_date", { ascending: false });
+
     return NextResponse.json({
       ...project,
       enrollments: enrollments || [],
       days: days || [],
+      payment_logs: payment_logs || [],
     });
   } catch (error) {
     console.error("Error fetching project:", error);

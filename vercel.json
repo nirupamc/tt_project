@@ -32,5 +32,15 @@
         }
       ]
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/daily-alerts",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-alerts",
+      "schedule": "0 9 * * 1"
+    }
   ]
 }

@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmployeeProjectCard } from "@/components/employee/ProjectCard";
+import { MyComplianceSection } from "@/components/employee/MyComplianceSection";
+import { MySupervisorCard } from "@/components/employee/MySupervisorCard";
 import type { Project, CompletedDummyProject } from "@/types";
 
 interface ProjectWithProgress extends Project {
@@ -87,25 +89,29 @@ export default function EmployeeDashboardPage() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => {
-            // Extract progress - handle both dummy and real projects
-            const isDummy = 'is_dummy' in project && project.is_dummy;
-            const progressData = isDummy 
-              ? undefined 
-              : 'progress' in project && typeof project.progress === 'object' 
-                ? project.progress 
-                : undefined;
-            
-            return (
-              <EmployeeProjectCard
-                key={project.id}
-                project={project}
-                progress={progressData}
-              />
-            );
-          })}
-        </div>
+        <>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => {
+              // Extract progress - handle both dummy and real projects
+              const isDummy = 'is_dummy' in project && project.is_dummy;
+              const progressData = isDummy 
+                ? undefined 
+                : 'progress' in project && typeof project.progress === 'object' 
+                  ? project.progress 
+                  : undefined;
+              
+              return (
+                <EmployeeProjectCard
+                  key={project.id}
+                  project={project}
+                  progress={progressData}
+                />
+              );
+            })}
+          </div>
+          <MyComplianceSection />
+          <MySupervisorCard />
+        </>
       )}
     </div>
   );

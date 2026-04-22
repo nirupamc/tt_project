@@ -5,6 +5,8 @@ import { auth } from "@/lib/auth";
 export async function middleware(request: NextRequest) {
   const session = await auth();
   const { pathname } = request.nextUrl;
+  const isAdminRole = (role?: string) =>
+    role === "admin" || role === "supervisor";
 
   // Public routes that don't require authentication
   const publicRoutes = ["/login", "/admin/login", "/api/auth"];
@@ -15,7 +17,7 @@ export async function middleware(request: NextRequest) {
   if (isPublicRoute) {
     // Redirect authenticated users away from login pages
     if (session?.user) {
-      if (pathname === "/admin/login" && session.user.role === "admin") {
+      if (pathname === "/admin/login" && isAdminRole(session.user.role)) {
         return NextResponse.redirect(new URL("/admin/overview", request.url));
       }
       if (pathname === "/login" && session.user.role === "employee") {
@@ -30,7 +32,7 @@ export async function middleware(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
-    if (session.user.role !== "admin") {
+    if (!isAdminRole(session.user.role)) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     return NextResponse.next();
@@ -49,7 +51,7 @@ export async function middleware(request: NextRequest) {
 
   // Protect API routes
   if (pathname.startsWith("/api/admin")) {
-    if (!session?.user || session.user.role !== "admin") {
+    if (!session?.user || !isAdminRole(session.user.role)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   }

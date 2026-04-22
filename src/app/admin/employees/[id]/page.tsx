@@ -38,6 +38,8 @@ import {
   Calendar
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { EmployeeComplianceTabsContent } from "@/components/admin/EmployeeComplianceTabsContent";
+import { AdminEmployeeDocumentsTab } from "@/components/admin/AdminEmployeeDocumentsTab";
 
 interface TimesheetWithProject extends Timesheet {
   project: Project | null;
@@ -47,17 +49,27 @@ interface EnrollmentWithProject extends Enrollment {
   project: Project;
 }
 
+interface EmployeeWithSupervisor extends User {
+  supervisor?: {
+    id: string;
+    name: string;
+    email: string;
+    job_title?: string | null;
+  } | null;
+}
+
 type TimeRange = 'thisWeek' | 'thisMonth' | 'allTime';
 
 export default function EmployeeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const [employee, setEmployee] = useState<User | null>(null);
+  const [employee, setEmployee] = useState<EmployeeWithSupervisor | null>(null);
   const [timesheets, setTimesheets] = useState<TimesheetWithProject[]>([]);
   const [enrollments, setEnrollments] = useState<EnrollmentWithProject[]>([]);
   const [projectsWithProgress, setProjectsWithProgress] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<TimeRange>('thisWeek');
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const fetchEmployee = async () => {
     try {
@@ -144,6 +156,33 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
     a.download = `${employee?.name}-timesheet-${format(new Date(), 'yyyy-MM-dd')}.csv`;
     a.click();
     toast.success('Timesheet exported');
+  };
+
+  const exportRfePacket = async () => {
+    try {
+      setGeneratingPdf(true);
+      const response = await fetch(`/api/export/rfe-packet/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to generate PDF");
+      }
+      const blob = await response.blob();
+      const contentDisposition = response.headers.get("Content-Disposition");
+      const serverFilenameMatch = contentDisposition?.match(/filename="(.+)"/);
+      const serverFilename = serverFilenameMatch?.[1];
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = serverFilename || `RFE_Packet_${employee?.name || "Employee"}_${format(new Date(), "yyyy-MM-dd")}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      toast.success("RFE packet generated");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to generate packet");
+    } finally {
+      setGeneratingPdf(false);
+    }
   };
 
   // Filter timesheets by time range
@@ -248,7 +287,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
               <div className="relative">
                 <Avatar className="h-20 w-20 border-2 border-[#FFD700]">
                   <AvatarImage src={employee.avatar_url || undefined} />
-                  <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-2xl">
+                  <AvatarFallback className="bg-linear-to-br from-indigo-500 to-purple-600 text-white text-2xl">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
@@ -257,8 +296,8 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                 <h1 className="font-bebas text-2xl text-[#F5F5F0]">{employee.name}</h1>
                 <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">{employee.email}</p>
                 <div className="flex items-center gap-4 mt-3">
-                  <Badge variant={employee.role === 'admin' ? 'default' : 'secondary'} className={employee.role === 'admin' ? "bg-[rgba(255,215,0,0.15)] text-[#FFD700] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
-                    {employee.role}
+                  <Badge variant={employee.role === 'admin' || employee.role === 'supervisor' ? 'default' : 'secondary'} className={employee.role === 'admin' || employee.role === 'supervisor' ? "bg-[rgba(255,215,0,0.15)] text-[#FFD700] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1" : "bg-[rgba(245,245,240,0.08)] text-[rgba(245,245,240,0.5)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase rounded px-2 py-1"}>
+                    {employee.role === 'admin' || employee.role === 'supervisor' ? 'Admin' : employee.role}
                   </Badge>
                   <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
                     Joined {format(new Date(employee.created_at), 'MMM yyyy')}
@@ -281,6 +320,14 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                     </>
                   )}
                 </div>
+                <div className="mt-2">
+                  <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
+                    Assigned Supervisor:{" "}
+                    <span className="text-[#FFD700] font-semibold">
+                      {employee.supervisor?.name || "None assigned"}
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -288,12 +335,16 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
 
         {/* Right: Delete Button */}
         <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
-          <CardContent className="pt-6 flex items-center justify-end h-full">
+          <CardContent className="pt-6 flex items-center justify-end gap-3 h-full">
             <Button
-              variant="destructive"
-              onClick={handleDelete}
-              className="gap-2"
+              onClick={exportRfePacket}
+              disabled={generatingPdf}
+              className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] font-space font-semibold gap-2"
             >
+              <Download className="h-4 w-4" />
+              {generatingPdf ? "Generating PDF..." : "Export RFE Packet"}
+            </Button>
+            <Button variant="destructive" onClick={handleDelete} className="gap-2">
               <Trash2 className="h-4 w-4" />
               Delete Employee
             </Button>
@@ -355,9 +406,12 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
       {/* Tabbed Layout */}
       <Tabs defaultValue="projects" className="space-y-6">
         <TabsList className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)]">
-          <TabsTrigger value="projects" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] font-space text-[13px]">Projects</TabsTrigger>
-          <TabsTrigger value="timesheet" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] font-space text-[13px]">Timesheet</TabsTrigger>
-          <TabsTrigger value="badges" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] font-space text-[13px]">Badges</TabsTrigger>
+          <TabsTrigger value="projects" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Projects</TabsTrigger>
+          <TabsTrigger value="timesheet" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Timesheet</TabsTrigger>
+          <TabsTrigger value="compliance" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Compliance</TabsTrigger>
+          <TabsTrigger value="trainingPlan" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Training Plan (I-983)</TabsTrigger>
+          <TabsTrigger value="documents" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Documents</TabsTrigger>
+          <TabsTrigger value="badges" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Badges</TabsTrigger>
         </TabsList>
 
         {/* Tab 1: Projects */}
@@ -398,7 +452,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                                 style={{ width: `${item.progress}%` }}
                               />
                             </div>
-                            <span className="font-space text-[13px] text-[rgba(245,245,240,0.5)] min-w-[3rem]">{item.progress}%</span>
+                            <span className="font-space text-[13px] text-[rgba(245,245,240,0.5)] min-w-12">{item.progress}%</span>
                           </div>
                         </TableCell>
                         <TableCell>
@@ -457,7 +511,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
               </CardHeader>
               <CardContent>
                 {chartData.length === 0 ? (
-                  <div className="h-[300px] flex items-center justify-center">
+                  <div className="h-75 flex items-center justify-center">
                     <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)]">No data available for selected range</p>
                   </div>
                 ) : (
@@ -525,6 +579,9 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
         </TabsContent>
 
         {/* Tab 3: Badges */}
+        <EmployeeComplianceTabsContent employee={employee} />
+        <AdminEmployeeDocumentsTab employeeId={employee.id} />
+
         <TabsContent value="badges">
           <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
             <CardHeader>

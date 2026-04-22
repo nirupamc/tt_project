@@ -16,7 +16,7 @@ export async function GET(request: Request) {
       .select(
         `
         *,
-        user:users(id, name, email, avatar_url),
+        user:users(id, name, email, avatar_url, role),
         project:projects(id, title)
       `,
       )

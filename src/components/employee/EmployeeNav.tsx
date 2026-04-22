@@ -13,11 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FolderKanban, Clock, LogOut, User } from "lucide-react";
+import { FolderKanban, Clock, IdCard, LogOut } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "My Projects", icon: FolderKanban },
   { href: "/dashboard/timesheet", label: "Timesheet", icon: Clock },
+  { href: "/dashboard/profile", label: "My Profile", icon: IdCard },
 ];
 
 export function EmployeeNav() {
@@ -115,6 +116,15 @@ export function EmployeeNav() {
                 >
                   <Clock className="h-4 w-4 mr-2" />
                   Timesheet
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="md:hidden">
+                <Link
+                  href="/dashboard/profile"
+                  className="flex items-center font-space text-[13px]"
+                >
+                  <IdCard className="h-4 w-4 mr-2" />
+                  My Profile
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="md:hidden" />

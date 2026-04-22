@@ -1,293 +1,373 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { format, addMonths, subMonths, isFuture } from "date-fns";
-import { ChevronLeft, ChevronRight, Clock, User, Eye, Calendar } from "lucide-react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import {
+  endOfWeek,
+  format,
+  parseISO,
+  startOfWeek,
+} from "date-fns";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  generateTimesheetEntries,
-  calculateSummary,
-} from "@/lib/timesheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-interface Employee {
+type FilterMode = "all" | "pending";
+
+interface TimesheetEntry {
   id: string;
-  name: string;
-  email: string;
-  role: string;
-  joining_date: string;
-  hours_per_day: number;
+  user_id: string;
+  work_date: string;
+  hours_logged: number;
+  task_category: string | null;
+  task_description: string | null;
+  i983_objective_mapped: string | null;
+  training_hours: number | null;
+  billable_hours: number | null;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
 }
 
-interface EmployeeTimesheetSummary extends Employee {
-  weekHours: number;
-  monthHours: number;
+interface Approval {
+  id: string;
+  employee_id: string;
+  week_start_date: string;
+  approved_at: string;
+  approved_by_name: string;
 }
 
-export default function AdminTimesheetsPage() {
-  const [employees, setEmployees] = useState<EmployeeTimesheetSummary[]>([]);
+interface WeekGroup {
+  employeeId: string;
+  employeeName: string;
+  employeeEmail: string;
+  weekStart: string;
+  entries: TimesheetEntry[];
+  totalHours: number;
+  approval?: Approval;
+}
+
+function AdminTimesheetsContent() {
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [approvingKey, setApprovingKey] = useState<string | null>(null);
+  const [entries, setEntries] = useState<TimesheetEntry[]>([]);
+  const [approvals, setApprovals] = useState<Approval[]>([]);
+  const [filterMode, setFilterMode] = useState<FilterMode>("pending");
+  const [selectedEntry, setSelectedEntry] = useState<TimesheetEntry | null>(null);
 
-  useEffect(() => {
-    fetchEmployees();
-  }, [selectedDate]);
-
-  const fetchEmployees = async () => {
+  const loadData = async () => {
     try {
-      const res = await fetch("/api/admin/employees");
-      if (res.ok) {
-        const data = await res.json();
-        
-        // Calculate timesheet summaries for each employee
-        const summaries: EmployeeTimesheetSummary[] = data.map((emp: Employee) => {
-          // Generate timesheet entries for each employee
-          const entries = generateTimesheetEntries(
-            emp.joining_date,
-            emp.hours_per_day || 8
-          );
-
-          // Calculate summaries
-          const weekSummary = calculateSummary(entries, "week");
-          const monthSummary = calculateSummary(entries, "month");
-
-          return {
-            ...emp,
-            weekHours: weekSummary.total_hours_worked,
-            monthHours: monthSummary.total_hours_worked,
-          };
-        });
-
-        setEmployees(summaries);
+      setLoading(true);
+      const [timesheetsRes, approvalsRes] = await Promise.all([
+        fetch("/api/admin/timesheets"),
+        fetch("/api/admin/timesheets/approvals"),
+      ]);
+      if (!timesheetsRes.ok || !approvalsRes.ok) {
+        throw new Error("Failed to load timesheet data");
       }
+      const timesheetsData = await timesheetsRes.json();
+      const approvalsData = await approvalsRes.json();
+      const detailedEntries = (timesheetsData || []).filter(
+        (entry: TimesheetEntry) => entry.task_description,
+      );
+      setEntries(detailedEntries);
+      setApprovals(approvalsData || []);
     } catch (error) {
-      console.error("Failed to fetch employees:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to load timesheets");
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredEmployees = employees.filter((emp) =>
-    emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    emp.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    loadData();
+  }, []);
 
-  const totalWeekHours = filteredEmployees.reduce((sum, emp) => sum + emp.weekHours, 0);
-  const totalMonthHours = filteredEmployees.reduce((sum, emp) => sum + emp.monthHours, 0);
+  useEffect(() => {
+    const filter = searchParams.get("filter");
+    if (filter === "all") {
+      setFilterMode("all");
+    }
+    if (filter === "pending") {
+      setFilterMode("pending");
+    }
+  }, [searchParams]);
+
+  const groupedWeeks = useMemo(() => {
+    const approvalMap = new Map(
+      approvals.map((approval) => [`${approval.employee_id}:${approval.week_start_date}`, approval]),
+    );
+    const map = new Map<string, WeekGroup>();
+
+    entries.forEach((entry) => {
+      const weekStart = format(
+        startOfWeek(parseISO(entry.work_date), { weekStartsOn: 1 }),
+        "yyyy-MM-dd",
+      );
+      const key = `${entry.user_id}:${weekStart}`;
+      const existing = map.get(key);
+      if (!existing) {
+        map.set(key, {
+          employeeId: entry.user_id,
+          employeeName: entry.user.name,
+          employeeEmail: entry.user.email,
+          weekStart,
+          entries: [entry],
+          totalHours: Number(entry.hours_logged),
+          approval: approvalMap.get(key),
+        });
+      } else {
+        existing.entries.push(entry);
+        existing.totalHours += Number(entry.hours_logged);
+      }
+    });
+
+    return Array.from(map.values())
+      .map((group) => ({
+        ...group,
+        entries: group.entries.sort((a, b) => a.work_date.localeCompare(b.work_date)),
+      }))
+      .sort((a, b) => {
+        if (a.weekStart === b.weekStart) return a.employeeName.localeCompare(b.employeeName);
+        return b.weekStart.localeCompare(a.weekStart);
+      });
+  }, [entries, approvals]);
+
+  const visibleWeeks =
+    filterMode === "pending"
+      ? groupedWeeks.filter((group) => !group.approval)
+      : groupedWeeks;
+
+  const approveWeek = async (group: WeekGroup) => {
+    const key = `${group.employeeId}:${group.weekStart}`;
+    setApprovingKey(key);
+    try {
+      const response = await fetch("/api/admin/timesheets/approvals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          employee_id: group.employeeId,
+          week_start_date: group.weekStart,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to approve week");
+      }
+      const approval = await response.json();
+      setApprovals((prev) => {
+        const withoutExisting = prev.filter(
+          (item) =>
+            !(item.employee_id === approval.employee_id && item.week_start_date === approval.week_start_date),
+        );
+        return [approval, ...withoutExisting];
+      });
+      toast.success("Week approved");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to approve week");
+    } finally {
+      setApprovingKey(null);
+    }
+  };
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">
-          TIMESHEETS
-        </h1>
-        <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] mt-1 font-medium">
-          Monitor employee hours and attendance
-        </p>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="bg-gradient-to-br from-[#FFD700] to-[#C8A800] text-[#0A0A0A] border-0">
-          <CardHeader className="pb-3">
-            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80 flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              This Week Total
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="font-bebas text-4xl tracking-wider">
-              {totalWeekHours}hrs
-            </div>
-            <div className="font-space text-[12px] opacity-70 mt-1">
-              Across {filteredEmployees.length} employees
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] text-[#FFD700] border-0">
-          <CardHeader className="pb-3">
-            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase opacity-80 flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              This Month Total
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="font-bebas text-4xl tracking-wider">
-              {totalMonthHours}hrs
-            </div>
-            <div className="font-space text-[12px] opacity-70 mt-1">
-              {format(selectedDate, "MMMM yyyy")}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border border-[rgba(10,10,10,0.08)]">
-          <CardHeader className="pb-3">
-            <CardTitle className="font-space text-[13px] font-medium tracking-wider uppercase text-[rgba(10,10,10,0.7)] flex items-center gap-2">
-              <User className="h-4 w-4" />
-              Active Employees
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="font-bebas text-4xl tracking-wider text-[#0A0A0A]">
-              {filteredEmployees.length}
-            </div>
-            <div className="font-space text-[12px] text-[rgba(10,10,10,0.6)] mt-1">
-              Total in system
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <Input
-          placeholder="Search employees..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm font-space text-[14px]"
-        />
-
-        <div className="flex items-center gap-2 ml-auto">
-          <Button 
-            onClick={() => setSelectedDate(subMonths(selectedDate, 1))} 
-            variant="outline" 
-            size="sm"
-            className="font-space text-[12px]"
+    <div className="p-8 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-bebas text-4xl text-[#F5F5F0] tracking-wider">TIMESHEETS</h1>
+          <p className="font-space text-[13px] text-[rgba(245,245,240,0.6)] mt-1">
+            Weekly supervisor approvals (Mon-Sun)
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => setFilterMode("all")}
+            className={
+              filterMode === "all"
+                ? "bg-[#FFD700] text-[#0A0A0A]"
+                : "bg-[#1A1A1A] text-[#F5F5F0] border border-[rgba(255,215,0,0.15)]"
+            }
           >
-            <ChevronLeft className="h-4 w-4" />
+            Show All
           </Button>
-          <span className="font-space text-[14px] font-medium text-[#0A0A0A] min-w-[120px] text-center">
-            {format(selectedDate, "MMMM yyyy")}
-          </span>
-          <Button 
-            onClick={() => setSelectedDate(addMonths(selectedDate, 1))} 
-            variant="outline" 
-            size="sm"
-            disabled={isFuture(addMonths(selectedDate, 1))}
-            className="font-space text-[12px]"
+          <Button
+            onClick={() => setFilterMode("pending")}
+            className={
+              filterMode === "pending"
+                ? "bg-[#FFD700] text-[#0A0A0A]"
+                : "bg-[#1A1A1A] text-[#F5F5F0] border border-[rgba(255,215,0,0.15)]"
+            }
           >
-            <ChevronRight className="h-4 w-4" />
+            Pending Approval Only
           </Button>
         </div>
       </div>
 
-      {/* Employee Table */}
-      <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-[rgba(10,10,10,0.03)] border-b border-[rgba(10,10,10,0.08)]">
-              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A]">
-                Employee Name
-              </TableHead>
-              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A]">
-                Role
-              </TableHead>
-              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A]">
-                Joining Date
-              </TableHead>
-              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
-                Hours/Day
-              </TableHead>
-              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
-                This Week (hrs)
-              </TableHead>
-              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
-                This Month (hrs)
-              </TableHead>
-              <TableHead className="font-space text-[12px] font-semibold tracking-wider uppercase text-[#0A0A0A] text-center">
-                Action
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              [...Array(5)].map((_, idx) => (
-                <TableRow key={idx}>
-                  <TableCell><Skeleton className="h-4 w-32 bg-[rgba(10,10,10,0.05)]" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-24 bg-[rgba(10,10,10,0.05)]" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-20 bg-[rgba(10,10,10,0.05)]" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-12 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-12 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-12 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
-                  <TableCell><Skeleton className="h-8 w-16 bg-[rgba(10,10,10,0.05)] mx-auto" /></TableCell>
-                </TableRow>
-              ))
-            ) : filteredEmployees.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
-                  <div className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
-                    {searchTerm ? "No employees found matching your search." : "No employees found."}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : (
-              filteredEmployees.map((emp) => (
-                <TableRow 
-                  key={emp.id}
-                  className="border-b border-[rgba(10,10,10,0.08)] hover:bg-[rgba(255,215,0,0.02)]"
-                >
-                  <TableCell className="font-space text-[14px] text-[#0A0A0A] font-medium">
+      {loading ? (
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
+          <CardContent className="py-10">
+            <p className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">Loading timesheets...</p>
+          </CardContent>
+        </Card>
+      ) : visibleWeeks.length === 0 ? (
+        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
+          <CardContent className="py-10">
+            <p className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">No weekly timesheets found.</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="space-y-4">
+          {visibleWeeks.map((group) => {
+            const weekStartDate = parseISO(group.weekStart);
+            const weekEndDate = endOfWeek(weekStartDate, { weekStartsOn: 1 });
+            const approvalKey = `${group.employeeId}:${group.weekStart}`;
+            return (
+              <Card
+                key={approvalKey}
+                className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl"
+              >
+                <CardHeader>
+                  <div className="flex items-start justify-between gap-4">
                     <div>
-                      <div>{emp.name}</div>
-                      <div className="font-space text-[12px] text-[rgba(10,10,10,0.6)] mt-1">
-                        {emp.email}
-                      </div>
+                      <CardTitle className="font-space text-lg text-[#F5F5F0]">
+                        {group.employeeName}
+                      </CardTitle>
+                      <p className="font-space text-xs text-[rgba(245,245,240,0.55)] mt-1">
+                        {group.employeeEmail}
+                      </p>
+                      <p className="font-space text-sm text-[#FFD700] mt-2">
+                        {format(weekStartDate, "MMM d")} – {format(weekEndDate, "MMM d, yyyy")} ·{" "}
+                        {group.totalHours.toFixed(1)}h
+                      </p>
                     </div>
-                  </TableCell>
-                  <TableCell className="font-space text-[14px] text-[rgba(10,10,10,0.7)]">
-                    <span className="inline-block px-2 py-1 bg-[rgba(10,10,10,0.05)] rounded text-[12px] font-medium">
-                      {emp.role}
-                    </span>
-                  </TableCell>
-                  <TableCell className="font-space text-[14px] text-[rgba(10,10,10,0.7)]">
-                    {emp.joining_date ? format(new Date(emp.joining_date), "MMM d, yyyy") : "—"}
-                  </TableCell>
-                  <TableCell className="font-space text-[14px] text-[#0A0A0A] font-semibold text-center">
-                    {emp.hours_per_day || 8}
-                  </TableCell>
-                  <TableCell className="font-space text-[14px] text-[#FFD700] font-semibold text-center">
-                    {emp.weekHours}
-                  </TableCell>
-                  <TableCell className="font-space text-[14px] text-[#FFD700] font-semibold text-center">
-                    {emp.monthHours}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <a href={`/admin/timesheets/${emp.id}`}>
+                    {group.approval ? (
+                      <Badge className="bg-[rgba(34,197,94,0.12)] text-[#4ade80] border border-[rgba(74,222,128,0.35)]">
+                        Approved {format(parseISO(group.approval.approved_at), "MMM d, yyyy")}
+                      </Badge>
+                    ) : (
                       <Button
-                        size="sm"
-                        variant="outline"
-                        className="font-space text-[12px] hover:bg-[rgba(255,215,0,0.1)] hover:border-[#FFD700]"
+                        onClick={() => approveWeek(group)}
+                        disabled={approvingKey === approvalKey}
+                        className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] font-space font-semibold"
                       >
-                        <Eye className="h-4 w-4 mr-1" />
-                        View
+                        {approvingKey === approvalKey ? "Approving..." : "Approve Week"}
                       </Button>
-                    </a>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </Card>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-[rgba(255,215,0,0.1)]">
+                        <th className="py-2 text-left font-space text-xs uppercase text-[rgba(245,245,240,0.7)]">
+                          Date
+                        </th>
+                        <th className="py-2 text-left font-space text-xs uppercase text-[rgba(245,245,240,0.7)]">
+                          Category
+                        </th>
+                        <th className="py-2 text-right font-space text-xs uppercase text-[rgba(245,245,240,0.7)]">
+                          Hours
+                        </th>
+                        <th className="py-2 text-right font-space text-xs uppercase text-[rgba(245,245,240,0.7)]">
+                          Details
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.entries.map((entry) => (
+                        <tr key={entry.id} className="border-b border-[rgba(255,215,0,0.06)]">
+                          <td className="py-2 font-space text-sm text-[#F5F5F0]">
+                            {format(parseISO(entry.work_date), "EEE, MMM d")}
+                          </td>
+                          <td className="py-2 font-space text-sm text-[rgba(245,245,240,0.75)]">
+                            {entry.task_category || "—"}
+                          </td>
+                          <td className="py-2 font-space text-sm text-right text-[#FFD700] font-semibold">
+                            {Number(entry.hours_logged).toFixed(1)}h
+                          </td>
+                          <td className="py-2 text-right">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-[rgba(255,215,0,0.25)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)]"
+                              onClick={() => setSelectedEntry(entry)}
+                            >
+                              View
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
+      <Dialog open={!!selectedEntry} onOpenChange={(open) => !open && setSelectedEntry(null)}>
+        <DialogContent className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.2)] text-[#F5F5F0] max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-space text-lg text-[#FFD700]">
+              Daily Activity Log Details
+            </DialogTitle>
+          </DialogHeader>
+          {selectedEntry && (
+            <div className="space-y-3 font-space text-sm">
+              <ReadOnlyRow label="Date" value={format(parseISO(selectedEntry.work_date), "MMM d, yyyy")} />
+              <ReadOnlyRow label="Total Hours" value={`${Number(selectedEntry.hours_logged).toFixed(1)}h`} />
+              <ReadOnlyRow label="Task Category" value={selectedEntry.task_category || "—"} />
+              <ReadOnlyRow
+                label="I-983 Objective Mapped"
+                value={selectedEntry.i983_objective_mapped || "—"}
+              />
+              <ReadOnlyRow
+                label="Training Hours"
+                value={`${Number(selectedEntry.training_hours || 0).toFixed(1)}h`}
+              />
+              <ReadOnlyRow
+                label="Billable Hours"
+                value={`${Number(selectedEntry.billable_hours || 0).toFixed(1)}h`}
+              />
+              <div>
+                <p className="text-[rgba(245,245,240,0.65)] mb-1">Task Description</p>
+                <p className="text-[#F5F5F0] leading-relaxed whitespace-pre-wrap">
+                  {selectedEntry.task_description || "—"}
+                </p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+export default function AdminTimesheetsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-[rgba(245,245,240,0.6)] font-space">Loading timesheets...</div>}>
+      <AdminTimesheetsContent />
+    </Suspense>
+  );
+}
+
+function ReadOnlyRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      <p className="text-[rgba(245,245,240,0.65)]">{label}</p>
+      <p className="col-span-2 text-[#F5F5F0]">{value}</p>
     </div>
   );
 }

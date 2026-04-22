@@ -1,6 +1,6 @@
 // Database types for Archway
 
-export type UserRole = "admin" | "employee";
+export type UserRole = "admin" | "supervisor" | "employee";
 export type TaskType = "reading" | "coding" | "quiz" | "video";
 
 export interface User {
@@ -14,6 +14,22 @@ export interface User {
   hourly_rate: number;
   default_start_date: string | null;
   joining_date: string | null; // Added for tenure calculation
+  opt_type?: "OPT" | "STEM OPT" | null;
+  ead_number?: string | null;
+  ead_start_date?: string | null;
+  ead_end_date?: string | null;
+  job_title?: string | null;
+  hours_per_week?: number | null;
+  pay_rate?: number | null;
+  work_location?: string | null;
+  university_name?: string | null;
+  dso_name?: string | null;
+  dso_email?: string | null;
+  i9_completion_date?: string | null;
+  everify_case_number?: string | null;
+  everify_status?: "Employment Authorized" | "Pending" | "Not Started" | null;
+  supervisor_id?: string | null;
+  documents_uploaded_count?: number;
   created_at: string;
 }
 
@@ -22,6 +38,17 @@ export interface Project {
   title: string;
   description: string | null;
   skill_tag: string | null;
+  client_code?: string | null;
+  client_name?: string | null;
+  client_location?: string | null;
+  sow_reference?: string | null;
+  sow_status?: "Not Started" | "Sent to Client" | "Signed" | null;
+  invoice_status?:
+    | "Not Issued"
+    | "Issued"
+    | "Partial Payment"
+    | "Fully Paid"
+    | null;
   total_days: number;
   start_date: string | null;
   enrollment_start_date?: string | null;
@@ -100,7 +127,88 @@ export interface Timesheet {
   hours_logged: number;
   project_id: string | null;
   notes: string | null;
+  task_category?: string | null;
+  task_description?: string | null;
+  i983_objective_mapped?: "objective_1" | "objective_2" | "objective_3" | null;
+  training_hours?: number | null;
+  billable_hours?: number | null;
   updated_at: string;
+}
+
+export interface TimesheetApproval {
+  id: string;
+  employee_id: string;
+  week_start_date: string;
+  approved_by: string;
+  approved_by_name: string;
+  approved_at: string;
+}
+
+export interface I983Plan {
+  id: string;
+  employee_id: string;
+  version_date: string | null;
+  dso_submission_date: string | null;
+  dso_ack_uploaded: boolean;
+  dso_ack_file_url: string | null;
+  next_eval_due: string | null;
+  objective_1_text: string | null;
+  objective_1_status: "Not Started" | "In Progress" | "Completed" | null;
+  objective_1_project_id: string | null;
+  objective_2_text: string | null;
+  objective_2_status: "Not Started" | "In Progress" | "Completed" | null;
+  objective_2_project_id: string | null;
+  objective_3_text: string | null;
+  objective_3_status: "Not Started" | "In Progress" | "Completed" | null;
+  objective_3_project_id: string | null;
+}
+
+export interface EmployeeDocument {
+  id: string;
+  employee_id: string;
+  document_type:
+    | "passport_copy"
+    | "current_i20"
+    | "ead_card"
+    | "signed_i983"
+    | "dso_ack_email"
+    | "signed_offer_letter"
+    | "completed_i9"
+    | "everify_screenshot"
+    | "supervisor_ack";
+  file_url: string | null;
+  uploaded_at: string | null;
+  expiry_date: string | null;
+  version_date: string | null;
+  status: "uploaded" | "missing";
+}
+
+export interface PaymentLog {
+  id: string;
+  project_id: string;
+  payment_date: string;
+  inr_amount: number;
+  utr_reference: string;
+  usd_equivalent: number;
+  payment_method: "UPI" | "NEFT" | "Bank Transfer" | "Wire";
+  notes: string | null;
+  created_at: string;
+}
+
+export type NotificationType =
+  | "ead_expiry"
+  | "i983_due"
+  | "timesheet_missing"
+  | "approval_pending";
+
+export interface NotificationItem {
+  id: string;
+  recipient_user_id: string;
+  message: string;
+  type: NotificationType;
+  related_url: string | null;
+  is_read: boolean;
+  created_at: string;
 }
 
 // Extended types with relations

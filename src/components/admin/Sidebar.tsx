@@ -6,11 +6,13 @@ import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AdminNotificationBell } from "@/components/admin/AdminNotificationBell";
 import {
   LayoutDashboard,
   Users,
   FolderKanban,
   Clock,
+  ShieldCheck,
   LogOut,
   Menu,
   X,
@@ -20,30 +22,31 @@ import { useState } from "react";
 const navItems = [
   { href: "/admin/overview", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/employees", label: "Employees", icon: Users },
-  { href: "/admin/projects", label: "Project Builder", icon: FolderKanban },
+  { href: "/admin/projects", label: "Projects & Clients", icon: FolderKanban },
   { href: "/admin/timesheets", label: "Timesheets", icon: Clock },
+  { href: "/admin/compliance", label: "Compliance", icon: ShieldCheck },
 ];
 
-export function Sidebar() {
-  const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleSignOut = () => {
-    signOut({ callbackUrl: "/admin/login" });
-  };
-
-  const NavContent = () => (
+function NavContent({
+  pathname,
+  onNavigate,
+  onSignOut,
+}: {
+  pathname: string;
+  onNavigate: () => void;
+  onSignOut: () => void;
+}) {
+  return (
     <>
       <div className="px-6 py-6 border-b border-[rgba(255,215,0,0.2)]">
-        <div className="flex items-center gap-3">
-          <img 
-            src="/logo.png" 
-            alt="Archway Logo" 
-            className="w-8 h-8 object-contain"
-          />
-          <div>
-            <h1 className="font-bebas text-[28px] text-[#FFD700] leading-none">ARCHWAY</h1>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="Archway Logo" className="w-8 h-8 object-contain" />
+            <div>
+              <h1 className="font-bebas text-[28px] text-[#FFD700] leading-none">ARCHWAY</h1>
+            </div>
           </div>
+          <AdminNotificationBell />
         </div>
       </div>
       <ScrollArea className="flex-1 px-3">
@@ -55,7 +58,7 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setMobileOpen(false)}
+                onClick={onNavigate}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2 rounded-lg font-space text-[14px] transition-all duration-200",
                   isActive
@@ -74,7 +77,7 @@ export function Sidebar() {
         <Button
           variant="ghost"
           className="w-full justify-start text-[rgba(245,245,240,0.6)] hover:text-[#F5F5F0] hover:bg-[rgba(255,215,0,0.05)] font-space text-[14px]"
-          onClick={handleSignOut}
+          onClick={onSignOut}
         >
           <LogOut className="h-5 w-5 mr-3" />
           Sign Out
@@ -82,6 +85,15 @@ export function Sidebar() {
       </div>
     </>
   );
+}
+
+export function Sidebar() {
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/admin/login" });
+  };
 
   return (
     <>
@@ -124,12 +136,16 @@ export function Sidebar() {
           mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <NavContent />
+        <NavContent
+          pathname={pathname}
+          onNavigate={() => setMobileOpen(false)}
+          onSignOut={handleSignOut}
+        />
       </aside>
 
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex fixed top-0 left-0 z-40 h-full w-64 bg-[#0A0A0A] border-r border-[rgba(255,215,0,0.2)] flex-col">
-        <NavContent />
+        <NavContent pathname={pathname} onNavigate={() => setMobileOpen(false)} onSignOut={handleSignOut} />
       </aside>
     </>
   );

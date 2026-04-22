@@ -44,10 +44,10 @@ export default function ProjectsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="font-bebas text-4xl text-[#F5F5F0]">
-            Project Builder
+            Projects &amp; Clients
           </h1>
           <p className="font-space text-[13px] text-[rgba(245,245,240,0.5)] mt-1">
-            Create and manage learning projects
+            Create and manage projects, clients, and payments
           </p>
         </div>
         <Button

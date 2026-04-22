@@ -2,29 +2,56 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { createAdminClient } from "@/lib/supabase";
 
-// GET all employees
-export async function GET() {
+// GET employees or supervisors
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const scope = searchParams.get("scope");
     const supabase = createAdminClient();
 
+    if (scope === "supervisors") {
+      const { data, error } = await supabase
+        .from("users")
+        .select("id, name, email, role, job_title")
+        .in("role", ["admin", "supervisor"])
+        .order("name", { ascending: true });
+
+      if (error) throw error;
+      return NextResponse.json(data || []);
+    }
+
     // Get all employees with their enrollment count
-    const { data: employees, error } = await supabase
-      .from("users")
-      .select(
-        `
-        *,
-        enrollments:enrollments(count)
-      `,
-      )
-      .eq("role", "employee")
-      .order("created_at", { ascending: false });
+    const [{ data: employees, error }, { data: docs }] = await Promise.all([
+      supabase
+        .from("users")
+        .select(
+          `
+          *,
+          enrollments:enrollments(count)
+        `,
+        )
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("employee_documents")
+        .select("employee_id, status, file_url"),
+    ]);
 
     if (error) throw error;
+
+    const docsCountByEmployee = new Map<string, number>();
+    (docs || []).forEach((doc) => {
+      if (doc.status !== "uploaded" || !doc.file_url) return;
+      docsCountByEmployee.set(
+        doc.employee_id,
+        (docsCountByEmployee.get(doc.employee_id) || 0) + 1,
+      );
+    });
 
     // Transform the data to include enrollment_count
     const employeesWithCount = employees?.map((emp) => ({
       ...emp,
       enrollment_count: emp.enrollments?.[0]?.count || 0,
+      documents_uploaded_count: docsCountByEmployee.get(emp.id) || 0,
       enrollments: undefined, // Remove the raw enrollments data
     }));
 
@@ -42,7 +69,15 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, password, hours_per_day, hourly_rate, joining_date } = body;
+    const {
+      name,
+      email,
+      password,
+      hours_per_day,
+      hourly_rate,
+      joining_date,
+      hours_per_week,
+    } = body;
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -54,6 +89,13 @@ export async function POST(request: Request) {
     if (password.length < 8) {
       return NextResponse.json(
         { message: "Password must be at least 8 characters" },
+        { status: 400 },
+      );
+    }
+
+    if (!joining_date) {
+      return NextResponse.json(
+        { message: "Joining Date is required" },
         { status: 400 },
       );
     }
@@ -87,7 +129,8 @@ export async function POST(request: Request) {
         role: "employee",
         hours_per_day: hours_per_day ? parseFloat(hours_per_day) : 8.0,
         hourly_rate: hourly_rate ? parseFloat(hourly_rate) : 0.0,
-        joining_date: joining_date || null, // Used for tenure calculation & completed dummy projects
+        joining_date,
+        hours_per_week: hours_per_week ? parseFloat(hours_per_week) : 30,
       })
       .select()
       .single();
