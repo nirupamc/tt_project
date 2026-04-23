@@ -301,7 +301,7 @@ export default function EmployeeProfilePage() {
             <KeyValueRow
               label="Hours Per Week"
               value={
-                profile.employee.hours_per_week !== null
+                profile.employee.hours_per_week != null
                   ? `${profile.employee.hours_per_week} hrs/week`
                   : missingValue()
               }
@@ -309,7 +309,7 @@ export default function EmployeeProfilePage() {
             <KeyValueRow
               label="Pay Rate"
               value={
-                profile.employee.pay_rate !== null
+                profile.employee.pay_rate != null && Number.isFinite(Number(profile.employee.pay_rate))
                   ? `$${Number(profile.employee.pay_rate).toFixed(2)}/hr`
                   : missingValue()
               }

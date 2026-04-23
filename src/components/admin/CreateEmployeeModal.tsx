@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -31,8 +38,12 @@ export function CreateEmployeeModal({
     name: "",
     email: "",
     password: "",
+    job_title: "",
+    work_location: "",
+    opt_type: "",
     hours_per_day: "8",
-    hourly_rate: "0",
+    hours_per_week: "30",
+    pay_rate: "18.00",
     joining_date: format(new Date(), 'yyyy-MM-dd'),
   });
 
@@ -54,7 +65,18 @@ export function CreateEmployeeModal({
 
       toast.success("Employee created successfully");
       onOpenChange(false);
-      setFormData({ name: "", email: "", password: "", hours_per_day: "8", hourly_rate: "0", joining_date: format(new Date(), 'yyyy-MM-dd') });
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        job_title: "",
+        work_location: "",
+        opt_type: "",
+        hours_per_day: "8",
+        hours_per_week: "30",
+        pay_rate: "18.00",
+        joining_date: format(new Date(), 'yyyy-MM-dd'),
+      });
       router.refresh();
     } catch (error) {
       toast.error(
@@ -105,6 +127,49 @@ export function CreateEmployeeModal({
               />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="job_title" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Job Title</Label>
+              <Input
+                id="job_title"
+                value={formData.job_title}
+                onChange={(e) =>
+                  setFormData({ ...formData, job_title: e.target.value })
+                }
+                placeholder="e.g. Software Engineer"
+                required
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="work_location" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Work Location</Label>
+              <Input
+                id="work_location"
+                value={formData.work_location}
+                onChange={(e) =>
+                  setFormData({ ...formData, work_location: e.target.value })
+                }
+                placeholder="e.g. Remote — Austin, TX"
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">OPT Type</Label>
+              <Select
+                value={formData.opt_type || "none"}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, opt_type: value === "none" ? "" : value })
+                }
+              >
+                <SelectTrigger className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
+                  <SelectValue placeholder="Select OPT Type" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1A1A1A] border-[rgba(255,215,0,0.15)] text-[#F5F5F0]">
+                  <SelectItem value="none">Select OPT Type</SelectItem>
+                  <SelectItem value="OPT">OPT</SelectItem>
+                  <SelectItem value="STEM OPT">STEM OPT</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="password" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Password</Label>
               <Input
                 id="password"
@@ -137,17 +202,33 @@ export function CreateEmployeeModal({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="hourly_rate" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Hourly Rate ($)</Label>
+              <Label htmlFor="hours_per_week" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Hours Per Week</Label>
               <Input
-                id="hourly_rate"
+                id="hours_per_week"
+                type="number"
+                step="1"
+                min="0"
+                value={formData.hours_per_week}
+                onChange={(e) =>
+                  setFormData({ ...formData, hours_per_week: e.target.value })
+                }
+                placeholder="30"
+                required
+                className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] placeholder:text-[rgba(245,245,240,0.3)]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="pay_rate" className="font-space text-xs font-medium tracking-wider uppercase text-[rgba(245,245,240,0.6)]">Pay Rate ($/hr)</Label>
+              <Input
+                id="pay_rate"
                 type="number"
                 step="0.01"
                 min="0"
-                value={formData.hourly_rate}
+                value={formData.pay_rate}
                 onChange={(e) =>
-                  setFormData({ ...formData, hourly_rate: e.target.value })
+                  setFormData({ ...formData, pay_rate: e.target.value })
                 }
-                placeholder="0.00"
+                placeholder="18.00"
                 required
                 className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)] placeholder:text-[rgba(245,245,240,0.3)]"
               />

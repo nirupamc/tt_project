@@ -75,8 +75,12 @@ export async function POST(request: Request) {
       password,
       hours_per_day,
       hourly_rate,
+      pay_rate,
       joining_date,
       hours_per_week,
+      job_title,
+      work_location,
+      opt_type,
     } = body;
 
     if (!name || !email || !password) {
@@ -96,6 +100,20 @@ export async function POST(request: Request) {
     if (!joining_date) {
       return NextResponse.json(
         { message: "Joining Date is required" },
+        { status: 400 },
+      );
+    }
+
+    if (!job_title) {
+      return NextResponse.json(
+        { message: "Job Title is required" },
+        { status: 400 },
+      );
+    }
+
+    if (opt_type && !["OPT", "STEM OPT"].includes(opt_type)) {
+      return NextResponse.json(
+        { message: "OPT Type must be OPT or STEM OPT" },
         { status: 400 },
       );
     }
@@ -127,10 +145,18 @@ export async function POST(request: Request) {
         email,
         password_hash,
         role: "employee",
+        job_title,
+        work_location: work_location || null,
+        opt_type: opt_type || null,
         hours_per_day: hours_per_day ? parseFloat(hours_per_day) : 8.0,
-        hourly_rate: hourly_rate ? parseFloat(hourly_rate) : 0.0,
-        joining_date,
         hours_per_week: hours_per_week ? parseFloat(hours_per_week) : 30,
+        pay_rate: pay_rate ? parseFloat(pay_rate) : null,
+        hourly_rate: pay_rate
+          ? parseFloat(pay_rate)
+          : hourly_rate
+            ? parseFloat(hourly_rate)
+            : 0.0,
+        joining_date,
       })
       .select()
       .single();
