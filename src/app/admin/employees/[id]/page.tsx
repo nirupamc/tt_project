@@ -49,27 +49,17 @@ interface EnrollmentWithProject extends Enrollment {
   project: Project;
 }
 
-interface EmployeeWithSupervisor extends User {
-  supervisor?: {
-    id: string;
-    name: string;
-    email: string;
-    job_title?: string | null;
-  } | null;
-}
-
 type TimeRange = 'thisWeek' | 'thisMonth' | 'allTime';
 
 export default function EmployeeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const [employee, setEmployee] = useState<EmployeeWithSupervisor | null>(null);
+  const [employee, setEmployee] = useState<User | null>(null);
   const [timesheets, setTimesheets] = useState<TimesheetWithProject[]>([]);
   const [enrollments, setEnrollments] = useState<EnrollmentWithProject[]>([]);
   const [projectsWithProgress, setProjectsWithProgress] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<TimeRange>('thisWeek');
-  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const fetchEmployee = async () => {
     try {
@@ -156,33 +146,6 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
     a.download = `${employee?.name}-timesheet-${format(new Date(), 'yyyy-MM-dd')}.csv`;
     a.click();
     toast.success('Timesheet exported');
-  };
-
-  const exportRfePacket = async () => {
-    try {
-      setGeneratingPdf(true);
-      const response = await fetch(`/api/export/rfe-packet/${id}`);
-      if (!response.ok) {
-        throw new Error("Failed to generate PDF");
-      }
-      const blob = await response.blob();
-      const contentDisposition = response.headers.get("Content-Disposition");
-      const serverFilenameMatch = contentDisposition?.match(/filename="(.+)"/);
-      const serverFilename = serverFilenameMatch?.[1];
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = serverFilename || `RFE_Packet_${employee?.name || "Employee"}_${format(new Date(), "yyyy-MM-dd")}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-      toast.success("RFE packet generated");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to generate packet");
-    } finally {
-      setGeneratingPdf(false);
-    }
   };
 
   // Filter timesheets by time range
@@ -320,14 +283,6 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                     </>
                   )}
                 </div>
-                <div className="mt-2">
-                  <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
-                    Assigned Supervisor:{" "}
-                    <span className="text-[#FFD700] font-semibold">
-                      {employee.supervisor?.name || "None assigned"}
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
           </CardContent>
@@ -335,16 +290,12 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
 
         {/* Right: Delete Button */}
         <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
-          <CardContent className="pt-6 flex items-center justify-end gap-3 h-full">
+          <CardContent className="pt-6 flex items-center justify-end h-full">
             <Button
-              onClick={exportRfePacket}
-              disabled={generatingPdf}
-              className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] font-space font-semibold gap-2"
+              variant="destructive"
+              onClick={handleDelete}
+              className="gap-2"
             >
-              <Download className="h-4 w-4" />
-              {generatingPdf ? "Generating PDF..." : "Export RFE Packet"}
-            </Button>
-            <Button variant="destructive" onClick={handleDelete} className="gap-2">
               <Trash2 className="h-4 w-4" />
               Delete Employee
             </Button>
