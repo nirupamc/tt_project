@@ -34,7 +34,18 @@ export function CreateEmployeeModal({
 }: CreateEmployeeModalProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    password: string;
+    job_title: string;
+    work_location: string;
+    opt_type: string;
+    hours_per_day: string;
+    hours_per_week: string;
+    pay_rate: string;
+    joining_date: string;
+  }>({
     name: "",
     email: "",
     password: "",
@@ -156,7 +167,7 @@ export function CreateEmployeeModal({
               <Select
                 value={formData.opt_type || "none"}
                 onValueChange={(value) =>
-                  setFormData({ ...formData, opt_type: value === "none" ? "" : value })
+                  setFormData({ ...formData, opt_type: value === "none" ? "" : (value || "") })
                 }
               >
                 <SelectTrigger className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]">
