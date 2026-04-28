@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { EmployeeNotificationBell } from "./EmployeeNotificationBell";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,36 +38,33 @@ export function EmployeeNav() {
       .slice(0, 2) || "?";
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0A0A0A] border-b border-[rgba(255,215,0,0.2)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-[rgba(255,215,0,0.2)] bg-[#0A0A0A]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-2"
-            >
-              <img 
-                src="/logo.png" 
-                alt="Archway Logo" 
-                className="w-6 h-6 object-contain"
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <img
+                src="/logo.png"
+                alt="Archway Logo"
+                className="h-6 w-6 object-contain"
               />
               <span className="font-bebas text-[22px] text-[#FFD700]">
                 ARCHWAY
               </span>
             </Link>
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden items-center gap-1 md:flex">
               {navItems.map((item) => {
                 const isActive =
                   pathname === item.href ||
-                  (item.href !== "/dashboard" &&
-                    pathname.startsWith(item.href));
+                  (item.href !== "/dashboard" && pathname.startsWith(item.href));
                 const Icon = item.icon;
+
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-lg font-space text-[13px] transition-colors",
+                      "flex items-center gap-2 rounded-lg px-3 py-2 font-space text-[13px] transition-colors",
                       isActive
                         ? "text-[#FFD700]"
                         : "text-[rgba(245,245,240,0.7)] hover:text-[#F5F5F0]",
@@ -81,62 +78,66 @@ export function EmployeeNav() {
             </nav>
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="relative h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFD700]">
-              <Avatar className="h-10 w-10 border-2 border-[#FFD700]">
-                <AvatarImage src={session?.user?.avatar_url || undefined} />
-                <AvatarFallback className="bg-[#2A2A2A] text-[#FFD700]">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <div className="px-2 py-1.5">
-                <p className="font-space text-sm font-medium">
-                  {session?.user?.name}
-                </p>
-                <p className="font-space text-xs text-gray-500">
-                  {session?.user?.email}
-                </p>
-              </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="md:hidden">
-                <Link
-                  href="/dashboard"
-                  className="flex items-center font-space text-[13px]"
+          <div className="flex items-center gap-3">
+            <EmployeeNotificationBell />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="relative h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:ring-offset-2">
+                <Avatar className="h-10 w-10 border-2 border-[#FFD700]">
+                  <AvatarImage src={session?.user?.avatar_url || undefined} />
+                  <AvatarFallback className="bg-[#2A2A2A] text-[#FFD700]">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="px-2 py-1.5">
+                  <p className="font-space text-sm font-medium">
+                    {session?.user?.name}
+                  </p>
+                  <p className="font-space text-xs text-gray-500">
+                    {session?.user?.email}
+                  </p>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="md:hidden">
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center font-space text-[13px]"
+                  >
+                    <FolderKanban className="mr-2 h-4 w-4" />
+                    My Projects
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="md:hidden">
+                  <Link
+                    href="/dashboard/timesheet"
+                    className="flex items-center font-space text-[13px]"
+                  >
+                    <Clock className="mr-2 h-4 w-4" />
+                    Timesheet
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="md:hidden">
+                  <Link
+                    href="/dashboard/profile"
+                    className="flex items-center font-space text-[13px]"
+                  >
+                    <IdCard className="mr-2 h-4 w-4" />
+                    My Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="md:hidden" />
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="font-space text-[13px] text-red-600"
                 >
-                  <FolderKanban className="h-4 w-4 mr-2" />
-                  My Projects
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="md:hidden">
-                <Link
-                  href="/dashboard/timesheet"
-                  className="flex items-center font-space text-[13px]"
-                >
-                  <Clock className="h-4 w-4 mr-2" />
-                  Timesheet
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="md:hidden">
-                <Link
-                  href="/dashboard/profile"
-                  className="flex items-center font-space text-[13px]"
-                >
-                  <IdCard className="h-4 w-4 mr-2" />
-                  My Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="md:hidden" />
-              <DropdownMenuItem
-                onClick={handleSignOut}
-                className="text-red-600 font-space text-[13px]"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
     </header>

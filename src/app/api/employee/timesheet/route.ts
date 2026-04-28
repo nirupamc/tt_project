@@ -32,7 +32,6 @@ export async function GET() {
           .from("timesheets")
           .select("*")
           .eq("user_id", session.user.id)
-          .is("project_id", null)
           .order("work_date", { ascending: false }),
         supabase
           .from("timesheet_approvals")

@@ -512,9 +512,9 @@ export default function EmployeeProfilePage() {
                 ]
                   .filter((objective) => !!objective.text)
                   .map((objective) => (
-                    <div key={objective.label} className="rounded-lg border border-[rgba(255,215,0,0.12)] p-3">
+                    <div key={objective.label} className="min-w-0 rounded-lg border border-[rgba(255,215,0,0.12)] p-3">
                       <p className="font-space text-sm text-[#FFD700] font-semibold">{objective.label}</p>
-                      <p className="font-space text-sm text-[#F5F5F0] mt-2 whitespace-pre-wrap">{objective.text}</p>
+                      <p className="font-space text-sm text-[#F5F5F0] mt-2 whitespace-pre-wrap break-words overflow-hidden">{objective.text}</p>
                       <span className={`inline-flex mt-3 rounded-full px-2 py-1 text-xs font-semibold ${statusBadge(objective.status || "Not Started")}`}>
                         {objective.status || "Not Started"}
                       </span>

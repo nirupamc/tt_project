@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import {
+  addDays,
   addMonths,
   addWeeks,
   endOfMonth,
@@ -36,6 +37,7 @@ interface TimesheetEntry {
   id: string;
   work_date: string;
   hours_logged: number;
+  is_auto_generated?: boolean;
   task_category: string | null;
   task_description: string | null;
   i983_objective_mapped: ObjectiveValue | null;
@@ -86,6 +88,7 @@ export default function EmployeeTimesheetPage() {
   ]);
   const [viewMode, setViewMode] = useState<ViewMode>("chart");
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [expandedWeekDay, setExpandedWeekDay] = useState<string | null>(null);
   const [descriptionTouched, setDescriptionTouched] = useState(false);
   const [hoursTouched, setHoursTouched] = useState(false);
   const [form, setForm] = useState<TimesheetFormState>({
@@ -124,6 +127,16 @@ export default function EmployeeTimesheetPage() {
     return map;
   }, [entries]);
 
+  const entriesByDate = useMemo(() => {
+    const map = new Map<string, TimesheetEntry[]>();
+    entries.forEach((entry) => {
+      const current = map.get(entry.work_date) || [];
+      current.push(entry);
+      map.set(entry.work_date, current);
+    });
+    return map;
+  }, [entries]);
+
   const descriptionLength = form.task_description.trim().length;
   const totalHours = Number(form.total_hours);
   const trainingHours = Number(form.training_hours);
@@ -143,21 +156,25 @@ export default function EmployeeTimesheetPage() {
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
   const weekEntries = eachDayOfInterval({
     start: weekStart,
-    end: addWeeks(weekStart, 1),
+    end: addDays(weekStart, 6),
   })
     .filter((day) => !isWeekend(day))
     .map((day) => ({
       day,
-      entry: entryMap.get(format(day, "yyyy-MM-dd")) || null,
+      entries: entriesByDate.get(format(day, "yyyy-MM-dd")) || [],
     }));
 
-  const weekTotal = weekEntries.reduce((sum, item) => sum + (item.entry?.hours_logged || 0), 0);
+  const weekTotal = weekEntries.reduce(
+    (sum, item) =>
+      sum + item.entries.reduce((daySum, entry) => daySum + Number(entry.hours_logged || 0), 0),
+    0,
+  );
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
   const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd });
   const monthTotal = monthDays.reduce((sum, day) => {
-    const entry = entryMap.get(format(day, "yyyy-MM-dd"));
-    return sum + (entry?.hours_logged || 0);
+    const dayEntries = entriesByDate.get(format(day, "yyyy-MM-dd")) || [];
+    return sum + dayEntries.reduce((daySum, entry) => daySum + Number(entry.hours_logged || 0), 0);
   }, 0);
 
   const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
@@ -433,16 +450,45 @@ export default function EmployeeTimesheetPage() {
               <p className="font-space text-sm font-semibold text-[#0A0A0A]">
                 Week of {format(weekStart, "MMM d, yyyy")}
               </p>
-              {visibleWeekApproval ? (
-                <Badge className="mt-2 bg-[rgba(34,197,94,0.12)] text-[#16a34a] border border-[rgba(22,163,74,0.4)]">
-                  Approved by {visibleWeekApproval.approved_by_name} on{" "}
-                  {format(parseISO(visibleWeekApproval.approved_at), "MMM d, yyyy")}
-                </Badge>
-              ) : (
-                <Badge className="mt-2 bg-[rgba(250,204,21,0.18)] text-[#a16207] border border-[rgba(250,204,21,0.45)]">
-                  Awaiting supervisor approval
-                </Badge>
-              )}
+              {(() => {
+                const isPastWeek = weekStart < currentWeekStart;
+                const isCurrentWeek =
+                  format(weekStart, "yyyy-MM-dd") === format(currentWeekStart, "yyyy-MM-dd");
+                const isFutureWeek = weekStart > currentWeekStart;
+
+                // Rule 3: Future weeks show no status
+                if (isFutureWeek) {
+                  return null;
+                }
+
+                // Rule 2: Past weeks always show as approved
+                if (isPastWeek) {
+                  return (
+                    <Badge className="mt-2 bg-[rgba(34,197,94,0.12)] text-[#16a34a] border border-[rgba(22,163,74,0.4)]">
+                      ✓ Approved
+                    </Badge>
+                  );
+                }
+
+                // Rule 1: Current week checks for actual approval record
+                if (isCurrentWeek) {
+                  if (visibleWeekApproval) {
+                    return (
+                      <Badge className="mt-2 bg-[rgba(34,197,94,0.12)] text-[#16a34a] border border-[rgba(22,163,74,0.4)]">
+                        ✓ Approved by {visibleWeekApproval.approved_by_name}
+                      </Badge>
+                    );
+                  } else {
+                    return (
+                      <Badge className="mt-2 bg-[rgba(250,204,21,0.18)] text-[#a16207] border border-[rgba(250,204,21,0.45)]">
+                        ⏳ Awaiting supervisor approval
+                      </Badge>
+                    );
+                  }
+                }
+
+                return null;
+              })()}
             </div>
             <Button onClick={() => setCurrentDate(addWeeks(currentDate, 1))} variant="outline" size="sm">
               <ChevronRight className="h-4 w-4" />
@@ -452,14 +498,58 @@ export default function EmployeeTimesheetPage() {
             <CardContent className="pt-6">
               <table className="w-full">
                 <tbody>
-                  {weekEntries.map(({ day, entry }) => (
-                    <tr key={day.toISOString()} className="border-b border-[rgba(10,10,10,0.06)]">
-                      <td className="py-3 font-space text-sm">{format(day, "EEE, MMM d")}</td>
-                      <td className="py-3 font-space text-sm text-right text-[#FFD700] font-semibold">
-                        {entry ? `${Number(entry.hours_logged).toFixed(1)}h` : "—"}
-                      </td>
-                    </tr>
-                  ))}
+                  {weekEntries.map(({ day, entries: dayEntries }) => {
+                    const dayKey = format(day, "yyyy-MM-dd");
+                    const dayTotal = dayEntries.reduce(
+                      (sum, entry) => sum + Number(entry.hours_logged || 0),
+                      0,
+                    );
+                    const isExpanded = expandedWeekDay === dayKey;
+
+                    return (
+                      <Fragment key={dayKey}>
+                        <tr
+                          className="cursor-pointer border-b border-[rgba(10,10,10,0.06)]"
+                          onClick={() => setExpandedWeekDay(isExpanded ? null : dayKey)}
+                        >
+                          <td className="py-3 font-space text-sm">{format(day, "EEE, MMM d")}</td>
+                          <td className="py-3 font-space text-sm text-right text-[#FFD700] font-semibold">
+                            {dayEntries.length > 0 ? `${dayTotal.toFixed(1)}h` : "—"}
+                          </td>
+                        </tr>
+                        {isExpanded && dayEntries.length > 0 && (
+                          <tr className="border-b border-[rgba(10,10,10,0.06)] bg-[rgba(10,10,10,0.02)]">
+                            <td colSpan={2} className="px-3 py-3">
+                              <div className="space-y-3">
+                                {dayEntries.map((entry) => (
+                                  <div key={entry.id} className="rounded-lg border border-[rgba(10,10,10,0.08)] bg-white p-3">
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                      <p className="font-space text-sm font-semibold text-[#0A0A0A]">
+                                        {entry.task_category || "Uncategorized"}
+                                      </p>
+                                      {entry.is_auto_generated && (
+                                        <span className="rounded-full bg-[rgba(34,197,94,0.12)] px-2 py-1 text-[11px] font-semibold text-[#16a34a]">
+                                          Auto-logged
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="mt-2 font-space text-sm text-[rgba(10,10,10,0.8)] whitespace-pre-wrap">
+                                      {entry.task_description || "No task description."}
+                                    </p>
+                                    <div className="mt-2 flex flex-wrap gap-3 text-xs font-space text-[rgba(10,10,10,0.7)]">
+                                      <span>Training Hours: {Number(entry.training_hours || 0).toFixed(1)}h</span>
+                                      <span>Billable Hours: {Number(entry.billable_hours || 0).toFixed(1)}h</span>
+                                      <span>I-983 Objective: {entry.i983_objective_mapped || "—"}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </Fragment>
+                    );
+                  })}
                 </tbody>
                 <tfoot>
                   <tr>
@@ -493,16 +583,20 @@ export default function EmployeeTimesheetPage() {
               <div className="grid grid-cols-7 gap-2">
                 {monthDays.map((day) => {
                   const key = format(day, "yyyy-MM-dd");
-                  const entry = entryMap.get(key);
+                  const dayEntries = entriesByDate.get(key) || [];
+                  const dayTotal = dayEntries.reduce(
+                    (sum, entry) => sum + Number(entry.hours_logged || 0),
+                    0,
+                  );
                   return (
                     <div
                       key={key}
                       className={`aspect-square border rounded-lg p-2 ${isSameMonth(day, currentDate) ? "bg-white border-[rgba(10,10,10,0.08)]" : "bg-[rgba(10,10,10,0.02)] border-[rgba(10,10,10,0.05)]"}`}
                     >
                       <p className="font-space text-xs text-[rgba(10,10,10,0.7)]">{format(day, "d")}</p>
-                      {entry && (
+                      {dayEntries.length > 0 && (
                         <p className="font-space text-xs text-[#FFD700] font-semibold mt-1">
-                          {Number(entry.hours_logged).toFixed(1)}h
+                          {dayTotal.toFixed(1)}h
                         </p>
                       )}
                     </div>
