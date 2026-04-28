@@ -1,12 +1,47 @@
-import { inngest } from "../client";
+import { Inngest } from "inngest";
 import { createAdminClient } from "@/lib/supabase";
 import { getUnlockedDayCount } from "@/lib/day-unlock";
-import { addDays, startOfWeek, endOfWeek, format } from "date-fns";
+import { startOfWeek, endOfWeek, format } from "date-fns";
 
+const inngest = new Inngest({
+  id: "archway",
+  name: "Archway",
+});
+
+type EnrollmentRow = {
+  id: string;
+  start_date: string | null;
+  users: {
+    id: string;
+    name: string;
+    email: string;
+    hours_per_day: number | string | null;
+    role: string;
+  }[];
+  projects?: {
+    id: string;
+    title: string;
+    total_days: number | null;
+  }[] | null;
+  project?: {
+    id: string;
+    title: string;
+    total_days: number | null;
+  } | null;
+};
+
+type TimesheetRow = {
+  total_hours: number | string | null;
+};
+
+// Runs 01:00 UTC Saturday (~7PM CT Friday with DST caveat)
 export const fridayWeeklySummary = inngest.createFunction(
-  { id: "friday-weekly-summary", name: "Friday Weekly Summary" },
-  { cron: "0 1 * * 6" }, // runs 01:00 UTC Saturday (~7PM CT Friday with DST caveat)
-  async ({ event, step }) => {
+  {
+    id: "friday-weekly-summary",
+    name: "Friday Weekly Summary",
+    triggers: [{ cron: "0 1 * * 6" }],
+  },
+  async ({ step }) => {
     const supabase = createAdminClient();
 
     try {
@@ -26,8 +61,9 @@ export const fridayWeeklySummary = inngest.createFunction(
       for (const enrollment of enrollments) {
         await step.run(`process-weekly-${enrollment.id}`, async () => {
           try {
-            const user = (enrollment as any).users;
-            const project = (enrollment as any).projects || (enrollment as any).project || null;
+            const typedEnrollment = enrollment as unknown as EnrollmentRow;
+            const user = typedEnrollment.users[0] ?? null;
+            const project = typedEnrollment.projects?.[0] ?? typedEnrollment.project ?? null;
             if (!user || user.role !== "employee") return;
             if (!project) return;
 
@@ -39,13 +75,17 @@ export const fridayWeeklySummary = inngest.createFunction(
             const { data: timesheets, error: tsErr } = await supabase
               .from("timesheets")
               .select("*")
-              .eq("employee_id", user.id)
+              .eq("user_id", user.id)
               .gte("work_date", weekStart)
               .lte("work_date", weekEnd);
 
             if (tsErr) throw tsErr;
 
-            const totalHours = (timesheets || []).reduce((s: number, t: any) => s + Number(t.total_hours || 0), 0);
+            const totalHours = (timesheets || []).reduce(
+              (sum: number, timesheet: TimesheetRow) =>
+                sum + Number(timesheet.total_hours || 0),
+              0,
+            );
             const daysWorked = (timesheets || []).length;
 
             // Determine project progress
@@ -76,7 +116,7 @@ export const fridayWeeklySummary = inngest.createFunction(
               tasksTotalCount = (tAll || []).length;
 
               if (tasksTotalCount > 0) {
-                const { data: upd, error: updErr } = await supabase
+                const { error: updErr } = await supabase
                   .from("tasks")
                   .update({ status: "completed", completed_at: new Date().toISOString(), completed_by_auto: true })
                   .eq("project_day_id", projectDay.id);
@@ -100,7 +140,7 @@ export const fridayWeeklySummary = inngest.createFunction(
 
             const { data: inserted, error: insertErr } = await supabase
               .from("weekly_summaries")
-              .upsert(summaryRow, { onConflict: ["employee_id", "project_id", "week_start"] })
+              .upsert(summaryRow, { onConflict: "employee_id,project_id,week_start" })
               .select("id");
 
             if (insertErr) throw insertErr;

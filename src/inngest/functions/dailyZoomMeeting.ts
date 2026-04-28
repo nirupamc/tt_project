@@ -1,13 +1,26 @@
-import { inngest } from "../client";
+import { Inngest } from "inngest";
 import { createAdminClient } from "@/lib/supabase";
 import { getZoomAccessToken, createZoomMeeting } from "@/lib/zoom";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import { sendEmail } from "@/lib/resend";
 
+const inngest = new Inngest({
+  id: "archway",
+  name: "Archway",
+});
+
+type ProjectRow = {
+  id: string;
+};
+
+// 15:30 UTC = 9:00 PM IST (approx)
 export const dailyZoomMeeting = inngest.createFunction(
-  { id: "daily-zoom-meeting", name: "Daily Zoom Meeting" },
-  { cron: "30 15 * * 1-5" }, // 15:30 UTC = 9:00 PM IST (approx)
-  async ({ event, step }) => {
+  {
+    id: "daily-zoom-meeting",
+    name: "Daily Zoom Meeting",
+    triggers: [{ cron: "30 15 * * 1-5" }],
+  },
+  async ({ step }) => {
     const supabase = createAdminClient();
 
     try {
@@ -43,7 +56,11 @@ export const dailyZoomMeeting = inngest.createFunction(
       const { data: projects } = await supabase.from("projects").select("id");
 
       if (projects && projects.length) {
-        const inserts = projects.map((p: any) => ({ project_id: p.id, zoom_meeting_id: zoomRow.id, meeting_date: dateString }));
+        const inserts = projects.map((project: ProjectRow) => ({
+          project_id: project.id,
+          zoom_meeting_id: zoomRow.id,
+          meeting_date: dateString,
+        }));
         const { error: pzErr } = await supabase.from("project_zoom_meetings").insert(inserts);
         if (pzErr) console.error("Failed to link projects to zoom meeting:", pzErr);
       }

@@ -1,11 +1,20 @@
-import { inngest } from "../client";
+import { Inngest } from "inngest";
 import { createAdminClient } from "@/lib/supabase";
 import { getUnlockedDayCount } from "@/lib/day-unlock";
 
+const inngest = new Inngest({
+  id: "archway",
+  name: "Archway",
+});
+
+// Runs 11:00 PM UTC Mon-Fri (~6PM CT accounting DST)
 export const autoSubmitTimesheet = inngest.createFunction(
-  { id: "auto-submit-timesheet", name: "Auto Submit Timesheet" },
-  { cron: "0 23 * * 1-5" }, // runs 11:00 PM UTC Mon-Fri (~6PM CT accounting DST)
-  async ({ event, step }) => {
+  {
+    id: "auto-submit-timesheet",
+    name: "Auto Submit Timesheet",
+    triggers: [{ cron: "0 23 * * 1-5" }],
+  },
+  async ({ step }) => {
     const supabase = createAdminClient();
 
     try {
@@ -100,7 +109,7 @@ export const autoSubmitTimesheet = inngest.createFunction(
             const { data: existing, error: existErr } = await supabase
               .from("timesheets")
               .select("id")
-              .eq("employee_id", user.id)
+              .eq("user_id", user.id)
               .eq("work_date", ctDateString)
               .limit(1);
 

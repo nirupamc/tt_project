@@ -1,14 +1,19 @@
-import { inngest } from "../client";
+import { Inngest } from "inngest";
 import { createAdminClient } from "@/lib/supabase";
 import { startOfWeek, format } from "date-fns";
+
+const inngest = new Inngest({
+  id: "archway",
+  name: "Archway",
+});
 
 export const autoApprovePastWeeks = inngest.createFunction(
   {
     id: "auto-approve-past-weeks",
     name: "Auto-Approve Past Weeks Timesheets",
+    triggers: [{ cron: "59 5 * * 6" }],
   },
   // Every Friday at 11:59 PM CT (Saturday 05:59 UTC)
-  { cron: "59 5 * * 6" },
   async ({ step }) => {
     await step.run("approve-past-weeks", async () => {
       const supabase = createAdminClient();
@@ -35,7 +40,7 @@ export const autoApprovePastWeeks = inngest.createFunction(
       // for any week BEFORE the current week
       const { data: timesheets, error: tsError } = await supabase
         .from("timesheets")
-        .select("employee_id, work_date")
+        .select("user_id, work_date")
         .lt("work_date", format(currentWeekStart, "yyyy-MM-dd"));
 
       if (tsError || !timesheets) {
@@ -43,20 +48,20 @@ export const autoApprovePastWeeks = inngest.createFunction(
         return { error: "Failed to fetch timesheets" };
       }
 
-      // Group by employee_id + week_start_date
+      // Group by user_id + week_start_date
       const weekMap = new Map<
         string,
-        { employee_id: string; week_start_date: string }
+        { user_id: string; week_start_date: string }
       >();
       for (const ts of timesheets) {
         const weekStart = format(
           startOfWeek(new Date(ts.work_date), { weekStartsOn: 1 }),
           "yyyy-MM-dd"
         );
-        const key = `${ts.employee_id}__${weekStart}`;
+        const key = `${ts.user_id}__${weekStart}`;
         if (!weekMap.has(key)) {
           weekMap.set(key, {
-            employee_id: ts.employee_id,
+            user_id: ts.user_id,
             week_start_date: weekStart,
           });
         }
@@ -68,7 +73,7 @@ export const autoApprovePastWeeks = inngest.createFunction(
         const { data: existing } = await supabase
           .from("timesheet_approvals")
           .select("id")
-          .eq("employee_id", entry.employee_id)
+          .eq("employee_id", entry.user_id)
           .eq("week_start_date", entry.week_start_date)
           .limit(1)
           .single();
@@ -77,7 +82,7 @@ export const autoApprovePastWeeks = inngest.createFunction(
           const { error: insertError } = await supabase
             .from("timesheet_approvals")
             .insert({
-              employee_id: entry.employee_id,
+              employee_id: entry.user_id,
               week_start_date: entry.week_start_date,
               approved_by: adminUser.id,
               approved_at: new Date().toISOString(),
@@ -87,7 +92,7 @@ export const autoApprovePastWeeks = inngest.createFunction(
             approvedCount++;
           } else {
             console.error(
-              `Auto-approve: failed to insert approval for ${entry.employee_id} week ${entry.week_start_date}`,
+              `Auto-approve: failed to insert approval for ${entry.user_id} week ${entry.week_start_date}`,
               insertError
             );
           }
