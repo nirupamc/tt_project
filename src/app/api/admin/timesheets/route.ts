@@ -8,8 +8,21 @@ export async function GET(request: Request) {
     const projectId = searchParams.get("projectId");
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
+    const employeeId = searchParams.get("employeeId");
 
     const supabase = createAdminClient();
+
+    let joiningDate: string | null = null;
+    if (employeeId) {
+      const { data: employee, error: employeeError } = await supabase
+        .from("users")
+        .select("joining_date")
+        .eq("id", employeeId)
+        .single();
+
+      if (employeeError) throw employeeError;
+      joiningDate = employee?.joining_date || null;
+    }
 
     let query = supabase
       .from("timesheets")
@@ -24,6 +37,13 @@ export async function GET(request: Request) {
 
     if (projectId) {
       query = query.eq("project_id", projectId);
+    }
+
+    if (employeeId) {
+      query = query.eq("user_id", employeeId);
+      if (joiningDate) {
+        query = query.gte("work_date", joiningDate);
+      }
     }
 
     if (startDate) {

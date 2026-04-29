@@ -41,13 +41,23 @@ export async function POST(request: Request) {
       );
     }
 
-    const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const blobPath = `employee-documents/${session.user.id}/${documentType}/${Date.now()}-${sanitizedName}`;
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_").toLowerCase();
+    const sanitizedDocumentType = documentType.replace(/[^a-zA-Z0-9._-]/g, "_").toLowerCase();
+    const blobPath = `employee-documents/${session.user.id}/${sanitizedDocumentType}/${Date.now()}-${sanitizedName}`;
 
-    const blob = await put(blobPath, file, {
-      access: "public",
-      addRandomSuffix: false,
-    });
+    let blob;
+    try {
+      blob = await put(blobPath, file, {
+        access: "public",
+        addRandomSuffix: false,
+      });
+    } catch (error) {
+      console.error("Vercel Blob upload error:", error);
+      return NextResponse.json(
+        { message: "File upload failed. Please try again." },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json({
       file_url: blob.url,

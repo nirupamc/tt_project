@@ -1,6 +1,7 @@
 import { Inngest } from "inngest";
 import { createAdminClient } from "@/lib/supabase";
 import { getUnlockedDayCount } from "@/lib/day-unlock";
+import { isBefore, isWeekend, parseISO, startOfDay } from "date-fns";
 
 const inngest = new Inngest({
   id: "archway",
@@ -31,12 +32,17 @@ export const autoSubmitTimesheet = inngest.createFunction(
       const ctMonth = ctParts.find((p) => p.type === "month")!.value;
       const ctDay = ctParts.find((p) => p.type === "day")!.value;
       const ctDateString = `${ctYear}-${ctMonth}-${ctDay}`; // YYYY-MM-DD in CT
+      const today = startOfDay(parseISO(ctDateString));
+
+      if (isWeekend(today)) {
+        return { skipped: "weekend" };
+      }
 
       // Fetch enrollments joined with user and project info
       const { data: enrollments, error: enrollErr } = await supabase
         .from("enrollments")
         .select(
-          `id, user_id, project_id, start_date, users(id, name, email, hours_per_day, role), projects(id, title, total_days)`
+          `id, user_id, project_id, start_date, users(id, name, email, hours_per_week, role, joining_date), projects(id, title, total_days)`
         );
 
       if (enrollErr) {
@@ -57,6 +63,11 @@ export const autoSubmitTimesheet = inngest.createFunction(
 
             // Only employees
             if (!user || user.role !== "employee") return;
+
+            const joiningDate = user.joining_date ? parseISO(user.joining_date) : null;
+            if (joiningDate && isBefore(today, joiningDate)) {
+              return;
+            }
 
             // Ensure start_date exists
             const startDate = enrollment.start_date;
@@ -136,7 +147,8 @@ export const autoSubmitTimesheet = inngest.createFunction(
             }
 
             // Determine total_hours
-            const hoursPerDay = user.hours_per_day && Number(user.hours_per_day) > 0 ? Number(user.hours_per_day) : 8;
+            const hoursPerWeek = user.hours_per_week ?? 40;
+            const hoursPerDay = hoursPerWeek / 5;
 
             // Insert timesheet row
             const insertRow: any = {

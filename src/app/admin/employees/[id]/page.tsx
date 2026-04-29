@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import type { User, Project, Enrollment } from '@/types';
-import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
+import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWeekend, subDays } from 'date-fns';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
   Clock, 
@@ -108,11 +108,10 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
 
   const fetchTimesheets = useCallback(async () => {
     try {
-      const res = await fetch(`/api/admin/timesheets`);
+      const res = await fetch(`/api/admin/timesheets?employeeId=${id}`);
       if (res.ok) {
         const data = (await res.json()) as AdminTimesheetRow[];
-        const filtered = data.filter((ts) => ts.user?.id === id);
-        setTimesheets(filtered);
+        setTimesheets(data);
       }
     } catch (error) {
       console.error('Failed to fetch timesheets:', error);
@@ -235,23 +234,35 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   const weekTimesheets = timesheets.filter(ts => {
     const date = parseISO(ts.work_date);
     const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-    const weekEnd = endOfWeek(new Date(), { weekStartsOn: 1 });
-    return date >= weekStart && date <= weekEnd;
+    const today = new Date();
+    return date >= weekStart && date <= today;
   });
   const weeklyHours = weekTimesheets.reduce((sum, ts) => sum + Number(ts.hours_logged), 0);
 
   // Calculate streak
-  const sortedDates = [...new Set(timesheets.map(t => t.work_date))].sort().reverse();
+  const entryDates = new Set(timesheets.map((t) => t.work_date));
   let streak = 0;
-  let lastDate = new Date();
-  for (const dateStr of sortedDates) {
-    const date = parseISO(dateStr);
-    const diffDays = Math.floor((lastDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-    if (diffDays <= 1) {
+  let cursor = new Date();
+  if (!entryDates.has(format(cursor, 'yyyy-MM-dd'))) {
+    cursor = subDays(cursor, 1);
+  }
+
+  while (isWeekend(cursor)) {
+    cursor = subDays(cursor, 1);
+  }
+
+  while (!isWeekend(cursor) && entryDates.has(format(cursor, 'yyyy-MM-dd'))) {
+    streak++;
+    cursor = subDays(cursor, 1);
+    while (isWeekend(cursor)) {
+      cursor = subDays(cursor, 1);
+    }
+  }
+
+  if (streak === 0) {
+    const yesterday = subDays(new Date(), 1);
+    if (!isWeekend(yesterday) && entryDates.has(format(yesterday, 'yyyy-MM-dd'))) {
       streak++;
-      lastDate = date;
-    } else {
-      break;
     }
   }
 

@@ -20,7 +20,14 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
 interface EmployeeComplianceTabsContentProps {
-  employee: User;
+  employee: User & {
+    supervisor?: {
+      id: string;
+      name: string;
+      email: string;
+      job_title?: string | null;
+    } | null;
+  };
 }
 
 interface SupervisorOption {
@@ -28,6 +35,7 @@ interface SupervisorOption {
   name: string;
   role: string;
   job_title?: string | null;
+  email?: string;
 }
 
 const OBJECTIVE_STATUS = ["Not Started", "In Progress", "Completed"] as const;
@@ -77,6 +85,18 @@ export function EmployeeComplianceTabsContent({
   const [supervisors, setSupervisors] = useState<SupervisorOption[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [i983Plan, setI983Plan] = useState<I983Plan | null>(null);
+  const supervisorOptions = useMemo(() => {
+    const options = [...supervisors];
+    if (employee.supervisor && !options.some((supervisor) => supervisor.id === employee.supervisor?.id)) {
+      options.unshift({
+        id: employee.supervisor.id,
+        name: employee.supervisor.name,
+        role: "supervisor",
+        job_title: employee.supervisor.job_title || null,
+      });
+    }
+    return options;
+  }, [employee.supervisor, supervisors]);
 
   const [complianceForm, setComplianceForm] = useState<ComplianceFormState>({
     joining_date: employee.joining_date || "",
@@ -474,9 +494,9 @@ export function EmployeeComplianceTabsContent({
                     </SelectTrigger>
                     <SelectContent className="bg-[#1A1A1A] border-[rgba(255,215,0,0.15)] text-[#F5F5F0]">
                       <SelectItem value="none">None assigned</SelectItem>
-                      {supervisors.map((supervisor) => (
+                      {supervisorOptions.map((supervisor) => (
                         <SelectItem key={supervisor.id} value={supervisor.id}>
-                          {supervisor.name} — {supervisor.job_title || supervisor.role}
+                          {supervisor.name} — {supervisor.job_title || supervisor.email}
                         </SelectItem>
                       ))}
                     </SelectContent>

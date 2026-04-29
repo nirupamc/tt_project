@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
-import { format } from "date-fns";
+import { format, isBefore, parseISO } from "date-fns";
 
 export async function POST() {
   try {
@@ -16,16 +16,24 @@ export async function POST() {
     const today = format(new Date(), "yyyy-MM-dd");
     const supabase = createAdminClient();
 
-    // Fetch user's hours_per_day
+    // Fetch user's hours_per_week and joining_date
     const { data: user, error: userError } = await supabase
       .from("users")
-      .select("hours_per_day")
+      .select("hours_per_week, joining_date")
       .eq("id", userId)
       .single();
 
     if (userError) throw userError;
 
-    const hoursToLog = user?.hours_per_day || 8.0;
+    if (user?.joining_date && isBefore(parseISO(today), parseISO(user.joining_date))) {
+      return NextResponse.json({
+        success: true,
+        logged: 0,
+        message: "Joining date not reached yet",
+      });
+    }
+
+    const hoursToLog = (user?.hours_per_week ?? 40) / 5;
 
     // Fetch all enrollments for this user
     const { data: enrollments, error: enrollError } = await supabase
@@ -56,21 +64,32 @@ export async function POST() {
         .eq("project_id", enrollment.project_id)
         .single();
 
-      // If no record exists, insert new one
-      if (!existing) {
-        const { error: insertError } = await supabase
-          .from("timesheets")
-          .insert({
-            user_id: userId,
-            work_date: today,
-            hours_logged: hoursToLog,
-            project_id: enrollment.project_id,
-            notes: "Auto-logged on login",
-          });
+      const payload = {
+        user_id: userId,
+        work_date: today,
+        hours_logged: hoursToLog,
+        project_id: enrollment.project_id,
+        notes: "Auto-logged on login",
+      };
 
-        if (!insertError) {
+      if (existing) {
+        const { error: updateError } = await supabase
+          .from("timesheets")
+          .update(payload)
+          .eq("id", existing.id);
+
+        if (!updateError) {
           loggedCount++;
         }
+        continue;
+      }
+
+      const { error: insertError } = await supabase
+        .from("timesheets")
+        .insert(payload);
+
+      if (!insertError) {
+        loggedCount++;
       }
     }
 

@@ -24,7 +24,7 @@ export async function GET(
     const { data: employee, error: employeeError } = await supabase
       .from("users")
       .select(
-        "id, name, email, avatar_url, job_title, joining_date, opt_type, ead_number, ead_start_date, ead_end_date, hours_per_week, pay_rate, work_location, university_name, dso_name, dso_email, i9_completion_date, everify_case_number, everify_status, supervisor_id",
+        "id, name, email, avatar_url, job_title, joining_date, opt_type, ead_number, ead_start_date, ead_end_date, hours_per_week, pay_rate, work_location, university_name, dso_name, dso_email, i9_completion_date, everify_case_number, everify_status, supervisor_id, supervisor:users!supervisor_id(id, name, email, job_title)",
       )
       .eq("id", employeeId)
       .single();
@@ -39,19 +39,11 @@ export async function GET(
     const weekEndKey = format(weekEnd, "yyyy-MM-dd");
 
     const [
-      { data: supervisor },
       { data: documents, error: docsError },
       { data: i983Plan, error: planError },
       { data: approvals, error: approvalsError },
       { data: currentWeekEntries, error: entriesError },
     ] = await Promise.all([
-      employee.supervisor_id
-        ? supabase
-            .from("users")
-            .select("id, name, email, job_title")
-            .eq("id", employee.supervisor_id)
-            .maybeSingle()
-        : Promise.resolve({ data: null, error: null }),
       supabase.from("employee_documents").select("*").eq("employee_id", employeeId),
       supabase
         .from("i983_plans")
@@ -74,7 +66,12 @@ export async function GET(
         .from("timesheets")
         .select("id")
         .eq("user_id", employeeId)
-        .gte("work_date", weekStartKey)
+        .gte(
+          "work_date",
+          employee.joining_date && employee.joining_date > weekStartKey
+            ? employee.joining_date
+            : weekStartKey,
+        )
         .lte("work_date", weekEndKey),
     ]);
 
@@ -145,7 +142,7 @@ export async function GET(
 
     return NextResponse.json({
       employee,
-      supervisor: supervisor || null,
+      supervisor: (employee as any).supervisor || null,
       documents: orderedDocuments,
       documents_uploaded_count: uploadedCount,
       i983_plan: i983Plan || null,

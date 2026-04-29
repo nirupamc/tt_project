@@ -13,8 +13,10 @@ import {
   CheckCircle2,
   Download,
   Mail,
+  PencilLine,
   XCircle,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type WeekStatus = "approved" | "awaiting_approval" | "no_entries";
@@ -75,6 +77,36 @@ interface ProfilePayload {
   empty_state: boolean;
 }
 
+type EditableSection = "visa" | "university";
+
+interface ComplianceFormValues {
+  opt_type: string;
+  ead_number: string;
+  ead_start_date: string;
+  ead_end_date: string;
+  i9_completion_date: string;
+  everify_case_number: string;
+  everify_status: string;
+  university_name: string;
+  dso_name: string;
+  dso_email: string;
+}
+
+const EMPTY_COMPLIANCE_FORM_VALUES: ComplianceFormValues = {
+  opt_type: "",
+  ead_number: "",
+  ead_start_date: "",
+  ead_end_date: "",
+  i9_completion_date: "",
+  everify_case_number: "",
+  everify_status: "",
+  university_name: "",
+  dso_name: "",
+  dso_email: "",
+};
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function formatDate(value: string | null) {
   if (!value) return null;
   const parsed = parseISO(value);
@@ -122,8 +154,8 @@ function ProfileSkeleton() {
           <Skeleton className="h-64 bg-[#1A1A1A]" />
         </div>
         <div className="lg:col-span-2 space-y-6">
-          <Skeleton className="h-[420px] bg-[#1A1A1A]" />
-          <Skeleton className="h-[360px] bg-[#1A1A1A]" />
+          <Skeleton className="h-105 bg-[#1A1A1A]" />
+          <Skeleton className="h-90 bg-[#1A1A1A]" />
         </div>
       </div>
       <Skeleton className="h-16 bg-[#1A1A1A]" />
@@ -157,10 +189,29 @@ function Card({
   );
 }
 
+function toComplianceFormValues(employee: ProfilePayload["employee"]): ComplianceFormValues {
+  return {
+    opt_type: employee.opt_type || "",
+    ead_number: employee.ead_number || "",
+    ead_start_date: employee.ead_start_date || "",
+    ead_end_date: employee.ead_end_date || "",
+    i9_completion_date: employee.i9_completion_date || "",
+    everify_case_number: employee.everify_case_number || "",
+    everify_status: employee.everify_status || "",
+    university_name: employee.university_name || "",
+    dso_name: employee.dso_name || "",
+    dso_email: employee.dso_email || "",
+  };
+}
+
 export default function EmployeeProfilePage() {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<ProfilePayload | null>(null);
+  const [editingSection, setEditingSection] = useState<EditableSection | null>(null);
+  const [formValues, setFormValues] = useState<ComplianceFormValues>(EMPTY_COMPLIANCE_FORM_VALUES);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -226,6 +277,89 @@ export default function EmployeeProfilePage() {
       profile.i983_plan.objective_2_text ||
       profile.i983_plan.objective_3_text)
   );
+
+  const beginEditing = (section: EditableSection) => {
+    setSaveError(null);
+    setFormValues(toComplianceFormValues(profile.employee));
+    setEditingSection(section);
+  };
+
+  const cancelEditing = () => {
+    setFormValues(toComplianceFormValues(profile.employee));
+    setSaveError(null);
+    setEditingSection(null);
+  };
+
+  const handleSave = async (section: EditableSection) => {
+    const visaPayload = {
+      opt_type: formValues.opt_type || null,
+      ead_number: formValues.ead_number || null,
+      ead_start_date: formValues.ead_start_date || null,
+      ead_end_date: formValues.ead_end_date || null,
+      i9_completion_date: formValues.i9_completion_date || null,
+      everify_case_number: formValues.everify_case_number || null,
+      everify_status: formValues.everify_status || null,
+    };
+    const universityPayload = {
+      university_name: formValues.university_name || null,
+      dso_name: formValues.dso_name || null,
+      dso_email: formValues.dso_email || null,
+    };
+
+    if (
+      section === "visa" &&
+      formValues.ead_start_date &&
+      formValues.ead_end_date &&
+      formValues.ead_end_date < formValues.ead_start_date
+    ) {
+      setSaveError("EAD End Date must be on or after EAD Start Date.");
+      return;
+    }
+
+    if (section === "university" && formValues.dso_email && !EMAIL_PATTERN.test(formValues.dso_email)) {
+      setSaveError("DSO Email must be a valid email address.");
+      return;
+    }
+
+    setSaving(true);
+    setSaveError(null);
+
+    try {
+      const response = await fetch("/api/employee/profile/compliance", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(section === "visa" ? visaPayload : universityPayload),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        setSaveError(error.message ?? "Failed to save. Please try again.");
+        return;
+      }
+
+      const updatedEmployee = (await response.json()) as ProfilePayload["employee"];
+      setProfile((current) =>
+        current
+          ? {
+              ...current,
+              employee: {
+                ...current.employee,
+                ...updatedEmployee,
+              },
+            }
+          : current,
+      );
+      setFormValues(toComplianceFormValues({ ...profile.employee, ...updatedEmployee }));
+      setEditingSection(null);
+    } catch {
+      setSaveError("Network error. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const inputClassName =
+    "w-full rounded-md border border-[rgba(255,215,0,0.18)] bg-[#0F0F0F] px-3 py-2 font-space text-sm text-white outline-none transition focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.12)]";
 
   return (
     <div className="employee-profile-page space-y-6">
@@ -319,42 +453,220 @@ export default function EmployeeProfilePage() {
           </Card>
 
           <Card title="Visa & EAD Information">
-            <KeyValueRow label="OPT Type" value={profile.employee.opt_type || missingValue()} />
-            <KeyValueRow label="EAD Card Number" value={profile.employee.ead_number || missingValue()} />
-            <KeyValueRow label="EAD Start Date" value={formatDate(profile.employee.ead_start_date) || missingValue()} />
-            <KeyValueRow
-              label="EAD End Date"
-              value={
-                profile.employee.ead_end_date ? (
-                  <span className={eadExpiringSoon ? "text-red-400" : "text-[#F5F5F0]"}>
-                    {eadExpiringSoon && <AlertTriangle className="inline h-3.5 w-3.5 mr-1" />}
-                    {formatDate(profile.employee.ead_end_date)}
-                  </span>
-                ) : (
-                  missingValue()
-                )
-              }
-            />
-            <KeyValueRow label="I-9 Completion Date" value={formatDate(profile.employee.i9_completion_date) || missingValue()} />
-            <KeyValueRow label="E-Verify Case Number" value={profile.employee.everify_case_number || missingValue()} />
-            <KeyValueRow label="E-Verify Status" value={profile.employee.everify_status || missingValue()} />
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <p className="font-space text-xs uppercase tracking-[0.2em] text-[rgba(245,245,240,0.45)]">
+                Visa & EAD details
+              </p>
+              {editingSection !== "visa" ? (
+                <Button
+                  variant="outline"
+                  onClick={() => beginEditing("visa")}
+                  className="border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] font-space gap-2"
+                >
+                  <PencilLine className="h-4 w-4" />
+                  Edit
+                </Button>
+              ) : null}
+            </div>
+
+            {editingSection === "visa" ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <label className="space-y-2">
+                    <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">OPT Type</span>
+                    <select
+                      value={formValues.opt_type}
+                      onChange={(event) => setFormValues((current) => ({ ...current, opt_type: event.target.value }))}
+                      className={inputClassName}
+                    >
+                      <option value="">Select...</option>
+                      <option value="OPT">OPT</option>
+                      <option value="STEM OPT">STEM OPT</option>
+                    </select>
+                  </label>
+                  <label className="space-y-2">
+                    <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">EAD Card Number</span>
+                    <input
+                      value={formValues.ead_number}
+                      onChange={(event) => setFormValues((current) => ({ ...current, ead_number: event.target.value }))}
+                      placeholder="e.g. SRC-12-345-67890"
+                      className={inputClassName}
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">EAD Start Date</span>
+                    <input
+                      type="date"
+                      value={formValues.ead_start_date}
+                      onChange={(event) => setFormValues((current) => ({ ...current, ead_start_date: event.target.value }))}
+                      className={inputClassName}
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">EAD End Date</span>
+                    <input
+                      type="date"
+                      value={formValues.ead_end_date}
+                      onChange={(event) => setFormValues((current) => ({ ...current, ead_end_date: event.target.value }))}
+                      className={inputClassName}
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">I-9 Completion Date</span>
+                    <input
+                      type="date"
+                      value={formValues.i9_completion_date}
+                      onChange={(event) => setFormValues((current) => ({ ...current, i9_completion_date: event.target.value }))}
+                      className={inputClassName}
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">E-Verify Case Number</span>
+                    <input
+                      value={formValues.everify_case_number}
+                      onChange={(event) => setFormValues((current) => ({ ...current, everify_case_number: event.target.value }))}
+                      className={inputClassName}
+                    />
+                  </label>
+                </div>
+                <label className="space-y-2 block">
+                  <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">E-Verify Status</span>
+                  <select
+                    value={formValues.everify_status}
+                    onChange={(event) => setFormValues((current) => ({ ...current, everify_status: event.target.value }))}
+                    className={inputClassName}
+                  >
+                    <option value="">Select...</option>
+                    <option value="Employment Authorized">Employment Authorized</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Not Started">Not Started</option>
+                  </select>
+                </label>
+                {saveError && <p className="font-space text-sm text-red-400">{saveError}</p>}
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <Button
+                    onClick={() => handleSave("visa")}
+                    disabled={saving}
+                    className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] font-space"
+                  >
+                    {saving ? "Saving..." : "Save Changes"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={cancelEditing}
+                    disabled={saving}
+                    className="border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] font-space"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <KeyValueRow label="OPT Type" value={profile.employee.opt_type || missingValue()} />
+                <KeyValueRow label="EAD Card Number" value={profile.employee.ead_number || missingValue()} />
+                <KeyValueRow label="EAD Start Date" value={formatDate(profile.employee.ead_start_date) || missingValue()} />
+                <KeyValueRow
+                  label="EAD End Date"
+                  value={
+                    profile.employee.ead_end_date ? (
+                      <span className={eadExpiringSoon ? "text-red-400" : "text-[#F5F5F0]"}>
+                        {eadExpiringSoon && <AlertTriangle className="inline h-3.5 w-3.5 mr-1" />}
+                        {formatDate(profile.employee.ead_end_date)}
+                      </span>
+                    ) : (
+                      missingValue()
+                    )
+                  }
+                />
+                <KeyValueRow label="I-9 Completion Date" value={formatDate(profile.employee.i9_completion_date) || missingValue()} />
+                <KeyValueRow label="E-Verify Case Number" value={profile.employee.everify_case_number || missingValue()} />
+                <KeyValueRow label="E-Verify Status" value={profile.employee.everify_status || missingValue()} />
+              </>
+            )}
           </Card>
 
           <Card title="University & DSO Information">
-            <KeyValueRow label="University Name" value={profile.employee.university_name || missingValue()} />
-            <KeyValueRow label="DSO Name" value={profile.employee.dso_name || missingValue()} />
-            <KeyValueRow
-              label="DSO Email"
-              value={
-                profile.employee.dso_email ? (
-                  <a href={`mailto:${profile.employee.dso_email}`} className="text-[#FFD700] hover:underline">
-                    {profile.employee.dso_email}
-                  </a>
-                ) : (
-                  missingValue()
-                )
-              }
-            />
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <p className="font-space text-xs uppercase tracking-[0.2em] text-[rgba(245,245,240,0.45)]">
+                University & DSO details
+              </p>
+              {editingSection !== "university" ? (
+                <Button
+                  variant="outline"
+                  onClick={() => beginEditing("university")}
+                  className="border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] font-space gap-2"
+                >
+                  <PencilLine className="h-4 w-4" />
+                  Edit
+                </Button>
+              ) : null}
+            </div>
+
+            {editingSection === "university" ? (
+              <div className="space-y-4">
+                <label className="space-y-2 block">
+                  <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">University Name</span>
+                  <input
+                    value={formValues.university_name}
+                    onChange={(event) => setFormValues((current) => ({ ...current, university_name: event.target.value }))}
+                    className={inputClassName}
+                  />
+                </label>
+                <label className="space-y-2 block">
+                  <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">DSO Name</span>
+                  <input
+                    value={formValues.dso_name}
+                    onChange={(event) => setFormValues((current) => ({ ...current, dso_name: event.target.value }))}
+                    className={inputClassName}
+                  />
+                </label>
+                <label className="space-y-2 block">
+                  <span className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">DSO Email</span>
+                  <input
+                    type="email"
+                    value={formValues.dso_email}
+                    onChange={(event) => setFormValues((current) => ({ ...current, dso_email: event.target.value }))}
+                    className={inputClassName}
+                  />
+                </label>
+                {saveError && <p className="font-space text-sm text-red-400">{saveError}</p>}
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <Button
+                    onClick={() => handleSave("university")}
+                    disabled={saving}
+                    className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] font-space"
+                  >
+                    {saving ? "Saving..." : "Save Changes"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={cancelEditing}
+                    disabled={saving}
+                    className="border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] font-space"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <KeyValueRow label="University Name" value={profile.employee.university_name || missingValue()} />
+                <KeyValueRow label="DSO Name" value={profile.employee.dso_name || missingValue()} />
+                <KeyValueRow
+                  label="DSO Email"
+                  value={
+                    profile.employee.dso_email ? (
+                      <a href={`mailto:${profile.employee.dso_email}`} className="text-[#FFD700] hover:underline">
+                        {profile.employee.dso_email}
+                      </a>
+                    ) : (
+                      missingValue()
+                    )
+                  }
+                />
+              </>
+            )}
           </Card>
 
           <Card title="My Supervisor">
@@ -514,7 +826,7 @@ export default function EmployeeProfilePage() {
                   .map((objective) => (
                     <div key={objective.label} className="min-w-0 rounded-lg border border-[rgba(255,215,0,0.12)] p-3">
                       <p className="font-space text-sm text-[#FFD700] font-semibold">{objective.label}</p>
-                      <p className="font-space text-sm text-[#F5F5F0] mt-2 whitespace-pre-wrap break-words overflow-hidden">{objective.text}</p>
+                      <p className="font-space text-sm text-[#F5F5F0] mt-2 whitespace-pre-wrap wrap-break-word overflow-hidden">{objective.text}</p>
                       <span className={`inline-flex mt-3 rounded-full px-2 py-1 text-xs font-semibold ${statusBadge(objective.status || "Not Started")}`}>
                         {objective.status || "Not Started"}
                       </span>

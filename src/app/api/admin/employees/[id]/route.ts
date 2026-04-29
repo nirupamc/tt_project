@@ -12,7 +12,7 @@ export async function GET(
 
     const { data: employee, error } = await supabase
       .from("users")
-      .select("*")
+      .select("*, supervisor:users!supervisor_id(id, name, email, job_title)")
       .eq("id", id)
       .single();
 

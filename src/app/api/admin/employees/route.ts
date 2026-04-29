@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { createAdminClient } from "@/lib/supabase";
+import { backfillTimesheetsForEmployee } from "@/lib/timesheet-backfill";
 
 // GET employees or supervisors
 export async function GET(request: Request) {
@@ -165,6 +166,17 @@ export async function POST(request: Request) {
 
     // Remove password_hash from response
     const { password_hash: _, ...safeEmployee } = employee;
+
+    try {
+      await backfillTimesheetsForEmployee(
+        supabase,
+        employee.id,
+        joining_date,
+        hours_per_week ? parseFloat(hours_per_week) : 40,
+      );
+    } catch (backfillError) {
+      console.error("Timesheet backfill after employee creation failed:", backfillError);
+    }
 
     return NextResponse.json(safeEmployee, { status: 201 });
   } catch (error) {
