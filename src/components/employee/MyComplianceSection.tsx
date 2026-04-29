@@ -190,12 +190,12 @@ export function MyComplianceSection() {
                 {objectiveCards.map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-lg border border-[rgba(10,10,10,0.08)] p-4"
+                    className="min-w-0 rounded-lg border border-[rgba(10,10,10,0.08)] p-4"
                   >
                     <p className="font-space text-xs uppercase tracking-wider text-[rgba(10,10,10,0.55)]">
                       {item.label}
                     </p>
-                    <p className="font-space text-sm text-[#0A0A0A] mt-2 min-h-16">
+                    <p className="font-space text-sm text-[#0A0A0A] mt-2 min-h-16 whitespace-pre-wrap break-all">
                       {item.text || "Not set"}
                     </p>
                     <div className="mt-3 flex items-center justify-between gap-2">

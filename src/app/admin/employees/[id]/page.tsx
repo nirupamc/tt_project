@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, use, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { User, Timesheet, Project, Enrollment } from '@/types';
+import type { User, Project, Enrollment } from '@/types';
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
@@ -41,12 +41,31 @@ import { toast } from 'sonner';
 import { EmployeeComplianceTabsContent } from "@/components/admin/EmployeeComplianceTabsContent";
 import { AdminEmployeeDocumentsTab } from "@/components/admin/AdminEmployeeDocumentsTab";
 
-interface TimesheetWithProject extends Timesheet {
-  project: Project | null;
-}
-
 interface EnrollmentWithProject extends Enrollment {
   project: Project;
+}
+
+interface AdminTimesheetRow {
+  id: string;
+  work_date: string;
+  hours_logged: number;
+  notes: string | null;
+  project: Project | null;
+  user?: {
+    id: string;
+  } | null;
+  user_id?: string;
+  project_id?: string | null;
+  updated_at?: string;
+}
+
+interface ProjectProgressEntry {
+  project_id: string;
+  project: Project;
+  total_tasks: number;
+  completed_tasks: number;
+  progress: number;
+  status: 'Not Started' | 'In Progress' | 'Completed';
 }
 
 interface EmployeeWithSupervisor extends User {
@@ -64,14 +83,14 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   const { id } = use(params);
   const router = useRouter();
   const [employee, setEmployee] = useState<EmployeeWithSupervisor | null>(null);
-  const [timesheets, setTimesheets] = useState<TimesheetWithProject[]>([]);
+  const [timesheets, setTimesheets] = useState<AdminTimesheetRow[]>([]);
   const [enrollments, setEnrollments] = useState<EnrollmentWithProject[]>([]);
-  const [projectsWithProgress, setProjectsWithProgress] = useState<any[]>([]);
+  const [projectsWithProgress, setProjectsWithProgress] = useState<ProjectProgressEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<TimeRange>('thisWeek');
   const [generatingPdf, setGeneratingPdf] = useState(false);
 
-  const fetchEmployee = async () => {
+  const fetchEmployee = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/employees/${id}`);
       if (res.ok) {
@@ -85,32 +104,32 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
     } catch (error) {
       console.error('Failed to fetch employee:', error);
     }
-  };
+  }, [id]);
 
-  const fetchTimesheets = async () => {
+  const fetchTimesheets = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/timesheets`);
       if (res.ok) {
-        const data = await res.json();
-        const filtered = data.filter((ts: any) => ts.user?.id === id);
+        const data = (await res.json()) as AdminTimesheetRow[];
+        const filtered = data.filter((ts) => ts.user?.id === id);
         setTimesheets(filtered);
       }
     } catch (error) {
       console.error('Failed to fetch timesheets:', error);
     }
-  };
+  }, [id]);
 
-  const fetchProgress = async () => {
+  const fetchProgress = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/employees/${id}/progress`);
       if (res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as ProjectProgressEntry[];
         setProjectsWithProgress(data);
       }
     } catch (error) {
       console.error('Failed to fetch progress:', error);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     const load = async () => {
@@ -119,7 +138,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
       setLoading(false);
     };
     load();
-  }, [id]);
+  }, [fetchEmployee, fetchTimesheets, fetchProgress]);
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
@@ -134,7 +153,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
       } else {
         toast.error('Failed to delete employee');
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred');
     }
   };
@@ -142,7 +161,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   const exportCSV = () => {
     const headers = ['Date', 'Project', 'Hours', 'Notes'];
     const rows = filteredTimesheets.map(ts => [
-      format(parseISO(ts.work_date as any), 'yyyy-MM-dd'),
+      format(parseISO(ts.work_date), 'yyyy-MM-dd'),
       ts.project?.title || 'N/A',
       Number(ts.hours_logged).toFixed(1),
       ts.notes || ''
@@ -206,7 +225,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
 
   const { start, end } = getTimeRangeFilter();
   const filteredTimesheets = timesheets.filter(ts => {
-    const date = parseISO(ts.work_date as any);
+    const date = parseISO(ts.work_date);
     return date >= start && date <= end;
   });
 
@@ -214,7 +233,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   const totalProjects = enrollments.length;
   const totalHours = timesheets.reduce((sum, ts) => sum + Number(ts.hours_logged), 0);
   const weekTimesheets = timesheets.filter(ts => {
-    const date = parseISO(ts.work_date as any);
+    const date = parseISO(ts.work_date);
     const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
     const weekEnd = endOfWeek(new Date(), { weekStartsOn: 1 });
     return date >= weekStart && date <= weekEnd;
@@ -226,7 +245,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   let streak = 0;
   let lastDate = new Date();
   for (const dateStr of sortedDates) {
-    const date = parseISO(dateStr as any);
+    const date = parseISO(dateStr);
     const diffDays = Math.floor((lastDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
     if (diffDays <= 1) {
       streak++;
@@ -240,7 +259,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   const chartData = (() => {
     const days = Array.from(new Set(filteredTimesheets.map(ts => ts.work_date))).sort();
     return days.map(day => ({
-      date: format(parseISO(day as any), 'MMM d'),
+      date: format(parseISO(day), 'MMM d'),
       hours: filteredTimesheets
         .filter(ts => ts.work_date === day)
         .reduce((sum, ts) => sum + Number(ts.hours_logged), 0),
@@ -309,7 +328,10 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                   </span>
                   <span className="text-[rgba(255,215,0,0.3)]">•</span>
                   <span className="font-space text-[12px] text-[rgba(245,245,240,0.5)]">
-                    <span className="text-[#FFD700] font-semibold">${employee.hourly_rate || 0}</span>/hour
+                    <span className="text-[#FFD700] font-semibold">
+                      ${Number(employee.pay_rate ?? employee.hourly_rate ?? 0).toFixed(2)}
+                    </span>
+                    /hour
                   </span>
                   {employee.joining_date && (
                     <>
@@ -528,7 +550,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                           color: '#F5F5F0',
                           fontFamily: 'var(--font-space)',
                         }}
-                        formatter={(value: any) => [`${value}h`, 'Hours']}
+                        formatter={(value) => [`${Number(value ?? 0)}h`, 'Hours']}
                       />
                       <Bar dataKey="hours" fill="#FFD700" radius={[8, 8, 0, 0]} />
                     </BarChart>
@@ -561,7 +583,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                       {filteredTimesheets.map((ts) => (
                         <TableRow key={ts.id} className="border-b border-[rgba(255,215,0,0.06)] hover:bg-[rgba(255,215,0,0.03)]">
                           <TableCell className="font-space text-[13px] text-[#F5F5F0]">
-                            {format(parseISO(ts.work_date as any), 'EEE, MMM d, yyyy')}
+                            {format(parseISO(ts.work_date), 'EEE, MMM d, yyyy')}
                           </TableCell>
                           <TableCell className="font-space text-[13px] text-[#F5F5F0]">{ts.project?.title || 'N/A'}</TableCell>
                           <TableCell className="font-space text-[13px] text-[#F5F5F0] font-medium">
