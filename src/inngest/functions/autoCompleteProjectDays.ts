@@ -23,9 +23,9 @@ export const autoCompleteProjectDays = inngest.createFunction(
   {
     id: "auto-complete-project-days",
     name: "Auto-Complete Project Days",
+    // Same schedule as auto-timesheet: 6PM CT weekdays = 11PM UTC Mon-Fri
+    triggers: [{ cron: "0 23 * * 1-5" }],
   },
-  // Same schedule as auto-timesheet: 6PM CT weekdays = 11PM UTC Mon-Fri
-  { cron: "0 23 * * 1-5" },
   async ({ step }) => {
     return await step.run("auto-complete-all-enrollments", async () => {
       const supabase = createAdminClient();
