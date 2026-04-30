@@ -67,9 +67,6 @@ export default function EmployeeDashboardPage() {
         <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">
           MY PROJECTS
         </h1>
-        <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] mt-1 font-medium">
-          Continue your learning journey
-        </p>
       </div>
 
       {loading ? (

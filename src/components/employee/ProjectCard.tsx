@@ -150,7 +150,7 @@ export function EmployeeProjectCard({
       <CardFooter className="pt-4 border-t border-[rgba(10,10,10,0.08)]">
         <Link href={`/dashboard/projects/${activeProject.id}`} className="w-full">
           <Button className="w-full bg-[#0A0A0A] text-[#FFD700] hover:bg-[#1A1A1A] font-space text-[13px] font-semibold tracking-wider">
-            Continue Learning
+            Continue
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </Link>

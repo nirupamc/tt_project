@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
+import { backfillProjectDaysForEnrollment } from "@/lib/project-day-backfill";
 
 // GET single project for employee
 export async function GET(
@@ -30,6 +31,12 @@ export async function GET(
         { status: 403 },
       );
     }
+
+    await backfillProjectDaysForEnrollment(supabase, {
+      id: enrollment.id,
+      user_id: session.user.id,
+      project_id: projectId,
+    });
 
     // Get project
     const { data: project, error: projectError } = await supabase

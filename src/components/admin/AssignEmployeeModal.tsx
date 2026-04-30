@@ -183,7 +183,7 @@ export function AssignEmployeeModal({
               All employees are already enrolled in this project.
             </p>
           ) : (
-            <ScrollArea className="max-h-[300px]">
+            <ScrollArea className="max-h-75">
               <div className="space-y-2">
                 {employees.map((emp) => (
                   <div

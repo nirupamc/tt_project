@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
 import { getCompletedDummyProjects } from "@/lib/completed-projects";
+import { backfillProjectDaysForEnrollment } from "@/lib/project-day-backfill";
 
 // GET employee's enrolled projects (including dummy completed projects)
 export async function GET() {
@@ -39,6 +40,12 @@ export async function GET() {
         const project = enrollment.project;
         if (!project) return null;
 
+        await backfillProjectDaysForEnrollment(supabase, {
+          id: enrollment.id,
+          user_id: enrollment.user_id,
+          project_id: enrollment.project_id,
+        });
+
         // FEATURE 1: Use assigned_date from enrollment (this is start_date field)
         const assignedDate = enrollment.start_date;
         
@@ -62,13 +69,16 @@ export async function GET() {
           completedTasks?.map((t) => t.project_day_id) || [],
         );
 
-        // Also include any auto-completed days recorded per-enrollment
-        const { data: autoCompletions } = await supabase
+        // Include auto-completed days tracked per enrollment so the dashboard
+        // progress bar reflects all completed project days.
+        const { data: autoCompletedDays } = await supabase
           .from("enrollment_day_completions")
           .select("project_day_id")
           .eq("enrollment_id", enrollment.id);
 
-        (autoCompletions || []).forEach((ac) => completedDayIds.add(ac.project_day_id));
+        (autoCompletedDays || []).forEach((day) => {
+          completedDayIds.add(day.project_day_id);
+        });
 
         return {
           ...project,
