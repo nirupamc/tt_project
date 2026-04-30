@@ -41,6 +41,10 @@ function StatusBadge({ status }: { status: SupervisorPayload["current_week_statu
 export function MySupervisorCard() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SupervisorPayload | null>(null);
+  const supervisorEmail =
+    data?.supervisor?.email === "admin@tantechllc.com"
+      ? "omer@tantech-llc.com"
+      : data?.supervisor?.email;
 
   useEffect(() => {
     const load = async () => {
@@ -91,11 +95,11 @@ export function MySupervisorCard() {
       <CardContent className="space-y-4">
         <div>
           <p className="font-space text-lg font-semibold text-[#F5F5F0]">{data.supervisor.name}</p>
-          <p className="font-space text-sm text-[rgba(245,245,240,0.65)]">{data.supervisor.email}</p>
+          <p className="font-space text-sm text-[rgba(245,245,240,0.65)]">{supervisorEmail}</p>
         </div>
         <div>
           <a
-            href={`mailto:${data.supervisor.email}`}
+            href={`mailto:${supervisorEmail}`}
             className="inline-flex items-center justify-center rounded-md border border-[#FFD700] px-4 py-2 text-sm font-medium text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] transition-colors"
           >
             Contact Supervisor

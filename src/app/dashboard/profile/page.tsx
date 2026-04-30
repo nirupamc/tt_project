@@ -681,12 +681,12 @@ export default function EmployeeProfilePage() {
                   <p className="font-space text-xs text-[rgba(245,245,240,0.6)] mt-1">
                     {profile.supervisor.job_title || "Not set — contact HR"}
                   </p>
-                  <a href={`mailto:${profile.supervisor.email}`} className="font-space text-sm text-[#FFD700] hover:underline mt-2 inline-block">
-                    {profile.supervisor.email}
+                  <a href={`mailto:${profile.supervisor.email === "admin@tantechllc.com" ? "omer@tantech-llc.com" : profile.supervisor.email}`} className="font-space text-sm text-[#FFD700] hover:underline mt-2 inline-block">
+                    {profile.supervisor.email === "admin@tantechllc.com" ? "omer@tantech-llc.com" : profile.supervisor.email}
                   </a>
                 </div>
                 <a
-                  href={`mailto:${profile.supervisor.email}`}
+                  href={`mailto:${profile.supervisor.email === "admin@tantechllc.com" ? "omer@tantech-llc.com" : profile.supervisor.email}`}
                   className="inline-flex items-center rounded-md border border-[#FFD700] px-3 py-2 text-sm text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)]"
                 >
                   <Mail className="h-4 w-4 mr-2" />
