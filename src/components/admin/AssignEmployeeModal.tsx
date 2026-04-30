@@ -129,7 +129,7 @@ export function AssignEmployeeModal({
       );
       const joiningDates = selectedEmployees
         .map((e) => e.joining_date)
-        .filter(Boolean);
+        .filter((d): d is string => Boolean(d));
 
       if (joiningDates.length > 0) {
         // Use the earliest joining_date as the default start date
