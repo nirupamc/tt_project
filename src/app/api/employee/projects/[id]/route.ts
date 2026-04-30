@@ -64,16 +64,32 @@ export async function GET(
       .eq("project_id", projectId)
       .order("day_number", { ascending: true });
 
-    // Get user's completions for this project
+    // Get user's completions for this project (manual task completions)
     const { data: completions } = await supabase
       .from("task_completions")
       .select("task_id, project_day_id")
       .eq("user_id", session.user.id);
 
+    // Get auto-completed days for this enrollment (Step 8)
+    const { data: autoCompletions } = await supabase
+      .from("enrollment_day_completions")
+      .select("project_day_id")
+      .eq("enrollment_id", enrollment.id);
+
     // Calculate which days are complete
     const completedDayNumbers: number[] = [];
+    const autoCompletedDayIds = new Set(
+      autoCompletions?.map((ac) => ac.project_day_id) || [],
+    );
 
     for (const day of days || []) {
+      // Priority 1: Check if auto-completed via enrollment_day_completions
+      if (autoCompletedDayIds.has(day.id)) {
+        completedDayNumbers.push(day.day_number);
+        continue;
+      }
+
+      // Priority 2: Check if manually completed (all required tasks done)
       const requiredTasks =
         day.tasks?.filter((t: { is_required: boolean }) => t.is_required) || [];
       const completedTaskIds = new Set(

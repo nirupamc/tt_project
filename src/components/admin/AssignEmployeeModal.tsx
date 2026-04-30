@@ -39,17 +39,16 @@ export function AssignEmployeeModal({
   const [employees, setEmployees] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [customStartDate, setCustomStartDate] = useState<string>(
-    format(new Date(), 'yyyy-MM-dd')
-  );
+  const [customStartDate, setCustomStartDate] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (open) {
       fetchEmployees();
       setSelectedIds([]);
-      // Reset to today's date when modal opens
-      setCustomStartDate(format(new Date(), 'yyyy-MM-dd'));
+      // Don't set a default date - let user select employees first
+      // Then the date will auto-populate from their joining_date
+      setCustomStartDate("");
     }
   }, [open]);
 
@@ -74,6 +73,11 @@ export function AssignEmployeeModal({
   const handleSubmit = async () => {
     if (selectedIds.length === 0) {
       toast.error("Please select at least one employee");
+      return;
+    }
+
+    if (!customStartDate) {
+      toast.error("Please select a start date");
       return;
     }
 
@@ -112,9 +116,27 @@ export function AssignEmployeeModal({
   };
 
   const toggleEmployee = (emp: User) => {
-    setSelectedIds((prev) =>
-      prev.includes(emp.id) ? prev.filter((i) => i !== emp.id) : [...prev, emp.id]
-    );
+    const newSelectedIds = selectedIds.includes(emp.id)
+      ? selectedIds.filter((i) => i !== emp.id)
+      : [...selectedIds, emp.id];
+    
+    setSelectedIds(newSelectedIds);
+
+    // Auto-update start date to minimum joining_date of selected employees
+    if (newSelectedIds.length > 0) {
+      const selectedEmployees = employees.filter((e) =>
+        newSelectedIds.includes(e.id)
+      );
+      const joiningDates = selectedEmployees
+        .map((e) => e.joining_date)
+        .filter(Boolean);
+
+      if (joiningDates.length > 0) {
+        // Use the earliest joining_date as the default start date
+        const minDate = joiningDates.sort()[0];
+        setCustomStartDate(minDate);
+      }
+    }
   };
 
   return (
@@ -139,10 +161,13 @@ export function AssignEmployeeModal({
               value={customStartDate}
               onChange={(e) => setCustomStartDate(e.target.value)}
               max={format(new Date(), 'yyyy-MM-dd')}
-              className="bg-[#1A1A1A] border-[rgba(255,215,0,0.2)] text-[#F5F5F0] font-space focus:border-[#FFD700] focus:ring-[#FFD700]"
+               placeholder="Select start date (auto-populates when employees selected)"
+               className="bg-[#1A1A1A] border-[rgba(255,215,0,0.2)] text-[#F5F5F0] font-space focus:border-[#FFD700] focus:ring-[#FFD700]"
             />
             <p className="font-space text-[11px] text-[rgba(245,245,240,0.4)] italic">
-              All days from this date until today will be unlocked immediately.
+               ✓ Auto-sets to earliest joining date when you select employees.
+               <br />✓ All days from this date until today will unlock immediately.
+               <br />✓ Days will continue unlocking at 9 AM CT after today.
             </p>
           </div>
 

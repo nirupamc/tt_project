@@ -62,6 +62,14 @@ export async function GET() {
           completedTasks?.map((t) => t.project_day_id) || [],
         );
 
+        // Also include any auto-completed days recorded per-enrollment
+        const { data: autoCompletions } = await supabase
+          .from("enrollment_day_completions")
+          .select("project_day_id")
+          .eq("enrollment_id", enrollment.id);
+
+        (autoCompletions || []).forEach((ac) => completedDayIds.add(ac.project_day_id));
+
         return {
           ...project,
           assigned_date: assignedDate || new Date().toISOString().split('T')[0], // Fallback to today

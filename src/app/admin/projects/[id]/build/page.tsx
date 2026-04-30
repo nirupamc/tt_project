@@ -153,24 +153,42 @@ export default function ProjectBuildPage({
 
     try {
       const text = await file.text();
-      const json = JSON.parse(text);
+      let json: unknown;
 
-      const res = await fetch(`/api/admin/projects/${id}/tasks/upload`, {
+      try {
+        json = JSON.parse(text);
+      } catch {
+        toast.error("Invalid JSON file");
+        return;
+      }
+
+      const res = await fetch(`/api/admin/projects/${id}/days`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(json),
       });
 
+      const responseText = await res.text();
+      let responseData: { message?: string } | null = null;
+
+      if (responseText) {
+        try {
+          responseData = JSON.parse(responseText) as { message?: string };
+        } catch {
+          responseData = null;
+        }
+      }
+
       if (res.ok) {
-        const result = await res.json();
-        toast.success(result.message);
+        toast.success(responseData?.message || "Upload complete");
         fetchData();
       } else {
-        const error = await res.json();
-        toast.error(error.message || "Failed to upload");
+        toast.error(
+          responseData?.message || responseText || "Failed to upload",
+        );
       }
     } catch (err) {
-      toast.error("Invalid JSON file");
+      toast.error(err instanceof Error ? err.message : "Failed to upload");
     } finally {
       setUploading(false);
       if (fileInputRef.current) {

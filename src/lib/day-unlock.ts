@@ -3,6 +3,8 @@
  * Days unlock at 9:00 AM Central Time (CT) based on project start date
  */
 
+import { parseISO, eachDayOfInterval, isWeekend, isAfter, startOfDay } from 'date-fns';
+
 const FORCE_UNLOCK_FOR_TESTING = false;
 
 /**
@@ -88,4 +90,34 @@ export function getUnlockedDayCount(startDate: string, totalDays: number): numbe
  */
 export function isDayUnlocked(startDate: string, dayNumber: number, totalDays: number): boolean {
   return dayNumber <= getUnlockedDayCount(startDate, totalDays);
+}
+
+/**
+ * Count working days (Mon–Fri) elapsed from joining_date up to and including today.
+ * Used for auto-completing project days based on tenure.
+ * 
+ * @param joiningDateStr - Joining date in YYYY-MM-DD format
+ * @param referenceDate - Date to calculate elapsed days from (defaults to today)
+ * @returns Number of working days elapsed (minimum 0 if joining_date is in future)
+ */
+export function countElapsedWorkingDays(
+  joiningDateStr: string,
+  referenceDate: Date = new Date()
+): number {
+  try {
+    const joining = startOfDay(parseISO(joiningDateStr));
+    const today = startOfDay(referenceDate);
+
+    // If joining date is in the future, no days have elapsed
+    if (isAfter(joining, today)) {
+      return 0;
+    }
+
+    const allDays = eachDayOfInterval({ start: joining, end: today });
+    const workingDays = allDays.filter((day) => !isWeekend(day));
+    return workingDays.length;
+  } catch (error) {
+    console.error('[day-unlock] Error in countElapsedWorkingDays:', error);
+    return 0;
+  }
 }
