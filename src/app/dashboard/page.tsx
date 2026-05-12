@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmployeeProjectCard } from "@/components/employee/ProjectCard";
+import { ComplianceStatusBanner } from "@/components/employee/ComplianceStatusBanner";
+import { EmployeeProjectCardWrapper } from "@/components/employee/EmployeeProjectCardWrapper";
+import { DeliverablesSummaryCard } from "@/components/employee/DeliverablesSummaryCard";
 import { MyComplianceSection } from "@/components/employee/MyComplianceSection";
 import { MySupervisorCard } from "@/components/employee/MySupervisorCard";
 import type { Project, CompletedDummyProject } from "@/types";
@@ -63,6 +65,11 @@ export default function EmployeeDashboardPage() {
 
   return (
     <div>
+      {/* Compliance Status Banner - Always visible at top */}
+      <div className="mb-8">
+        <ComplianceStatusBanner />
+      </div>
+
       <div className="mb-8">
         <h1 className="font-bebas text-4xl text-[#0A0A0A] tracking-wider">
           MY PROJECTS
@@ -87,6 +94,7 @@ export default function EmployeeDashboardPage() {
         </div>
       ) : (
         <>
+          <DeliverablesSummaryCard />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => {
               // Extract progress - handle both dummy and real projects
@@ -96,9 +104,9 @@ export default function EmployeeDashboardPage() {
                 : 'progress' in project && typeof project.progress === 'object' 
                   ? project.progress 
                   : undefined;
-              
+               
               return (
-                <EmployeeProjectCard
+                <EmployeeProjectCardWrapper
                   key={project.id}
                   project={project}
                   progress={progressData}

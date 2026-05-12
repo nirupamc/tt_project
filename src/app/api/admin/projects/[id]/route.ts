@@ -16,7 +16,16 @@ export async function GET(
       .eq("id", id)
       .single();
 
-    if (error || !project) {
+    if (error) {
+      console.error("❌ Error fetching project:", error);
+      return NextResponse.json(
+        { message: "Failed to fetch project", error: String(error) },
+        { status: 500 },
+      );
+    }
+
+    if (!project) {
+      console.warn("⚠️ Project not found for id:", id);
       return NextResponse.json(
         { message: "Project not found" },
         { status: 404 },
@@ -24,7 +33,7 @@ export async function GET(
     }
 
     // Get enrolled employees
-    const { data: enrollments } = await supabase
+    const { data: enrollments, error: enrollmentsError } = await supabase
       .from("enrollments")
       .select(
         `
@@ -34,8 +43,12 @@ export async function GET(
       )
       .eq("project_id", id);
 
+    if (enrollmentsError) {
+      console.error("❌ Error fetching enrollments:", enrollmentsError);
+    }
+
     // Get project days with tasks
-    const { data: days } = await supabase
+    const { data: days, error: daysError } = await supabase
       .from("project_days")
       .select(
         `
@@ -46,11 +59,19 @@ export async function GET(
       .eq("project_id", id)
       .order("day_number", { ascending: true });
 
-    const { data: payment_logs } = await supabase
+    if (daysError) {
+      console.error("❌ Error fetching project days:", daysError);
+    }
+
+    const { data: payment_logs, error: paymentError } = await supabase
       .from("payment_logs")
       .select("*")
       .eq("project_id", id)
       .order("payment_date", { ascending: false });
+
+    if (paymentError) {
+      console.error("❌ Error fetching payment logs:", paymentError);
+    }
 
     return NextResponse.json({
       ...project,

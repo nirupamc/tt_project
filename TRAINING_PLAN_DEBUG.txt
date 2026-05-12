@@ -1,0 +1,84 @@
+TRAINING PLAN BROKEN DISPLAY - ROOT CAUSE ANALYSIS
+==================================================
+
+COMPONENT: src/components/employee/MyComplianceSection.tsx
+API ENDPOINT: src/app/api/employee/training-plan/route.ts
+
+SYMPTOM:
+--------
+Shows: "Your training plan is being set up by your supervisor. Check back soon."
+But data EXISTS in the database (confirmed in admin view)
+
+ROOT CAUSE - Line 271 in MyComplianceSection.tsx
+-------------------------------------------------
+
+CURRENT (BROKEN) CODE:
+    171. if (loading) {
+    ...
+    182. const objectiveCards = training?.plan
+    183.   ? [
+    184.       {
+    185.         label: "Objective 1",
+    186.         text: training.plan.objective_1_text,
+    187.         ...
+    188.       },
+    189.       ...
+    190.     ]
+    191.   : [];
+    
+    270. {objectiveCards.length === 0 || objectiveCards.every((item) => !item.text) ? (
+    271.   <div className="text-center py-8">
+    272.     <p className="font-space text-sm text-[rgba(10,10,10,0.65)]">
+    273.       Your training plan is being set up by your supervisor. Check back soon.
+    274.     </p>
+    275.   </div>
+    276. ) : (
+    277.   // RENDER OBJECTIVES
+
+THE PROBLEM:
+-----------
+
+The condition on line 270 is CORRECT but it's firing because:
+
+Option A (Most Likely): training.plan is null even though data exists in DB
+  → This suggests RLS policy is blocking access OR query filter is wrong
+  → Check: Does the query use correct field name?
+  
+Option B (Less Likely): training.plan exists but ALL objective_*_text fields are null/empty
+  → But admin confirms data exists, so this would only happen if the form submits with empty text
+  
+VERIFICATION STEPS:
+-------------------
+
+1. Check the API response by logging what plan contains
+2. Check if the i983_plans table has:
+   - Correct employee_id match
+   - NOT null for at least one of: objective_1_text, objective_2_text, objective_3_text
+3. Check RLS policies on i983_plans table
+4. Confirm query field names match database columns
+
+THE FIX (Conditional):
+-----------
+
+IF the issue is RLS blocking or query returning null when it shouldn't:
+  → The fix is in the API endpoint, not the component
+  
+IF the issue is all text fields being empty:
+  → Component condition is already correct (shows message when all empty)
+  → Fix would be in how supervisor creates/saves the plan
+
+RECOMMENDED DIAGNOSTIC QUERY:
+----------------------------
+
+SELECT 
+  id,
+  employee_id,
+  objective_1_text,
+  objective_2_text,
+  objective_3_text,
+  created_at,
+  updated_at
+FROM i983_plans
+WHERE employee_id = '<EMPLOYEE_ID>';
+
+This will show if data actually exists and what fields are populated.

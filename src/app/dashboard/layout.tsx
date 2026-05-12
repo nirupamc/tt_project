@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { EmployeeNav } from "@/components/employee/EmployeeNav";
+import { ComplianceStatusBanner } from "@/components/employee/ComplianceStatusBanner";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 import { format } from "date-fns";
@@ -46,6 +47,7 @@ export default function DashboardLayout({
       <div className="min-h-screen bg-[#FAFAF8]">
         <EmployeeNav />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <ComplianceStatusBanner />
           {children}
         </main>
         <Toaster />

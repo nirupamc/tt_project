@@ -49,7 +49,7 @@ interface ComplianceFormState {
   ead_end_date: string;
   job_title: string;
   hours_per_week: number;
-  pay_rate: number;
+  pay_rate: string;
   work_location: string;
   university_name: string;
   dso_name: string;
@@ -106,7 +106,7 @@ export function EmployeeComplianceTabsContent({
     ead_end_date: employee.ead_end_date || "",
     job_title: employee.job_title || "",
     hours_per_week: employee.hours_per_week ?? 30,
-    pay_rate: employee.pay_rate ?? 0,
+    pay_rate: employee.pay_rate ? String(employee.pay_rate) : "",
     work_location: employee.work_location || "",
     university_name: employee.university_name || "",
     dso_name: employee.dso_name || "",
@@ -389,7 +389,7 @@ export function EmployeeComplianceTabsContent({
                   step="0.01"
                   value={String(complianceForm.pay_rate)}
                   onChange={(value) =>
-                    setComplianceForm((prev) => ({ ...prev, pay_rate: Number(value) }))
+                    setComplianceForm((prev) => ({ ...prev, pay_rate: value }))
                   }
                 />
                 <Field

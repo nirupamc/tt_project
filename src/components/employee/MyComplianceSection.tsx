@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AlertTriangle, CheckCircle2, Eye, Upload, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Eye, Upload, XCircle, Loader2 } from "lucide-react";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { REQUIRED_DOCUMENTS } from "@/lib/compliance-documents";
-import type { EmployeeDocument } from "@/types";
+import type { EmployeeDocument, Deliverable } from "@/types";
 
 type TrainingStatus = "Not Started" | "In Progress" | "Completed";
 
@@ -16,16 +16,22 @@ interface TrainingPlanPayload {
   plan: {
     objective_1_text: string | null;
     objective_1_status: TrainingStatus | null;
-    objective_1_project?: { title?: string } | null;
+    objective_1_project?: { id?: string; title?: string } | null;
     objective_2_text: string | null;
     objective_2_status: TrainingStatus | null;
-    objective_2_project?: { title?: string } | null;
+    objective_2_project?: { id?: string; title?: string } | null;
     objective_3_text: string | null;
     objective_3_status: TrainingStatus | null;
-    objective_3_project?: { title?: string } | null;
+    objective_3_project?: { id?: string; title?: string } | null;
   } | null;
   next_evaluation_due: string | null;
   days_remaining: number | null;
+  i983_version_date: string | null;
+  objective_entry_counts: {
+    objective_1: number;
+    objective_2: number;
+    objective_3: number;
+  };
 }
 
 interface EmployeeDocumentsPayload {
@@ -48,6 +54,8 @@ export function MyComplianceSection() {
   const [uploadingType, setUploadingType] = useState<string | null>(null);
   const [training, setTraining] = useState<TrainingPlanPayload | null>(null);
   const [documentsData, setDocumentsData] = useState<EmployeeDocumentsPayload | null>(null);
+  const [deliverables, setDeliverables] = useState<Record<string, Deliverable[]>>({});
+  const [loadingDeliverables, setLoadingDeliverables] = useState(false);
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const loadData = async () => {
@@ -64,10 +72,34 @@ export function MyComplianceSection() {
       const docsPayload = (await docsRes.json()) as EmployeeDocumentsPayload;
       setTraining(trainingPayload);
       setDocumentsData(docsPayload);
+
+      // Fetch deliverables for each objective's project
+      setLoadingDeliverables(true);
+      const deliverablesByProject: Record<string, Deliverable[]> = {};
+      
+      if (trainingPayload.plan) {
+        const objectives = [
+          { num: 1, project: trainingPayload.plan.objective_1_project },
+          { num: 2, project: trainingPayload.plan.objective_2_project },
+          { num: 3, project: trainingPayload.plan.objective_3_project },
+        ];
+
+        for (const obj of objectives) {
+          if (obj.project && typeof obj.project === 'object' && 'id' in obj.project && obj.project.id) {
+            const delRes = await fetch(`/api/employee/deliverables?projectId=${obj.project.id}`);
+            if (delRes.ok) {
+              deliverablesByProject[`objective_${obj.num}`] = await delRes.json();
+            }
+          }
+        }
+      }
+      
+      setDeliverables(deliverablesByProject);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to load compliance data");
     } finally {
       setLoading(false);
+      setLoadingDeliverables(false);
     }
   };
 
@@ -178,6 +210,64 @@ export function MyComplianceSection() {
           <CardTitle className="font-space text-lg text-[#0A0A0A]">My Training Plan</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* CHANGE 4: I-983 not filed warning */}
+          {training && !training.i983_version_date && (
+            <div className="rounded-lg border-l-4 border-red-600 bg-red-50 p-4 mb-4">
+              <p className="font-space text-sm font-semibold text-red-800">
+                ⚠️ Your I-983 Training Plan has not been filed. Contact HR at{" "}
+                <a href="mailto:hr@tantech-llc.com" className="underline hover:text-red-900">
+                  hr@tantech-llc.com
+                </a>{" "}
+                immediately. You must have a filed I-983 to maintain STEM OPT status.
+              </p>
+            </div>
+          )}
+
+          {/* CHANGE 3: Evaluation due date at the TOP */}
+          {training?.next_evaluation_due && (
+            <div
+              className={`rounded-lg border p-4 mb-4 ${
+                training.days_remaining && training.days_remaining <= 30
+                  ? "border-red-600 bg-red-50"
+                  : training.days_remaining && training.days_remaining <= 60
+                    ? "border-amber-600 bg-amber-50"
+                    : "border-[rgba(255,215,0,0.2)] bg-[rgba(255,215,0,0.05)]"
+              }`}
+            >
+              <div className="flex items-start gap-2">
+                {training.days_remaining && training.days_remaining <= 30 && (
+                  <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                )}
+                <div className="flex-1">
+                  <p className="font-space text-sm text-[rgba(10,10,10,0.6)]">Next Evaluation Due Date</p>
+                  <p className="font-bebas text-[20px] text-[#0A0A0A] leading-none mt-1">
+                    {format(parseISO(training.next_evaluation_due), "MMM d, yyyy")}
+                  </p>
+                  {training.days_remaining !== null && training.days_remaining !== undefined && (
+                    <>
+                      <p
+                        className={`font-space text-sm mt-2 ${
+                          training.days_remaining <= 30
+                            ? "text-red-700 font-semibold"
+                            : training.days_remaining <= 60
+                              ? "text-amber-700 font-semibold"
+                              : "text-[rgba(10,10,10,0.65)]"
+                        }`}
+                      >
+                        {training.days_remaining} days remaining
+                      </p>
+                      {training.days_remaining <= 30 && (
+                        <p className="font-space text-sm text-red-700 mt-1 font-semibold">
+                          Action required: Your I-983 evaluation is due soon. Contact your DSO and supervisor immediately.
+                        </p>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {objectiveCards.length === 0 || objectiveCards.every((item) => !item.text) ? (
             <div className="text-center py-8">
               <p className="font-space text-sm text-[rgba(10,10,10,0.65)]">
@@ -187,52 +277,91 @@ export function MyComplianceSection() {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {objectiveCards.map((item) => (
-                  <div
-                    key={item.label}
-                    className="min-w-0 rounded-lg border border-[rgba(10,10,10,0.08)] p-4"
-                  >
-                    <p className="font-space text-xs uppercase tracking-wider text-[rgba(10,10,10,0.55)]">
-                      {item.label}
-                    </p>
-                    <p className="font-space text-sm text-[#0A0A0A] mt-2 min-h-16 whitespace-pre-wrap break-all">
-                      {item.text || "Not set"}
-                    </p>
-                    <div className="mt-3 flex items-center justify-between gap-2">
-                      <Badge className={getStatusClass(item.status)}>
-                        {item.status || "Not Started"}
-                      </Badge>
+                {objectiveCards.map((item, idx) => {
+                  const objKey = `objective_${idx + 1}`;
+                  const entryCount = training?.objective_entry_counts[objKey as keyof typeof training.objective_entry_counts] || 0;
+                  const progressPercent = Math.min(Math.round((entryCount / 20) * 100), 100);
+                  const objectiveDeliverables = deliverables[objKey] || [];
+
+                  return (
+                    <div
+                      key={item.label}
+                      className="min-w-0 rounded-lg border border-[rgba(10,10,10,0.08)] p-4"
+                    >
+                      <p className="font-space text-xs uppercase tracking-wider text-[rgba(10,10,10,0.55)]">
+                        {item.label}
+                      </p>
+                      <p className="font-space text-sm text-[#0A0A0A] mt-2 min-h-16 whitespace-pre-wrap break-all">
+                        {item.text || "Not set"}
+                      </p>
+                      <div className="mt-3 flex items-center justify-between gap-2">
+                        <Badge className={getStatusClass(item.status)}>
+                          {item.status || "Not Started"}
+                        </Badge>
+                      </div>
+                      <p className="font-space text-xs text-[rgba(10,10,10,0.6)] mt-3">
+                        Mapped project:{" "}
+                        <span className="font-semibold text-[#0A0A0A]">{item.projectName}</span>
+                      </p>
+
+                      {/* CHANGE 1: Auto-progress from daily logs */}
+                      <div className="mt-4 pt-4 border-t border-[rgba(10,10,10,0.08)]">
+                        <p className="font-space text-xs text-[rgba(10,10,10,0.6)]">
+                          {entryCount} daily log entries mapped to this objective
+                        </p>
+                        <div className="mt-2 h-2 bg-[rgba(10,10,10,0.08)] rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-[#FFD700] rounded-full transition-all"
+                            style={{ width: `${progressPercent}%` }}
+                          />
+                        </div>
+                        <p className="font-space text-xs text-[rgba(10,10,10,0.5)] mt-1">
+                          Target: 20 entries
+                        </p>
+                      </div>
+
+                      {/* CHANGE 2: Objective-to-deliverable link */}
+                      <div className="mt-4 pt-4 border-t border-[rgba(10,10,10,0.08)]">
+                        <p className="font-space text-xs font-semibold text-[rgba(10,10,10,0.6)] mb-2">
+                          Work produced under this objective:
+                        </p>
+                        {loadingDeliverables && objectiveDeliverables.length === 0 ? (
+                          <div className="flex items-center gap-1">
+                            <Loader2 className="h-3 w-3 animate-spin text-[rgba(10,10,10,0.4)]" />
+                            <p className="font-space text-xs text-[rgba(10,10,10,0.5)]">Loading...</p>
+                          </div>
+                        ) : objectiveDeliverables.length > 0 ? (
+                          <div className="space-y-2">
+                            {objectiveDeliverables.slice(0, 3).map((del) => (
+                              <div key={del.id} className="text-xs">
+                                <div className="flex items-center justify-between gap-1">
+                                  <p className="font-space text-[#0A0A0A] font-semibold truncate">
+                                    {del.title}
+                                  </p>
+                                  <Badge className="shrink-0 bg-[rgba(255,215,0,0.12)] text-[#C8A800] border border-[rgba(255,215,0,0.3)] font-space text-[9px] font-semibold">
+                                    {del.status.replace(/_/g, " ")}
+                                  </Badge>
+                                </div>
+                                <p className="font-space text-[rgba(10,10,10,0.5)] text-[11px] mt-0.5">
+                                  {format(new Date(del.date), "MMM d, yyyy")}
+                                </p>
+                              </div>
+                            ))}
+                            {objectiveDeliverables.length > 3 && (
+                              <p className="font-space text-[10px] text-[rgba(10,10,10,0.4)] italic">
+                                +{objectiveDeliverables.length - 3} more deliverable{objectiveDeliverables.length - 3 === 1 ? "" : "s"}
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="font-space text-xs text-[rgba(10,10,10,0.5)]">
+                            No deliverables logged yet. Log your first deliverable in My Projects.
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <p className="font-space text-xs text-[rgba(10,10,10,0.6)] mt-3">
-                      Mapped project:{" "}
-                      <span className="font-semibold text-[#0A0A0A]">{item.projectName}</span>
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <div className="rounded-lg border border-[rgba(255,215,0,0.2)] p-4">
-                <p className="font-space text-sm text-[rgba(10,10,10,0.6)]">Next Evaluation Due Date</p>
-                <p className="font-space text-lg font-semibold text-[#0A0A0A] mt-1">
-                  {training?.next_evaluation_due
-                    ? format(parseISO(training.next_evaluation_due), "MMM d, yyyy")
-                    : "Not available"}
-                </p>
-                {training?.days_remaining !== null && training?.days_remaining !== undefined && (
-                  <p
-                    className={`font-space text-sm mt-1 ${
-                      training.days_remaining < 30
-                        ? "text-red-600"
-                        : training.days_remaining <= 60
-                          ? "text-amber-600"
-                          : "text-[rgba(10,10,10,0.65)]"
-                    }`}
-                  >
-                    {training.days_remaining < 30 && (
-                      <AlertTriangle className="inline h-4 w-4 mr-1 align-text-bottom" />
-                    )}
-                    {training.days_remaining} days remaining
-                  </p>
-                )}
+                  );
+                })}
               </div>
             </>
           )}

@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ProfileEditableSection } from "@/components/employee/ProfileEditableSection";
+import { toast } from "sonner";
 
 type WeekStatus = "approved" | "awaiting_approval" | "no_entries";
 
@@ -28,20 +30,37 @@ interface ProfilePayload {
     email: string;
     avatar_url: string | null;
     joining_date: string | null;
+    // Personal & Employment Info
+    employee_id: string | null;
     job_title: string | null;
+    department: string | null;
+    start_date: string | null;
+    hours_per_week: number | null;
+    pay_rate: number | null;
+    work_location: string | null;
+    supervisor_name: string | null;
+    supervisor_email: string | null;
+    // Visa & Immigration
     opt_type: "OPT" | "STEM OPT" | null;
     ead_number: string | null;
     ead_start_date: string | null;
     ead_end_date: string | null;
-    hours_per_week: number | null;
-    pay_rate: number | null;
-    work_location: string | null;
+    everify_case_number: string | null;
+    everify_status: "Employment Authorized" | "Pending" | "Not Started" | null;
+    // Education Info (student-editable)
+    degree_field: string | null;
+    graduation_year: number | null;
+    // Contact & Links (student-editable)
+    personal_email: string | null;
+    phone_number: string | null;
+    linkedin_url: string | null;
+    portfolio_url: string | null;
+    // University & DSO Info
     university_name: string | null;
     dso_name: string | null;
     dso_email: string | null;
+    // Other compliance fields
     i9_completion_date: string | null;
-    everify_case_number: string | null;
-    everify_status: "Employment Authorized" | "Pending" | "Not Started" | null;
     supervisor_id: string | null;
   };
   supervisor: {
@@ -358,6 +377,60 @@ export default function EmployeeProfilePage() {
     }
   };
 
+  const handleSaveEducation = async (updates: Record<string, any>) => {
+    try {
+      const response = await fetch("/api/employee/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) throw new Error("Failed to save education info");
+      
+      const updated = await response.json();
+      setProfile((current) =>
+        current
+          ? {
+              ...current,
+              employee: {
+                ...current.employee,
+                ...updated,
+              },
+            }
+          : current,
+      );
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleSaveContact = async (updates: Record<string, any>) => {
+    try {
+      const response = await fetch("/api/employee/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) throw new Error("Failed to save contact info");
+      
+      const updated = await response.json();
+      setProfile((current) =>
+        current
+          ? {
+              ...current,
+              employee: {
+                ...current.employee,
+                ...updated,
+              },
+            }
+          : current,
+      );
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const inputClassName =
     "w-full rounded-md border border-[rgba(255,215,0,0.18)] bg-[#0F0F0F] px-3 py-2 font-space text-sm text-white outline-none transition focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.12)]";
 
@@ -668,6 +741,71 @@ export default function EmployeeProfilePage() {
               </>
             )}
           </Card>
+
+          {/* Education Section - Editable by Student */}
+          <ProfileEditableSection
+            title="Education Information"
+            fields={[
+              {
+                key: "degree_field",
+                label: "Degree Field",
+                value: profile.employee.degree_field,
+                placeholder: "e.g., Computer Science",
+                hint: "Enter your STEM degree field exactly as shown on your I-20",
+              },
+              {
+                key: "university_name",
+                label: "University Name",
+                value: profile.employee.university_name,
+                placeholder: "e.g., University of California",
+              },
+              {
+                key: "graduation_year",
+                label: "Graduation Year",
+                value: profile.employee.graduation_year,
+                type: "number",
+                placeholder: "YYYY",
+              },
+            ]}
+            onSave={handleSaveEducation}
+            isSaving={saving}
+          />
+
+          {/* Contact Section - Editable by Student */}
+          <ProfileEditableSection
+            title="Contact & Professional Links"
+            fields={[
+              {
+                key: "personal_email",
+                label: "Personal Email",
+                value: profile.employee.personal_email,
+                type: "email",
+                placeholder: "your.email@example.com",
+              },
+              {
+                key: "phone_number",
+                label: "Phone Number",
+                value: profile.employee.phone_number,
+                placeholder: "+1 (555) 000-0000",
+              },
+              {
+                key: "linkedin_url",
+                label: "LinkedIn Profile",
+                value: profile.employee.linkedin_url,
+                type: "url",
+                placeholder: "https://linkedin.com/in/yourprofile",
+              },
+              {
+                key: "portfolio_url",
+                label: "Portfolio / Website",
+                value: profile.employee.portfolio_url,
+                type: "url",
+                placeholder: "https://yourportfolio.com",
+              },
+            ]}
+            onSave={handleSaveContact}
+            isSaving={saving}
+          />
 
           <Card title="My Supervisor">
             {!profile.employee.supervisor_id || !profile.supervisor ? (

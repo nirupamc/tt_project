@@ -1,50 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Mail } from "lucide-react";
 
 interface SupervisorPayload {
-  supervisor: {
-    id: string;
-    name: string;
-    email: string;
-    job_title: string | null;
-  } | null;
+  supervisorName: string | null;
+  supervisorEmail: string | null;
+  lastCheckin: string | null;
+  lastCheckinDaysAgo: number | null;
+  thisWeekStatus: "approved" | "awaiting_approval" | "not_submitted";
+  latestNote: string | null;
   last_approval_date: string | null;
-  current_week_status: "approved" | "awaiting_approval" | "no_entries" | "no_supervisor";
-}
-
-function StatusBadge({ status }: { status: SupervisorPayload["current_week_status"] }) {
-  if (status === "approved") {
-    return (
-      <span className="inline-flex rounded-full bg-[rgba(34,197,94,0.14)] border border-[rgba(34,197,94,0.35)] px-3 py-1 text-xs font-space font-semibold text-green-700">
-        ✓ This week approved
-      </span>
-    );
-  }
-  if (status === "awaiting_approval") {
-    return (
-      <span className="inline-flex rounded-full bg-[rgba(245,158,11,0.15)] border border-[rgba(245,158,11,0.35)] px-3 py-1 text-xs font-space font-semibold text-amber-700">
-        ⏳ Awaiting approval
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex rounded-full bg-[rgba(107,114,128,0.15)] border border-[rgba(107,114,128,0.35)] px-3 py-1 text-xs font-space font-semibold text-gray-700">
-      No entries this week
-    </span>
-  );
+  current_week_status:
+    | "approved"
+    | "awaiting_approval"
+    | "no_entries"
+    | "no_supervisor";
 }
 
 export function MySupervisorCard() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SupervisorPayload | null>(null);
-  const supervisorEmail =
-    data?.supervisor?.email === "admin@tantechllc.com"
-      ? "omer@tantech-llc.com"
-      : data?.supervisor?.email;
 
   useEffect(() => {
     const load = async () => {
@@ -54,7 +34,11 @@ export function MySupervisorCard() {
         if (!response.ok) throw new Error("Failed to fetch supervisor info");
         setData(await response.json());
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Failed to fetch supervisor info");
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch supervisor info",
+        );
       } finally {
         setLoading(false);
       }
@@ -64,53 +48,139 @@ export function MySupervisorCard() {
 
   if (loading) {
     return (
-      <Card className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.18)] rounded-xl mt-6">
+      <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl mt-6">
         <CardContent className="py-6">
-          <p className="font-space text-sm text-[rgba(245,245,240,0.65)]">Loading supervisor details...</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!data?.supervisor || data.current_week_status === "no_supervisor") {
-    return (
-      <Card className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.18)] rounded-xl mt-6">
-        <CardHeader>
-          <CardTitle className="font-space text-lg text-[#FFD700]">My Supervisor</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="font-space text-sm text-[rgba(245,245,240,0.7)]">
-            No supervisor assigned yet. Please contact HR.
+          <p className="font-space text-sm text-[rgba(10,10,10,0.6)]">
+            Loading supervisor details...
           </p>
         </CardContent>
       </Card>
     );
   }
 
+  // No supervisor assigned
+  if (!data?.supervisorName) {
+    return (
+      <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl mt-6">
+        <CardHeader>
+          <CardTitle className="font-space text-lg text-[#0A0A0A]">
+            My Supervisor
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="font-space text-sm text-[rgba(10,10,10,0.8)]">
+            No supervisor assigned yet. Contact HR at{" "}
+            <a
+              href="mailto:hr@tantech-llc.com"
+              className="text-[#FFD700] hover:underline font-semibold"
+            >
+              hr@tantech-llc.com
+            </a>
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Calculate if last check-in is more than 7 days ago
+  const isOldCheckin =
+    data.lastCheckinDaysAgo !== null && data.lastCheckinDaysAgo > 7;
+
+  // Status badge configuration
+  const statusConfig = {
+    approved: {
+      bg: "bg-[rgba(34,197,94,0.12)]",
+      text: "text-[#16a34a]",
+      border: "border-[rgba(22,163,74,0.4)]",
+      label: "✓ Approved",
+    },
+    awaiting_approval: {
+      bg: "bg-[rgba(250,204,21,0.18)]",
+      text: "text-[#a16207]",
+      border: "border-[rgba(250,204,21,0.45)]",
+      label: "⏳ Awaiting Approval",
+    },
+    not_submitted: {
+      bg: "bg-[rgba(239,68,68,0.12)]",
+      text: "text-[#dc2626]",
+      border: "border-[rgba(239,68,68,0.4)]",
+      label: "✗ Not Submitted",
+    },
+  };
+
+  const status = statusConfig[data.thisWeekStatus];
+
   return (
-    <Card className="bg-[#0A0A0A] border border-[rgba(255,215,0,0.18)] rounded-xl mt-6">
+    <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl mt-6">
       <CardHeader>
-        <CardTitle className="font-space text-lg text-[#FFD700]">My Supervisor</CardTitle>
+        <CardTitle className="font-space text-lg text-[#0A0A0A]">
+          My Supervisor
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Supervisor Name & Contact */}
         <div>
-          <p className="font-space text-lg font-semibold text-[#F5F5F0]">{data.supervisor.name}</p>
-          <p className="font-space text-sm text-[rgba(245,245,240,0.65)]">{supervisorEmail}</p>
+          <p className="font-space text-sm font-semibold text-[#0A0A0A] mb-2">
+            {data.supervisorName}
+          </p>
+          {data.supervisorEmail && (
+            <a
+              href={`mailto:${data.supervisorEmail}`}
+              className="inline-flex items-center gap-2 font-space text-xs text-[#FFD700] hover:text-[#FFE44D] font-semibold"
+            >
+              <Mail className="h-4 w-4" />
+              Contact Supervisor
+            </a>
+          )}
         </div>
-        <div>
-          <a
-            href={`mailto:${supervisorEmail}`}
-            className="inline-flex items-center justify-center rounded-md border border-[#FFD700] px-4 py-2 text-sm font-medium text-[#FFD700] hover:bg-[rgba(255,215,0,0.08)] transition-colors"
+
+        {/* Last Check-in Date */}
+        <div className="pt-2 border-t border-[rgba(10,10,10,0.06)]">
+          <p className="font-space text-xs font-semibold uppercase tracking-wide text-[rgba(10,10,10,0.7)] mb-1">
+            Last Check-in
+          </p>
+          {data.lastCheckin ? (
+            <p
+              className={`font-space text-sm ${isOldCheckin ? "text-[#a16207]" : "text-[rgba(10,10,10,0.8)]"}`}
+            >
+              {format(parseISO(data.lastCheckin), "MMM d, yyyy")}
+              {isOldCheckin && (
+                <span className="ml-2 text-[#a16207] font-semibold">
+                  ({data.lastCheckinDaysAgo} days ago)
+                </span>
+              )}
+            </p>
+          ) : (
+            <p className="font-space text-sm text-[rgba(10,10,10,0.6)]">
+              No check-in logged yet
+            </p>
+          )}
+        </div>
+
+        {/* This Week's Status */}
+        <div className="pt-2 border-t border-[rgba(10,10,10,0.06)]">
+          <p className="font-space text-xs font-semibold uppercase tracking-wide text-[rgba(10,10,10,0.7)] mb-2">
+            This Week's Status
+          </p>
+          <Badge
+            className={`${status.bg} ${status.text} border ${status.border}`}
           >
-            Contact Supervisor
-          </a>
+            {status.label}
+          </Badge>
         </div>
-        <p className="font-space text-sm text-[rgba(245,245,240,0.72)]">
-          {data.last_approval_date
-            ? `Last approved: ${format(new Date(data.last_approval_date), "MMMM d, yyyy")}`
-            : "No approvals yet."}
-        </p>
-        <StatusBadge status={data.current_week_status} />
+
+        {/* Latest Note */}
+        {data.latestNote && (
+          <div className="pt-2 border-t border-[rgba(10,10,10,0.06)]">
+            <p className="font-space text-xs font-semibold uppercase tracking-wide text-[rgba(10,10,10,0.7)] mb-2">
+              What your supervisor noted last week:
+            </p>
+            <p className="font-space text-sm text-[rgba(10,10,10,0.8)] leading-relaxed">
+              {data.latestNote}
+              {data.latestNote.length === 200 && "…"}
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

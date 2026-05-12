@@ -27,7 +27,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Printer } from "lucide-react";
+import { getTaskCategoriesForJobTitle } from "@/lib/task-categories";
+import { WeeklySummaryCard } from "@/components/employee/WeeklySummaryCard";
+import { DailyEntryRow } from "@/components/employee/DailyEntryRow";
 
 type ViewMode = "chart" | "day" | "week" | "month";
 
@@ -64,7 +67,7 @@ const CATEGORY_OPTIONS = [
   "Documentation",
 ] as const;
 
-type CategoryValue = (typeof CATEGORY_OPTIONS)[number];
+type CategoryValue = string;
 
 interface TimesheetFormState {
   work_date: string;
@@ -86,15 +89,22 @@ export default function EmployeeTimesheetPage() {
     "Objective 2",
     "Objective 3",
   ]);
+  const [jobTitle, setJobTitle] = useState<string | null>(null);
+  const [availableCategories, setAvailableCategories] = useState<string[]>(
+    Array.from(getTaskCategoriesForJobTitle(null))
+  );
+  const [hoursPerWeek, setHoursPerWeek] = useState<number>(40);
   const [viewMode, setViewMode] = useState<ViewMode>("chart");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [expandedWeekDay, setExpandedWeekDay] = useState<string | null>(null);
   const [descriptionTouched, setDescriptionTouched] = useState(false);
   const [hoursTouched, setHoursTouched] = useState(false);
+  // Get initial categories for form state
+  const initialCategories = Array.from(getTaskCategoriesForJobTitle(null));
   const [form, setForm] = useState<TimesheetFormState>({
     work_date: format(new Date(), "yyyy-MM-dd"),
     total_hours: "8",
-    task_category: CATEGORY_OPTIONS[0],
+    task_category: initialCategories[0],
     task_description: "",
     i983_objective_mapped: "objective_1" as ObjectiveValue,
     training_hours: "0",
@@ -104,12 +114,38 @@ export default function EmployeeTimesheetPage() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/employee/timesheet");
-      if (!response.ok) throw new Error("Failed to load timesheet");
-      const data = await response.json();
-      setEntries(data.entries || []);
-      setApprovals(data.approvals || []);
-      setObjectiveLabels(data.objective_labels || ["Objective 1", "Objective 2", "Objective 3"]);
+      
+      // Fetch timesheet data
+      const timesheetResponse = await fetch("/api/employee/timesheet");
+      if (!timesheetResponse.ok) throw new Error("Failed to load timesheet");
+      const timesheetData = await timesheetResponse.json();
+      setEntries(timesheetData.entries || []);
+      setApprovals(timesheetData.approvals || []);
+      setObjectiveLabels(timesheetData.objective_labels || ["Objective 1", "Objective 2", "Objective 3"]);
+      
+      // Fetch user profile to get job_title and hours_per_week
+      const profileResponse = await fetch("/api/employee/profile");
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+        setJobTitle(profileData.job_title || null);
+        if (profileData.hours_per_week) {
+          setHoursPerWeek(profileData.hours_per_week);
+        }
+        const categories = Array.from(getTaskCategoriesForJobTitle(profileData.job_title));
+        setAvailableCategories(categories);
+        
+        // Update form's task_category to first available category if current one isn't available
+        if (!categories.includes(form.task_category)) {
+          setForm((prev) => ({
+            ...prev,
+            task_category: categories[0],
+          }));
+        }
+      } else {
+        // Fallback to general categories if profile fetch fails
+        const categories = Array.from(getTaskCategoriesForJobTitle(null));
+        setAvailableCategories(categories);
+      }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to load timesheet");
     } finally {
@@ -275,14 +311,14 @@ export default function EmployeeTimesheetPage() {
                 <Select
                   value={form.task_category}
                   onValueChange={(value) =>
-                    setForm((prev) => ({ ...prev, task_category: value as (typeof CATEGORY_OPTIONS)[number] }))
+                    setForm((prev) => ({ ...prev, task_category: value as CategoryValue }))
                   }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {CATEGORY_OPTIONS.map((category) => (
+                    {availableCategories.map((category) => (
                       <SelectItem key={category} value={category}>
                         {category}
                       </SelectItem>
@@ -441,127 +477,107 @@ export default function EmployeeTimesheetPage() {
       )}
 
       {viewMode === "week" && (
-        <div className="space-y-4">
+        <div className="space-y-4" id="week-view">
+          {/* Navigation */}
           <div className="flex items-center justify-between">
             <Button onClick={() => setCurrentDate(subWeeks(currentDate, 1))} variant="outline" size="sm">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <div className="text-center">
-              <p className="font-space text-sm font-semibold text-[#0A0A0A]">
-                Week of {format(weekStart, "MMM d, yyyy")}
-              </p>
-              {(() => {
-                const isPastWeek = weekStart < currentWeekStart;
-                const isCurrentWeek =
-                  format(weekStart, "yyyy-MM-dd") === format(currentWeekStart, "yyyy-MM-dd");
-                const isFutureWeek = weekStart > currentWeekStart;
-
-                // Rule 3: Future weeks show no status
-                if (isFutureWeek) {
-                  return null;
-                }
-
-                // Rule 2: Past weeks always show as approved
-                if (isPastWeek) {
-                  return (
-                    <Badge className="mt-2 bg-[rgba(34,197,94,0.12)] text-[#16a34a] border border-[rgba(22,163,74,0.4)]">
-                      ✓ Approved
-                    </Badge>
-                  );
-                }
-
-                // Rule 1: Current week checks for actual approval record
-                if (isCurrentWeek) {
-                  if (visibleWeekApproval) {
-                    return (
-                      <Badge className="mt-2 bg-[rgba(34,197,94,0.12)] text-[#16a34a] border border-[rgba(22,163,74,0.4)]">
-                        ✓ Approved by {visibleWeekApproval.approved_by_name}
-                      </Badge>
-                    );
-                  } else {
-                    return (
-                      <Badge className="mt-2 bg-[rgba(250,204,21,0.18)] text-[#a16207] border border-[rgba(250,204,21,0.45)]">
-                        ⏳ Awaiting supervisor approval
-                      </Badge>
-                    );
-                  }
-                }
-
-                return null;
-              })()}
-            </div>
+            <Button
+              onClick={() => window.print()}
+              variant="outline"
+              size="sm"
+              className="print:hidden"
+            >
+              <Printer className="h-4 w-4 mr-2" />
+              Print this week
+            </Button>
             <Button onClick={() => setCurrentDate(addWeeks(currentDate, 1))} variant="outline" size="sm">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-          <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl">
-            <CardContent className="pt-6">
-              <table className="w-full">
-                <tbody>
-                  {weekEntries.map(({ day, entries: dayEntries }) => {
-                    const dayKey = format(day, "yyyy-MM-dd");
-                    const dayTotal = dayEntries.reduce(
-                      (sum, entry) => sum + Number(entry.hours_logged || 0),
-                      0,
-                    );
-                    const isExpanded = expandedWeekDay === dayKey;
 
-                    return (
-                      <Fragment key={dayKey}>
-                        <tr
-                          className="cursor-pointer border-b border-[rgba(10,10,10,0.06)]"
-                          onClick={() => setExpandedWeekDay(isExpanded ? null : dayKey)}
-                        >
-                          <td className="py-3 font-space text-sm">{format(day, "EEE, MMM d")}</td>
-                          <td className="py-3 font-space text-sm text-right text-[#FFD700] font-semibold">
-                            {dayEntries.length > 0 ? `${dayTotal.toFixed(1)}h` : "—"}
-                          </td>
-                        </tr>
-                        {isExpanded && dayEntries.length > 0 && (
-                          <tr className="border-b border-[rgba(10,10,10,0.06)] bg-[rgba(10,10,10,0.02)]">
-                            <td colSpan={2} className="px-3 py-3">
-                              <div className="space-y-3">
-                                {dayEntries.map((entry) => (
-                                  <div key={entry.id} className="rounded-lg border border-[rgba(10,10,10,0.08)] bg-white p-3">
-                                    <div className="flex flex-wrap items-center justify-between gap-2">
-                                      <p className="font-space text-sm font-semibold text-[#0A0A0A]">
-                                        {entry.task_category || "Uncategorized"}
-                                      </p>
-                                      {entry.is_auto_generated && (
-                                        <span className="rounded-full bg-[rgba(34,197,94,0.12)] px-2 py-1 text-[11px] font-semibold text-[#16a34a]">
-                                          Auto-logged
-                                        </span>
-                                      )}
-                                    </div>
-                                    <p className="mt-2 font-space text-sm text-[rgba(10,10,10,0.8)] whitespace-pre-wrap">
-                                      {entry.task_description || "No task description."}
-                                    </p>
-                                    <div className="mt-2 flex flex-wrap gap-3 text-xs font-space text-[rgba(10,10,10,0.7)]">
-                                      <span>Training Hours: {Number(entry.training_hours || 0).toFixed(1)}h</span>
-                                      <span>Billable Hours: {Number(entry.billable_hours || 0).toFixed(1)}h</span>
-                                      <span>I-983 Objective: {entry.i983_objective_mapped || "—"}</span>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </Fragment>
-                    );
-                  })}
+          {/* Summary Card */}
+          <WeeklySummaryCard
+            weekStart={weekStart}
+            totalHours={weekTotal}
+            requiredHours={hoursPerWeek}
+            trainingHours={weekEntries.reduce((sum, { entries: dayEntries }) => 
+              sum + dayEntries.reduce((daySum, e) => daySum + Number(e.training_hours || 0), 0), 0)}
+            billableHours={weekEntries.reduce((sum, { entries: dayEntries }) => 
+              sum + dayEntries.reduce((daySum, e) => daySum + Number(e.billable_hours || 0), 0), 0)}
+            supervisorApproval={visibleWeekApproval}
+          />
+
+          {/* Daily Entries Table */}
+          <Card className="bg-white border border-[rgba(10,10,10,0.08)] rounded-xl print:shadow-none print:border-[rgba(10,10,10,0.2)]">
+            <CardContent className="pt-6 print:pt-4 px-0 print:px-0">
+              <table className="w-full">
+                <thead className="print:bg-[rgba(10,10,10,0.05)]">
+                  <tr className="border-b border-[rgba(10,10,10,0.08)]">
+                    <th className="text-left py-3 px-3 font-space text-xs uppercase font-semibold text-[rgba(10,10,10,0.7)]">
+                      Day
+                    </th>
+                    <th className="text-left py-3 px-3 font-space text-xs uppercase font-semibold text-[rgba(10,10,10,0.7)]">
+                      Hours
+                    </th>
+                    <th className="text-left py-3 px-3 font-space text-xs uppercase font-semibold text-[rgba(10,10,10,0.7)]">
+                      Task Category
+                    </th>
+                    <th className="text-left py-3 px-3 font-space text-xs uppercase font-semibold text-[rgba(10,10,10,0.7)]">
+                      I-983 Objective
+                    </th>
+                    <th className="text-center py-3 px-3 font-space text-xs uppercase font-semibold text-[rgba(10,10,10,0.7)] print:hidden">
+                      Notes
+                    </th>
+                    <th className="text-center py-3 px-3 font-space text-xs uppercase font-semibold text-[rgba(10,10,10,0.7)]">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {weekEntries.map(({ day, entries: dayEntries }) => (
+                    <DailyEntryRow
+                      key={format(day, "yyyy-MM-dd")}
+                      day={day}
+                      entries={dayEntries}
+                      objectiveLabels={objectiveLabels}
+                      hoursPerWeekDaily={hoursPerWeek / 5}
+                      isApproved={!!visibleWeekApproval}
+                    />
+                  ))}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <td className="py-3 font-space text-sm font-semibold">Week Total</td>
-                    <td className="py-3 font-space text-sm text-right font-bold text-[#FFD700]">
+                <tfoot className="border-t border-[rgba(10,10,10,0.08)] print:border-t-2">
+                  <tr className="print:bg-[rgba(10,10,10,0.05)]">
+                    <td colSpan={2} className="py-3 px-3 font-space text-sm font-bold text-[#0A0A0A]">
+                      Week Total
+                    </td>
+                    <td className="py-3 px-3 font-space text-sm font-bold text-[#FFD700]">
                       {weekTotal.toFixed(1)}h
+                    </td>
+                    <td colSpan={3} className="text-right py-3 px-3 font-space text-xs text-[rgba(10,10,10,0.6)]">
+                      Required: {hoursPerWeek.toFixed(1)}h
                     </td>
                   </tr>
                 </tfoot>
               </table>
             </CardContent>
           </Card>
+
+          {/* Print-only footer */}
+          <style>{`
+            @media print {
+              body {
+                background: white;
+              }
+              #week-view {
+                box-shadow: none;
+              }
+              .print\\:hidden {
+                display: none !important;
+              }
+            }
+          `}</style>
         </div>
       )}
 

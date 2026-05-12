@@ -14,21 +14,38 @@ export interface User {
   hourly_rate: number;
   default_start_date: string | null;
   joining_date: string | null; // Added for tenure calculation
+  // Personal & Employment Info
+  employee_id?: string | null;
+  job_title?: string | null;
+  department?: string | null;
+  start_date?: string | null;
+  hours_per_week?: number | null;
+  pay_rate?: string | number | null;
+  work_location?: string | null;
+  supervisor_name?: string | null;
+  supervisor_email?: string | null;
+  supervisor_id?: string | null;
+  // Visa & Immigration
   opt_type?: "OPT" | "STEM OPT" | null;
   ead_number?: string | null;
   ead_start_date?: string | null;
   ead_end_date?: string | null;
-  job_title?: string | null;
-  hours_per_week?: number | null;
-  pay_rate?: number | null;
-  work_location?: string | null;
+  everify_status?: "Employment Authorized" | "Pending" | "Not Started" | null;
+  everify_case_number?: string | null;
+  // Education Info (student-editable)
+  degree_field?: string | null;
+  graduation_year?: number | null;
+  // Contact & Links (student-editable)
+  personal_email?: string | null;
+  phone_number?: string | null;
+  linkedin_url?: string | null;
+  portfolio_url?: string | null;
+  // University & DSO Info
   university_name?: string | null;
   dso_name?: string | null;
   dso_email?: string | null;
+  // Other compliance fields
   i9_completion_date?: string | null;
-  everify_case_number?: string | null;
-  everify_status?: "Employment Authorized" | "Pending" | "Not Started" | null;
-  supervisor_id?: string | null;
   documents_uploaded_count?: number;
   created_at: string;
 }
@@ -98,6 +115,21 @@ export interface Enrollment {
   project_id: string;
   start_date: string; // This is the assigned_date (when admin assigned it)
   enrolled_at: string;
+}
+
+export interface Deliverable {
+  id: string;
+  user_id: string;
+  project_id: string;
+  date: string;
+  title: string;
+  description: string;
+  file_url: string | null;
+  file_name: string | null;
+  external_link: string | null;
+  status: 'in_progress' | 'submitted' | 'client_reviewed' | 'completed';
+  created_at: string;
+  updated_at: string;
 }
 
 // Dummy completed project (not in database)
