@@ -23,14 +23,14 @@ interface AlertRow {
   detail: string;
 }
 
-function getUrgencyClass(daysRemaining: number | null) {
-  if (daysRemaining === null || daysRemaining < 0 || daysRemaining < 14) {
-    return "bg-[rgba(239,68,68,0.12)] border-[rgba(248,113,113,0.4)]";
+function getDaysToneClass(daysRemaining: number | null) {
+  if (daysRemaining === null || daysRemaining < 14) {
+    return "text-[#f87171]";
   }
   if (daysRemaining <= 30) {
-    return "bg-[rgba(245,158,11,0.12)] border-[rgba(251,191,36,0.45)]";
+    return "text-amber-300";
   }
-  return "bg-[rgba(250,204,21,0.12)] border-[rgba(250,204,21,0.35)]";
+  return "text-[rgba(245,245,240,0.75)]";
 }
 
 function getAlertLabel(alertType: AlertType) {
@@ -44,6 +44,88 @@ function getAlertLabel(alertType: AlertType) {
     case "timesheet_pending":
       return "Timesheet Pending";
   }
+}
+
+// Display order: dated immigration deadlines first, weekly ops next,
+// open-ended document gaps last
+const ALERT_GROUP_ORDER: AlertType[] = [
+  "ead_expiring",
+  "i983_due",
+  "timesheet_pending",
+  "missing_docs",
+];
+
+const ALERT_GROUP_VISIBLE_COUNT = 5;
+
+function sortAlerts(a: AlertRow, b: AlertRow) {
+  // Overdue/no-deadline first, then soonest deadline
+  const aDays = a.daysRemaining ?? -1;
+  const bDays = b.daysRemaining ?? -1;
+  return aDays - bDays;
+}
+
+function AlertRowItem({ alert }: { alert: AlertRow }) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 border-b border-[rgba(245,245,240,0.06)] last:border-b-0">
+      <div className="min-w-0">
+        <Link
+          href={`/admin/employees/${alert.employeeId}`}
+          className="font-space text-sm font-semibold text-[#F5F5F0] hover:text-[#FFD700]"
+        >
+          {alert.employeeName}
+        </Link>
+        <span className="font-space text-xs text-[rgba(245,245,240,0.55)] ml-3">
+          {alert.detail}
+        </span>
+      </div>
+      <p
+        className={`font-space text-xs tabular-nums text-right shrink-0 ${getDaysToneClass(alert.daysRemaining)}`}
+      >
+        {alert.daysRemaining === null || alert.daysRemaining < 0
+          ? "Overdue"
+          : `${alert.daysRemaining} days left`}
+      </p>
+    </div>
+  );
+}
+
+function AlertGroup({ alertType, alerts }: { alertType: AlertType; alerts: AlertRow[] }) {
+  if (alerts.length === 0) return null;
+  const sorted = [...alerts].sort(sortAlerts);
+  const visible = sorted.slice(0, ALERT_GROUP_VISIBLE_COUNT);
+  const overflow = sorted.slice(ALERT_GROUP_VISIBLE_COUNT);
+
+  return (
+    <div
+      id={`alerts-${alertType}`}
+      className="rounded-xl border border-[rgba(255,215,0,0.1)] bg-[#1A1A1A] overflow-hidden scroll-mt-6"
+    >
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-[rgba(255,215,0,0.12)]">
+        <AlertTriangle className="h-4 w-4 text-[#FFD700]" />
+        <h3 className="font-space text-[13px] font-semibold tracking-wide text-[#F5F5F0]">
+          {getAlertLabel(alertType)}
+        </h3>
+        <span className="font-space text-xs text-[rgba(245,245,240,0.5)]">
+          ({alerts.length})
+        </span>
+      </div>
+      <div>
+        {visible.map((alert) => (
+          <AlertRowItem key={alert.key} alert={alert} />
+        ))}
+        {overflow.length > 0 && (
+          <details>
+            <summary className="cursor-pointer list-none px-4 py-2.5 font-space text-xs text-[#FFD700] hover:bg-[rgba(255,215,0,0.05)]">
+              Show {overflow.length} more…
+            </summary>
+            {overflow.map((alert) => (
+              <AlertRowItem key={alert.key} alert={alert} />
+            ))}
+          </details>
+        )}
+      </div>
+    </div>
+  );
 }
 
 async function getComplianceData() {
@@ -193,7 +275,7 @@ export default async function AdminOverviewPage() {
       value: `${data.completeDocsCount} / ${data.totalEmployees}`,
       subtitle: "full document files",
       icon: FileCheck2,
-      href: "/admin/overview#active-alerts",
+      href: "/admin/overview#alerts-missing_docs",
     },
     {
       title: "Timesheets Pending Approval",
@@ -207,16 +289,23 @@ export default async function AdminOverviewPage() {
       value: String(data.eadExpiringEmployees.length),
       subtitle: "within 90 days",
       icon: ShieldAlert,
-      href: "/admin/overview#active-alerts",
+      href: "/admin/overview#alerts-ead_expiring",
     },
     {
       title: "I-983 Evaluations Due",
       value: String(data.i983DueEmployees.length),
       subtitle: "within 30 days",
       icon: ClipboardCheck,
-      href: "/admin/overview#active-alerts",
+      href: "/admin/overview#alerts-i983_due",
     },
   ];
+
+  const alertsByType = new Map<AlertType, AlertRow[]>();
+  data.alerts.forEach((alert) => {
+    const group = alertsByType.get(alert.alertType) || [];
+    group.push(alert);
+    alertsByType.set(alert.alertType, group);
+  });
 
   return (
     <div className="p-6 lg:p-8">
@@ -262,37 +351,13 @@ export default async function AdminOverviewPage() {
             </p>
           </div>
         ) : (
-          <div className="mt-4 space-y-3">
-            {data.alerts.map((alert) => (
-              <div
-                key={alert.key}
-                className={`rounded-lg border p-4 ${getUrgencyClass(alert.daysRemaining)}`}
-              >
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-[#FFD700]" />
-                    <Link
-                      href={`/admin/employees/${alert.employeeId}`}
-                      className="font-space text-sm font-semibold text-[#F5F5F0] hover:text-[#FFD700]"
-                    >
-                      {alert.employeeName}
-                    </Link>
-                    <span className="font-space text-xs text-[rgba(245,245,240,0.75)]">
-                      {getAlertLabel(alert.alertType)}
-                    </span>
-                  </div>
-                  <p className="font-space text-xs text-[rgba(245,245,240,0.85)]">
-                    {alert.daysRemaining === null
-                      ? "Overdue"
-                      : alert.daysRemaining < 0
-                        ? "Overdue"
-                        : `${alert.daysRemaining} days remaining`}
-                  </p>
-                </div>
-                <p className="font-space text-xs text-[rgba(245,245,240,0.7)] mt-2">
-                  {alert.detail}
-                </p>
-              </div>
+          <div className="mt-4 space-y-4">
+            {ALERT_GROUP_ORDER.map((alertType) => (
+              <AlertGroup
+                key={alertType}
+                alertType={alertType}
+                alerts={alertsByType.get(alertType) || []}
+              />
             ))}
           </div>
         )}

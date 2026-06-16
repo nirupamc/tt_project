@@ -14,12 +14,7 @@ const FORCE_UNLOCK_FOR_TESTING = false;
  * @returns Number of unlocked days (minimum 0)
  */
 export function getUnlockedDayCount(startDate: string, totalDays: number): number {
-  console.log('[day-unlock] startDate received:', startDate);
-  console.log('[day-unlock] totalDays:', totalDays);
-  console.log('[day-unlock] now UTC:', new Date().toISOString());
-  
   if (FORCE_UNLOCK_FOR_TESTING) {
-    console.log('[day-unlock] FORCE UNLOCK enabled - returning totalDays:', totalDays);
     return totalDays;
   }
   
@@ -43,11 +38,7 @@ export function getUnlockedDayCount(startDate: string, totalDays: number): numbe
   const ctMonth = parseInt(ctParts.find(p => p.type === 'month')!.value);
   const ctDay = parseInt(ctParts.find(p => p.type === 'day')!.value);
   const ctHour = parseInt(ctParts.find(p => p.type === 'hour')!.value);
-  const ctMinute = parseInt(ctParts.find(p => p.type === 'minute')!.value);
-  
-  console.log('[day-unlock] CT date:', `${ctYear}-${ctMonth}-${ctDay}`);
-  console.log('[day-unlock] CT hour:', ctHour, 'CT minute:', ctMinute);
-  
+
   // Parse start date as plain calendar date (no timezone)
   const [sYear, sMonth, sDay] = startDate.split('-').map(Number);
   
@@ -66,18 +57,14 @@ export function getUnlockedDayCount(startDate: string, totalDays: number): numbe
       (ctYear === unlockYear && ctMonth > unlockMonth) ||
       (ctYear === unlockYear && ctMonth === unlockMonth && ctDay > unlockDay) ||
       (ctYear === unlockYear && ctMonth === unlockMonth && ctDay === unlockDay && ctHour >= 9);
-    
-    console.log(`[day-unlock] Day ${dayNum} unlock date: ${unlockYear}-${unlockMonth}-${unlockDay}, isUnlocked: ${isUnlocked}`);
-    
+
     if (isUnlocked) {
       unlockedCount++;
     } else {
       break; // days are sequential, no need to check further
     }
   }
-  
-  console.log('[day-unlock] final unlockedCount:', unlockedCount);
-  
+
   return unlockedCount;
 }
 

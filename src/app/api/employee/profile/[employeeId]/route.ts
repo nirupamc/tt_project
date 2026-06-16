@@ -24,7 +24,7 @@ export async function GET(
     const { data: employee, error: employeeError } = await supabase
       .from("users")
       .select(
-        "id, name, email, avatar_url, job_title, joining_date, opt_type, ead_number, ead_start_date, ead_end_date, hours_per_week, pay_rate, work_location, university_name, dso_name, dso_email, i9_completion_date, everify_case_number, everify_status, supervisor_id, supervisor:users!supervisor_id(id, name, email, job_title)",
+        "id, name, email, avatar_url, job_title, joining_date, opt_type, ead_number, ead_start_date, ead_end_date, hours_per_week, pay_rate, work_location, university_name, dso_name, dso_email, i9_completion_date, everify_case_number, everify_status, supervisor_id, supervisor:supervisor_id(id, name, email, job_title)",
       )
       .eq("id", employeeId)
       .single();

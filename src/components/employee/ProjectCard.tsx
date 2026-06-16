@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -8,8 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { Project, CompletedDummyProject } from "@/types";
-import { Clock, Calendar, ArrowRight, Lock } from "lucide-react";
+import type { Project, CompletedDummyProject, Deliverable } from "@/types";
+import { Clock, Calendar, ArrowRight, Lock, FileText } from "lucide-react";
 
 interface EmployeeProjectCardProps {
   project: Project | CompletedDummyProject;
@@ -23,6 +24,28 @@ export function EmployeeProjectCard({
   project,
   progress,
 }: EmployeeProjectCardProps) {
+  const [deliverableCount, setDeliverableCount] = useState(0);
+
+  // Fetch deliverable count for this project
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const response = await fetch("/api/employee/deliverables");
+        if (response.ok) {
+          const data = await response.json();
+          const count = (data as Deliverable[]).filter(
+            (d) => d.project_id === project.id,
+          ).length;
+          setDeliverableCount(count);
+        }
+      } catch (error) {
+        console.error("Error fetching deliverable count:", error);
+      }
+    };
+
+    fetchCount();
+  }, [project.id]);
+
   // Check if this is a completed dummy project
   const isDummy = 'is_dummy' in project && project.is_dummy;
   const dummyProject = isDummy ? project as CompletedDummyProject : null;
@@ -108,11 +131,19 @@ export function EmployeeProjectCard({
             {activeProject.title}
           </CardTitle>
         </div>
-        {activeProject.skill_tag && (
-          <Badge variant="secondary" className="w-fit bg-[rgba(255,215,0,0.12)] text-[#C8A800] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase">
-            {activeProject.skill_tag}
-          </Badge>
-        )}
+        <div className="flex gap-2 flex-wrap mt-2">
+          {activeProject.skill_tag && (
+            <Badge variant="secondary" className="w-fit bg-[rgba(255,215,0,0.12)] text-[#C8A800] border border-[rgba(255,215,0,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase">
+              {activeProject.skill_tag}
+            </Badge>
+          )}
+          {deliverableCount > 0 && (
+            <Badge className="w-fit bg-[rgba(34,197,94,0.12)] text-green-700 border border-[rgba(34,197,94,0.3)] font-space text-[10px] font-semibold tracking-[1.5px] uppercase flex items-center gap-1">
+              <FileText className="h-3 w-3" />
+              {deliverableCount} deliverable{deliverableCount !== 1 ? 's' : ''}
+            </Badge>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="flex-1">
         <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] line-clamp-2 leading-relaxed">

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ProjectDeliverables } from '@/components/employee/ProjectDeliverables';
 import type { Project, ProjectDayWithTasks, DayStatus } from '@/types';
 import { ArrowLeft, Lock, CheckCircle, PlayCircle, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
@@ -63,11 +64,6 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
 
         // Use enrollment_start_date instead of project start_date
         const enrollmentStartDate = projectData.project.enrollment_start_date || projectData.project.start_date;
-        
-        console.log('[project-page] enrollment_start_date:', enrollmentStartDate);
-        console.log('[project-page] project.total_days:', projectData.project.total_days);
-        console.log('[project-page] isDayUnlocked result for day 1:', 
-          isDayUnlocked(enrollmentStartDate, 1, projectData.project.total_days));
 
         // Calculate day statuses
         const completedDayNumbers = new Set<number>(
@@ -139,12 +135,15 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
           )}
         </div>
         <p className="font-space text-[14px] text-[rgba(10,10,10,0.7)] leading-relaxed">{project.description}</p>
-        {(project.enrollment_start_date || project.start_date) && (
-          <div className="flex items-center gap-2 mt-3 font-space text-[13px] text-[rgba(10,10,10,0.65)] font-medium">
-            <Calendar className="h-4 w-4 text-[rgba(10,10,10,0.5)]" />
-            <span>Started {format(new Date(project.enrollment_start_date || project.start_date || new Date()), 'MMMM d, yyyy')}</span>
-          </div>
-        )}
+        {(() => {
+          const startedDate = project.enrollment_start_date || project.start_date;
+          return startedDate ? (
+            <div className="flex items-center gap-2 mt-3 font-space text-[13px] text-[rgba(10,10,10,0.65)] font-medium">
+              <Calendar className="h-4 w-4 text-[rgba(10,10,10,0.5)]" />
+              <span>Started {format(new Date(startedDate), 'MMMM d, yyyy')}</span>
+            </div>
+          ) : null;
+        })()}
       </div>
 
       <div className="space-y-3">
@@ -197,6 +196,15 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
             </Card>
           ))
         )}
+      </div>
+
+      {/* Deliverables Section */}
+      <div className="mt-12">
+        <Card className="bg-white border border-[rgba(10,10,10,0.08)]">
+          <CardContent className="pt-6">
+            <ProjectDeliverables projectId={id} projectTitle={project.title} />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

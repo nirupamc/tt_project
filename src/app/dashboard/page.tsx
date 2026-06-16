@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmployeeProjectCard } from "@/components/employee/ProjectCard";
 import { MyComplianceSection } from "@/components/employee/MyComplianceSection";
 import { MySupervisorCard } from "@/components/employee/MySupervisorCard";
+import { MonthlyDeliverablesSummary } from "@/components/employee/MonthlyDeliverablesSummary";
 import type { Project, CompletedDummyProject } from "@/types";
 
 interface ProjectWithProgress extends Project {
@@ -69,43 +70,52 @@ export default function EmployeeDashboardPage() {
         </h1>
       </div>
 
+      {/* Monthly Deliverables Summary */}
+      {!loading && projects.length > 0 && (
+        <div className="mb-8">
+          <MonthlyDeliverablesSummary />
+        </div>
+      )}
+
       {loading ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(3)].map((_, i) => (
             <Skeleton key={i} className="h-80 bg-[rgba(10,10,10,0.05)]" />
           ))}
         </div>
-      ) : projects.length === 0 ? (
-        <div className="bg-white border border-[rgba(10,10,10,0.08)] rounded-lg p-12 text-center">
-          <h3 className="font-space text-lg font-medium text-[#0A0A0A] mb-2">
-            No projects yet
-          </h3>
-          <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
-            You haven&apos;t been assigned to any projects. Contact your
-            administrator to get started.
-          </p>
-        </div>
       ) : (
         <>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => {
-              // Extract progress - handle both dummy and real projects
-              const isDummy = 'is_dummy' in project && project.is_dummy;
-              const progressData = isDummy 
-                ? undefined 
-                : 'progress' in project && typeof project.progress === 'object' 
-                  ? project.progress 
-                  : undefined;
-              
-              return (
-                <EmployeeProjectCard
-                  key={project.id}
-                  project={project}
-                  progress={progressData}
-                />
-              );
-            })}
-          </div>
+          {projects.length === 0 ? (
+            <div className="bg-white border border-[rgba(10,10,10,0.08)] rounded-lg p-12 text-center">
+              <h3 className="font-space text-lg font-medium text-[#0A0A0A] mb-2">
+                No projects yet
+              </h3>
+              <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
+                You haven&apos;t been assigned to any projects. Contact your
+                administrator to get started.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project) => {
+                // Extract progress - handle both dummy and real projects
+                const isDummy = 'is_dummy' in project && project.is_dummy;
+                const progressData = isDummy
+                  ? undefined
+                  : 'progress' in project && typeof project.progress === 'object'
+                    ? project.progress
+                    : undefined;
+
+                return (
+                  <EmployeeProjectCard
+                    key={project.id}
+                    project={project}
+                    progress={progressData}
+                  />
+                );
+              })}
+            </div>
+          )}
           <MyComplianceSection />
           <MySupervisorCard />
         </>

@@ -261,6 +261,31 @@ export interface ProjectDayWithStatus extends ProjectDay {
   completed_count: number;
 }
 
+// Deliverables
+export type DeliverableStatus = "in_progress" | "submitted" | "client_reviewed" | "completed";
+
+export interface Deliverable {
+  id: string;
+  user_id: string;
+  project_id: string;
+  date: string;
+  title: string;
+  description: string;
+  file_url: string | null;
+  file_name: string | null;
+  external_link: string | null;
+  status: DeliverableStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DeliverableWithProject extends Deliverable {
+  project?: {
+    id: string;
+    title: string;
+  };
+}
+
 // Session user type
 export interface SessionUser {
   id: string;

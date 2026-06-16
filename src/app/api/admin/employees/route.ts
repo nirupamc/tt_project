@@ -22,12 +22,19 @@ export async function GET(request: Request) {
     }
 
     // Get all employees with their enrollment count
+    // (explicit columns: never ship password_hash to the browser)
     const [{ data: employees, error }, { data: docs }] = await Promise.all([
       supabase
         .from("users")
         .select(
           `
-          *,
+          id, name, email, role, avatar_url, job_title, opt_type,
+          ead_number, ead_start_date, ead_end_date,
+          hours_per_day, hours_per_week, pay_rate, hourly_rate, work_location,
+          joining_date, default_start_date, university_name, dso_name, dso_email,
+          i9_completion_date, everify_case_number, everify_status,
+          supervisor_id, created_at,
+          supervisor:supervisor_id(name),
           enrollments:enrollments(count)
         `,
         )
@@ -138,6 +145,14 @@ export async function POST(request: Request) {
     // Hash the password
     const password_hash = await bcrypt.hash(password, 12);
 
+    // Assign the default supervisor (Omar Ansari) to every new employee
+    const { data: defaultSupervisor } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", "omaransari@tantech-llc.com")
+      .eq("role", "supervisor")
+      .single();
+
     // Create the employee
     const { data: employee, error } = await supabase
       .from("users")
@@ -146,6 +161,7 @@ export async function POST(request: Request) {
         email,
         password_hash,
         role: "employee",
+        supervisor_id: defaultSupervisor?.id || null,
         job_title,
         work_location: work_location || null,
         opt_type: opt_type || null,

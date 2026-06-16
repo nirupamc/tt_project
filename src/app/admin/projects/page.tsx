@@ -12,18 +12,20 @@ import { Plus, Search } from "lucide-react";
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<ProjectWithEnrollments[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [search, setSearch] = useState("");
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
   const fetchProjects = async () => {
     try {
+      setLoadError(false);
       const res = await fetch("/api/admin/projects");
-      if (res.ok) {
-        const data = await res.json();
-        setProjects(data);
-      }
+      if (!res.ok) throw new Error("Failed to fetch projects");
+      const data = await res.json();
+      setProjects(data);
     } catch (error) {
       console.error("Failed to fetch projects:", error);
+      setLoadError(true);
     } finally {
       setLoading(false);
     }
@@ -76,6 +78,21 @@ export default function ProjectsPage() {
           {[...Array(6)].map((_, i) => (
             <Skeleton key={i} className="h-64 bg-[#2A2A2A]" />
           ))}
+        </div>
+      ) : loadError ? (
+        <div className="text-center py-12 bg-[#1A1A1A] border border-[rgba(248,113,113,0.35)] rounded-lg">
+          <p className="font-space font-medium text-[#f87171]">
+            Couldn&apos;t load projects.
+          </p>
+          <Button
+            onClick={() => {
+              setLoading(true);
+              fetchProjects();
+            }}
+            className="mt-4 bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold"
+          >
+            Retry
+          </Button>
         </div>
       ) : filteredProjects.length === 0 ? (
         <div className="text-center py-12 bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-lg">

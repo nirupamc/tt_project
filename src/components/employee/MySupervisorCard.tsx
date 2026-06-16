@@ -41,10 +41,7 @@ function StatusBadge({ status }: { status: SupervisorPayload["current_week_statu
 export function MySupervisorCard() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SupervisorPayload | null>(null);
-  const supervisorEmail =
-    data?.supervisor?.email === "admin@tantechllc.com"
-      ? "omer@tantech-llc.com"
-      : data?.supervisor?.email;
+  const supervisorEmail = data?.supervisor?.email || "";
 
   useEffect(() => {
     const load = async () => {

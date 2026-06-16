@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import type { User, Project, Enrollment } from '@/types';
+import { REQUIRED_DOCUMENTS } from '@/lib/compliance-documents';
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWeekend, subDays } from 'date-fns';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
@@ -89,6 +90,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<TimeRange>('thisWeek');
   const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [docsUploadedCount, setDocsUploadedCount] = useState<number | null>(null);
 
   const fetchEmployee = useCallback(async () => {
     try {
@@ -130,14 +132,32 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
     }
   }, [id]);
 
+  const fetchDocsCount = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/employees/${id}/documents`);
+      if (res.ok) {
+        const data = await res.json();
+        const docs = Array.isArray(data) ? data : data.documents || [];
+        setDocsUploadedCount(
+          docs.filter(
+            (doc: { file_url?: string | null; status?: string }) =>
+              !!doc.file_url && doc.status === 'uploaded',
+          ).length,
+        );
+      }
+    } catch (error) {
+      console.error('Failed to fetch documents count:', error);
+    }
+  }, [id]);
+
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      await Promise.all([fetchEmployee(), fetchTimesheets(), fetchProgress()]);
+      await Promise.all([fetchEmployee(), fetchTimesheets(), fetchProgress(), fetchDocsCount()]);
       setLoading(false);
     };
     load();
-  }, [fetchEmployee, fetchTimesheets, fetchProgress]);
+  }, [fetchEmployee, fetchTimesheets, fetchProgress, fetchDocsCount]);
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
@@ -306,6 +326,18 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
 
   const initials = employee.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || '?';
 
+  // Inactive tabs muted so the active one reads at a glance
+  const tabTriggerClass =
+    "data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[rgba(245,245,240,0.55)] font-space text-[13px]";
+
+  const hasComplianceGaps = [
+    employee.opt_type,
+    employee.ead_number,
+    employee.ead_end_date,
+    employee.everify_status,
+    employee.joining_date,
+  ].some((value) => !value);
+
   return (
     <div className="p-6 lg:p-8">
       {/* Header Section */}
@@ -439,12 +471,18 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
       {/* Tabbed Layout */}
       <Tabs defaultValue="projects" className="space-y-6">
         <TabsList className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)]">
-          <TabsTrigger value="projects" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Projects</TabsTrigger>
-          <TabsTrigger value="timesheet" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Timesheet</TabsTrigger>
-          <TabsTrigger value="compliance" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Compliance</TabsTrigger>
-          <TabsTrigger value="trainingPlan" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Training Plan (I-983)</TabsTrigger>
-          <TabsTrigger value="documents" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Documents</TabsTrigger>
-          <TabsTrigger value="badges" className="data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[#FFD700] font-space text-[13px]">Badges</TabsTrigger>
+          <TabsTrigger value="projects" className={tabTriggerClass}>
+            Projects ({projectsWithProgress.length})
+          </TabsTrigger>
+          <TabsTrigger value="timesheet" className={tabTriggerClass}>Timesheet</TabsTrigger>
+          <TabsTrigger value="compliance" className={tabTriggerClass}>
+            Compliance{hasComplianceGaps && <span className="ml-1 text-amber-400" title="Compliance fields missing">⚠</span>}
+          </TabsTrigger>
+          <TabsTrigger value="trainingPlan" className={tabTriggerClass}>Training Plan (I-983)</TabsTrigger>
+          <TabsTrigger value="documents" className={tabTriggerClass}>
+            Documents{docsUploadedCount !== null && ` (${docsUploadedCount}/${REQUIRED_DOCUMENTS.length})`}
+          </TabsTrigger>
+          <TabsTrigger value="badges" className={tabTriggerClass}>Badges</TabsTrigger>
         </TabsList>
 
         {/* Tab 1: Projects */}

@@ -12,12 +12,15 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Search } from "lucide-react";
 
 type FilterMode = "all" | "pending";
 
@@ -64,11 +67,15 @@ function AdminTimesheetsContent() {
   const [entries, setEntries] = useState<TimesheetEntry[]>([]);
   const [approvals, setApprovals] = useState<Approval[]>([]);
   const [filterMode, setFilterMode] = useState<FilterMode>("pending");
+  const [loadError, setLoadError] = useState(false);
+  const [search, setSearch] = useState("");
+  const [bulkApprovingWeek, setBulkApprovingWeek] = useState<string | null>(null);
   const [selectedEntry, setSelectedEntry] = useState<TimesheetEntry | null>(null);
 
   const loadData = async () => {
     try {
       setLoading(true);
+      setLoadError(false);
       const [timesheetsRes, approvalsRes] = await Promise.all([
         fetch("/api/admin/timesheets"),
         fetch("/api/admin/timesheets/approvals"),
@@ -84,6 +91,7 @@ function AdminTimesheetsContent() {
       setEntries(detailedEntries);
       setApprovals(approvalsData || []);
     } catch (error) {
+      setLoadError(true);
       toast.error(error instanceof Error ? error.message : "Failed to load timesheets");
     } finally {
       setLoading(false);
@@ -144,10 +152,30 @@ function AdminTimesheetsContent() {
       });
   }, [entries, approvals]);
 
-  const visibleWeeks =
-    filterMode === "pending"
-      ? groupedWeeks.filter((group) => !group.approval)
-      : groupedWeeks;
+  const visibleWeeks = groupedWeeks.filter((group) => {
+    if (filterMode === "pending" && group.approval) return false;
+    const q = search.toLowerCase();
+    if (
+      q &&
+      !group.employeeName.toLowerCase().includes(q) &&
+      !group.employeeEmail.toLowerCase().includes(q)
+    ) {
+      return false;
+    }
+    return true;
+  });
+
+  // Group employee-weeks under their week so the page reads
+  // week-by-week instead of one endless list
+  const weekSections = useMemo(() => {
+    const sections = new Map<string, WeekGroup[]>();
+    visibleWeeks.forEach((group) => {
+      const existing = sections.get(group.weekStart) || [];
+      existing.push(group);
+      sections.set(group.weekStart, existing);
+    });
+    return Array.from(sections.entries()); // insertion order = weekStart desc
+  }, [visibleWeeks]);
 
   const approveWeek = async (group: WeekGroup) => {
     const key = `${group.employeeId}:${group.weekStart}`;
@@ -181,16 +209,63 @@ function AdminTimesheetsContent() {
     }
   };
 
+  const approveAllInWeek = async (weekStart: string, groups: WeekGroup[]) => {
+    const pending = groups.filter((group) => !group.approval);
+    if (pending.length === 0) return;
+    setBulkApprovingWeek(weekStart);
+    let approved = 0;
+    let failed = 0;
+    for (const group of pending) {
+      try {
+        const response = await fetch("/api/admin/timesheets/approvals", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            employee_id: group.employeeId,
+            week_start_date: group.weekStart,
+          }),
+        });
+        if (!response.ok) throw new Error();
+        const approval = await response.json();
+        setApprovals((prev) => {
+          const withoutExisting = prev.filter(
+            (item) =>
+              !(item.employee_id === approval.employee_id && item.week_start_date === approval.week_start_date),
+          );
+          return [approval, ...withoutExisting];
+        });
+        approved += 1;
+      } catch {
+        failed += 1;
+      }
+    }
+    setBulkApprovingWeek(null);
+    if (failed === 0) {
+      toast.success(`Approved ${approved} timesheet${approved === 1 ? "" : "s"}`);
+    } else {
+      toast.error(`Approved ${approved}, failed ${failed} — retry the remaining ones`);
+    }
+  };
+
   return (
     <div className="p-8 space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-bebas text-4xl text-[#F5F5F0] tracking-wider">TIMESHEETS</h1>
           <p className="font-space text-[13px] text-[rgba(245,245,240,0.6)] mt-1">
             Weekly supervisor approvals (Mon-Sun)
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="relative w-56">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[rgba(245,245,240,0.5)]" />
+            <Input
+              placeholder="Search employee..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10 bg-[#1A1A1A] border border-[rgba(255,215,0,0.15)] text-[#F5F5F0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[rgba(255,215,0,0.1)]"
+            />
+          </div>
           <Button
             onClick={() => setFilterMode("all")}
             className={
@@ -215,22 +290,70 @@ function AdminTimesheetsContent() {
       </div>
 
       {loading ? (
-        <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
-          <CardContent className="py-10">
-            <p className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">Loading timesheets...</p>
+        <div className="space-y-3">
+          {[...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="h-28 bg-[#2A2A2A] rounded-xl" />
+          ))}
+        </div>
+      ) : loadError ? (
+        <Card className="bg-[#1A1A1A] border border-[rgba(248,113,113,0.35)] rounded-xl">
+          <CardContent className="py-10 text-center">
+            <p className="font-space text-[13px] text-[#f87171]">Couldn&apos;t load timesheets.</p>
+            <Button
+              onClick={loadData}
+              className="mt-4 bg-[#FFD700] text-[#0A0A0A] font-space text-[13px] font-semibold"
+            >
+              Retry
+            </Button>
           </CardContent>
         </Card>
-      ) : visibleWeeks.length === 0 ? (
+      ) : weekSections.length === 0 ? (
         <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
           <CardContent className="py-10">
-            <p className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">No weekly timesheets found.</p>
+            <p className="font-space text-[13px] text-[rgba(245,245,240,0.6)]">
+              {search || filterMode === "pending"
+                ? "No timesheets match the current filters."
+                : "No weekly timesheets found."}
+            </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
-          {visibleWeeks.map((group) => {
-            const weekStartDate = parseISO(group.weekStart);
+        <div className="space-y-6">
+          {weekSections.map(([weekStart, groups], sectionIndex) => {
+            const weekStartDate = parseISO(weekStart);
             const weekEndDate = endOfWeek(weekStartDate, { weekStartsOn: 1 });
+            const pendingCount = groups.filter((group) => !group.approval).length;
+            return (
+              <details key={weekStart} open={sectionIndex === 0} className="group">
+                <summary className="cursor-pointer list-none flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[rgba(255,215,0,0.15)] bg-[#1A1A1A] px-5 py-3 hover:border-[rgba(255,215,0,0.3)]">
+                  <div className="flex items-center gap-3">
+                    <span className="font-bebas text-[22px] text-[#F5F5F0] tracking-wide">
+                      Week of {format(weekStartDate, "MMM d")} – {format(weekEndDate, "MMM d, yyyy")}
+                    </span>
+                    <span className="font-space text-xs text-[rgba(245,245,240,0.55)] tabular-nums">
+                      {groups.length} employee{groups.length === 1 ? "" : "s"}
+                      {pendingCount > 0 && ` · ${pendingCount} pending`}
+                    </span>
+                  </div>
+                  {pendingCount > 1 && (
+                    <Button
+                      size="sm"
+                      disabled={bulkApprovingWeek === weekStart}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        approveAllInWeek(weekStart, groups);
+                      }}
+                      className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] font-space text-[12px] font-semibold"
+                    >
+                      {bulkApprovingWeek === weekStart
+                        ? "Approving..."
+                        : `Approve All (${pendingCount})`}
+                    </Button>
+                  )}
+                </summary>
+                <div className="mt-3 space-y-4">
+          {groups.map((group) => {
             const approvalKey = `${group.employeeId}:${group.weekStart}`;
             return (
               <Card
@@ -246,9 +369,8 @@ function AdminTimesheetsContent() {
                       <p className="font-space text-xs text-[rgba(245,245,240,0.55)] mt-1">
                         {group.employeeEmail}
                       </p>
-                      <p className="font-space text-sm text-[#FFD700] mt-2">
-                        {format(weekStartDate, "MMM d")} – {format(weekEndDate, "MMM d, yyyy")} ·{" "}
-                        {group.totalHours.toFixed(1)}h
+                      <p className="font-space text-sm text-[#FFD700] mt-2 tabular-nums">
+                        {group.totalHours.toFixed(1)}h logged
                       </p>
                     </div>
                     {group.approval ? (
@@ -258,7 +380,7 @@ function AdminTimesheetsContent() {
                     ) : (
                       <Button
                         onClick={() => approveWeek(group)}
-                        disabled={approvingKey === approvalKey}
+                        disabled={approvingKey === approvalKey || bulkApprovingWeek === weekStart}
                         className="bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D] font-space font-semibold"
                       >
                         {approvingKey === approvalKey ? "Approving..." : "Approve Week"}
@@ -312,6 +434,10 @@ function AdminTimesheetsContent() {
                   </table>
                 </CardContent>
               </Card>
+            );
+          })}
+                </div>
+              </details>
             );
           })}
         </div>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
+import { isDayUnlocked } from "@/lib/day-unlock";
 
 // GET tasks for a specific day
 export async function GET(
@@ -19,7 +20,7 @@ export async function GET(
     // Check enrollment
     const { data: enrollment } = await supabase
       .from("enrollments")
-      .select("id")
+      .select("id, start_date")
       .eq("user_id", session.user.id)
       .eq("project_id", projectId)
       .single();
@@ -31,12 +32,32 @@ export async function GET(
       );
     }
 
+    // Enforce day-unlock schedule server-side (client check is cosmetic only)
+    const { data: project } = await supabase
+      .from("projects")
+      .select("start_date, total_days")
+      .eq("id", projectId)
+      .single();
+
+    const unlockStartDate = enrollment.start_date || project?.start_date;
+    const requestedDay = parseInt(dayNumber);
+    const isLocked = unlockStartDate
+      ? !isDayUnlocked(unlockStartDate, requestedDay, project?.total_days || 0)
+      : requestedDay !== 1;
+
+    if (isLocked) {
+      return NextResponse.json(
+        { message: "This day is not unlocked yet" },
+        { status: 403 },
+      );
+    }
+
     // Get project day
     const { data: projectDay, error: dayError } = await supabase
       .from("project_days")
       .select("*")
       .eq("project_id", projectId)
-      .eq("day_number", parseInt(dayNumber))
+      .eq("day_number", requestedDay)
       .single();
 
     if (dayError || !projectDay) {

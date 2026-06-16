@@ -19,14 +19,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ProjectDetailData extends Project {
   days: ProjectDayWithTasks[];
   enrollments: EnrollmentWithUser[];
   payment_logs: PaymentLog[];
 }
+
+// Inactive tabs muted so the active one reads at a glance
+const detailTabClass =
+  "data-[state=active]:bg-[rgba(255,215,0,0.15)] data-[state=active]:text-[#FFD700] text-[rgba(245,245,240,0.55)] font-space text-[13px]";
 
 interface PaymentDraft {
   id: string;
@@ -379,8 +383,21 @@ export default function ProjectDetailPage({
         </Card>
       </div>
 
-      <Separator className="border-[rgba(255,215,0,0.1)]" />
+      <Tabs defaultValue="client" className="space-y-6">
+        <TabsList className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)]">
+          <TabsTrigger value="client" className={detailTabClass}>Client &amp; Contract</TabsTrigger>
+          <TabsTrigger value="payments" className={detailTabClass}>
+            Payments ({paymentRows.length})
+          </TabsTrigger>
+          <TabsTrigger value="team" className={detailTabClass}>
+            Team ({project.enrollments.length})
+          </TabsTrigger>
+          <TabsTrigger value="curriculum" className={detailTabClass}>
+            Curriculum ({project.days.length} days)
+          </TabsTrigger>
+        </TabsList>
 
+        <TabsContent value="client">
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
           <CardHeader>
@@ -459,7 +476,9 @@ export default function ProjectDetailPage({
           </CardContent>
         </Card>
       </div>
+        </TabsContent>
 
+        <TabsContent value="payments">
       <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Payment Log</CardTitle>
@@ -594,7 +613,9 @@ export default function ProjectDetailPage({
           </p>
         </CardContent>
       </Card>
+        </TabsContent>
 
+        <TabsContent value="team">
       <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
         <CardHeader>
           <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Team</CardTitle>
@@ -656,7 +677,9 @@ export default function ProjectDetailPage({
           </div>
         </CardContent>
       </Card>
+        </TabsContent>
 
+        <TabsContent value="curriculum">
       <Card className="bg-[#1A1A1A] border border-[rgba(255,215,0,0.1)] rounded-xl">
         <CardHeader>
           <CardTitle className="font-bebas text-2xl text-[#F5F5F0]">Project Days Overview</CardTitle>
@@ -688,6 +711,8 @@ export default function ProjectDetailPage({
           )}
         </CardContent>
       </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
