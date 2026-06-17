@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AlertTriangle, CheckCircle2, Eye, Upload, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Eye, Trash2, Upload, XCircle } from "lucide-react";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -46,6 +46,7 @@ function getStatusClass(status: TrainingStatus | null) {
 export function MyComplianceSection() {
   const [loading, setLoading] = useState(true);
   const [uploadingType, setUploadingType] = useState<string | null>(null);
+  const [deletingType, setDeletingType] = useState<string | null>(null);
   const [training, setTraining] = useState<TrainingPlanPayload | null>(null);
   const [documentsData, setDocumentsData] = useState<EmployeeDocumentsPayload | null>(null);
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -133,6 +134,40 @@ export function MyComplianceSection() {
       toast.error(error instanceof Error ? error.message : "Failed to upload");
     } finally {
       setUploadingType(null);
+    }
+  };
+
+  const deleteDocument = async (documentType: string) => {
+    if (!confirm("Delete this document? You'll need to upload a new one.")) {
+      return;
+    }
+    try {
+      setDeletingType(documentType);
+      const res = await fetch("/api/employee/documents", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          document_type: documentType,
+          file_url: null,
+        }),
+      });
+      const payload = await res.json();
+      if (!res.ok) {
+        throw new Error(payload.message || "Failed to delete document");
+      }
+      setDocumentsData((prev) => {
+        const current = prev?.documents || [];
+        const next = current.filter((doc) => doc.document_type !== payload.document_type);
+        return {
+          documents: [...next, payload],
+          ead_end_date: prev?.ead_end_date || null,
+        };
+      });
+      toast.success("Document deleted. You can now upload a new one.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to delete document");
+    } finally {
+      setDeletingType(null);
     }
   };
 
@@ -318,17 +353,29 @@ export function MyComplianceSection() {
                       }
                     />
                     {uploaded ? (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="font-space text-xs"
-                        onClick={() =>
-                          window.open(document.file_url!, "_blank", "noopener,noreferrer")
-                        }
-                      >
-                        <Eye className="h-3.5 w-3.5 mr-1" />
-                        View
-                      </Button>
+                      <>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="font-space text-xs"
+                          onClick={() =>
+                            window.open(document.file_url!, "_blank", "noopener,noreferrer")
+                          }
+                        >
+                          <Eye className="h-3.5 w-3.5 mr-1" />
+                          View
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={deletingType === requiredDocument.type}
+                          className="font-space text-xs text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                          onClick={() => deleteDocument(requiredDocument.type)}
+                        >
+                          <Trash2 className="h-3.5 w-3.5 mr-1" />
+                          Delete
+                        </Button>
+                      </>
                     ) : (
                       <Button
                         size="sm"

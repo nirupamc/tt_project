@@ -33,14 +33,16 @@ import {
   FolderKanban, 
   Flame, 
   TrendingUp, 
-  Trash2, 
+  Trash2,
   Download,
   Trophy,
-  Calendar
+  Calendar,
+  KeyRound
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { EmployeeComplianceTabsContent } from "@/components/admin/EmployeeComplianceTabsContent";
 import { AdminEmployeeDocumentsTab } from "@/components/admin/AdminEmployeeDocumentsTab";
+import { ChangePasswordModal } from "@/components/admin/ChangePasswordModal";
 
 interface EnrollmentWithProject extends Enrollment {
   project: Project;
@@ -91,6 +93,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
   const [timeRange, setTimeRange] = useState<TimeRange>('thisWeek');
   const [generatingPdf, setGeneratingPdf] = useState(false);
   const [docsUploadedCount, setDocsUploadedCount] = useState<number | null>(null);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   const fetchEmployee = useCallback(async () => {
     try {
@@ -409,6 +412,14 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
               <Download className="h-4 w-4" />
               {generatingPdf ? "Generating PDF..." : "Export RFE Packet"}
             </Button>
+            <Button
+              variant="outline"
+              onClick={() => setChangePasswordOpen(true)}
+              className="bg-transparent border-2 border-[rgba(255,215,0,0.4)] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] hover:border-[#FFD700] font-space text-[13px] font-semibold tracking-wider gap-2"
+            >
+              <KeyRound className="h-4 w-4" />
+              Change Password
+            </Button>
             <Button variant="destructive" onClick={handleDelete} className="gap-2">
               <Trash2 className="h-4 w-4" />
               Delete Employee
@@ -416,6 +427,13 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
           </CardContent>
         </Card>
       </div>
+
+      <ChangePasswordModal
+        open={changePasswordOpen}
+        onOpenChange={setChangePasswordOpen}
+        employeeId={id}
+        employeeName={employee.name}
+      />
 
       {/* KPI Row */}
       <div className="grid gap-4 md:grid-cols-4 mb-8">
