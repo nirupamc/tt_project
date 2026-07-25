@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import type { Project, CompletedDummyProject, Deliverable } from "@/types";
 import { Clock, Calendar, ArrowRight, Lock, FileText } from "lucide-react";
+import { parseISO } from "date-fns";
 
 interface EmployeeProjectCardProps {
   project: Project | CompletedDummyProject;
@@ -157,7 +158,7 @@ export function EmployeeProjectCard({
           {assignedDate ? (
             <div className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4 text-[rgba(10,10,10,0.5)]" />
-              <span>{new Date(assignedDate).toLocaleDateString()}</span>
+              <span>{parseISO(assignedDate).toLocaleDateString()}</span>
             </div>
           ) : null}
         </div>

@@ -15,7 +15,7 @@ import {
   isFuture,
   isToday,
   isBefore,
-  differenceInDays,
+  parseISO,
 } from 'date-fns';
 
 export interface TimesheetEntry {
@@ -46,7 +46,7 @@ export function generateTimesheetEntries(
     return [];
   }
 
-  const joiningDate = new Date(joining_date);
+  const joiningDate = parseISO(joining_date);
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   yesterday.setHours(0, 0, 0, 0);
@@ -109,7 +109,7 @@ export function calculateSummary(
 
     // Filter entries in this week
     filteredEntries = entries.filter((entry) => {
-      const entryDate = new Date(entry.date);
+      const entryDate = parseISO(entry.date);
       return entryDate >= weekStart && entryDate <= weekEnd;
     });
 
@@ -126,7 +126,7 @@ export function calculateSummary(
 
     // Filter entries in this month
     filteredEntries = entries.filter((entry) => {
-      const entryDate = new Date(entry.date);
+      const entryDate = parseISO(entry.date);
       return entryDate >= monthStart && entryDate <= monthEnd;
     });
 
@@ -159,7 +159,7 @@ export function getEntriesForMonth(
   const monthEnd = endOfMonth(new Date(year, month));
 
   return entries.filter((entry) => {
-    const entryDate = new Date(entry.date);
+    const entryDate = parseISO(entry.date);
     return entryDate >= monthStart && entryDate <= monthEnd;
   });
 }
@@ -178,7 +178,7 @@ export function getEntriesForWeek(
   const weekEnd = endOfWeek(weekStartDate, { weekStartsOn: 1 });
 
   return entries.filter((entry) => {
-    const entryDate = new Date(entry.date);
+    const entryDate = parseISO(entry.date);
     return entryDate >= weekStart && entryDate <= weekEnd;
   });
 }

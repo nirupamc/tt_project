@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { endOfMonth, startOfMonth } from "date-fns";
+import { endOfMonth, parseISO, startOfMonth } from "date-fns";
 import { toast } from "sonner";
 import {
   Card,
@@ -34,7 +34,7 @@ export function MonthlyDeliverablesSummary() {
         const monthEnd = endOfMonth(now);
 
         const thisMonth = deliverables.filter((d) => {
-          const delivDate = new Date(d.date);
+          const delivDate = parseISO(d.date);
           return delivDate >= monthStart && delivDate <= monthEnd;
         });
 

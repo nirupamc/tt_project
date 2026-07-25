@@ -67,6 +67,20 @@ export async function GET(
   }
 }
 
+// Only real, editable columns — spreading the raw body allowed mass
+// assignment of arbitrary keys (and a 500 on any unknown key).
+const EDITABLE_FIELDS = [
+  "title", "description", "skill_tag", "total_days", "start_date",
+  "thumbnail_url", "is_published", "is_active", "weekdays_only",
+  "daily_reminder_emails",
+] as const;
+
+function pickEditable(body: Record<string, unknown>) {
+  return Object.fromEntries(
+    EDITABLE_FIELDS.filter((f) => f in body).map((f) => [f, body[f]]),
+  );
+}
+
 // PUT update project
 export async function PUT(
   request: Request,
@@ -80,7 +94,7 @@ export async function PUT(
     const { data: project, error } = await supabase
       .from("projects")
       .update({
-        ...body,
+        ...pickEditable(body),
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)
@@ -112,7 +126,7 @@ export async function PATCH(
     const { data: project, error } = await supabase
       .from("projects")
       .update({
-        ...body,
+        ...pickEditable(body),
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { addDays, differenceInCalendarDays, format } from "date-fns";
+import { addDays, differenceInCalendarDays, format, parseISO } from "date-fns";
 import { toast } from "sonner";
 import type { I983Plan, Project, User } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -135,7 +135,7 @@ export function EmployeeComplianceTabsContent({
 
   const nextEvaluationDate = useMemo(() => {
     if (!complianceForm.joining_date) return null;
-    return addDays(new Date(complianceForm.joining_date), 365);
+    return addDays(parseISO(complianceForm.joining_date), 365);
   }, [complianceForm.joining_date]);
 
   const daysRemaining = useMemo(() => {

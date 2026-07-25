@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
-import { format, isFuture, startOfWeek } from "date-fns";
+import { format, isFuture, parseISO, startOfWeek } from "date-fns";
 
 const CATEGORY_OPTIONS = [
   "Frontend Development",
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const workDate = new Date(work_date);
+    const workDate = parseISO(work_date);
     if (isFuture(workDate)) {
       return NextResponse.json(
         { message: "Date cannot be in the future" },
