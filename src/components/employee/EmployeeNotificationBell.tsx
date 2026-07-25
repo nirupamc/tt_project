@@ -31,7 +31,7 @@ export function EmployeeNotificationBell() {
       if (!res.ok) return;
       const data = await res.json();
       setNotifications(data.notifications || []);
-      setUnreadCount((data.notifications || []).filter((n: any) => !n.is_read).length);
+      setUnreadCount((data.notifications || []).filter((n: { is_read: boolean }) => !n.is_read).length);
     } catch (err) {
       // noop
     }
@@ -73,8 +73,8 @@ export function EmployeeNotificationBell() {
         setUnreadCount((prev) => Math.max(0, prev - 1));
       }
       setOpen(false);
-      if ((item as any).related_url) {
-        window.location.href = (item as any).related_url;
+      if (item.related_url) {
+        window.location.href = item.related_url;
       }
     } catch (err) {
       toast.error("Failed to open notification");

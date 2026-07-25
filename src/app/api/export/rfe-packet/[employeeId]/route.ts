@@ -220,7 +220,7 @@ export async function GET(
       },
     }) as unknown as React.ReactElement;
 
-    const pdfBuffer = await renderToBuffer(packetDocument as any);
+    const pdfBuffer = await renderToBuffer(packetDocument as Parameters<typeof renderToBuffer>[0]);
 
     const firstName = employee.name?.split(" ")[0] || "Employee";
     const lastName = employee.name?.split(" ").slice(1).join("_") || "User";

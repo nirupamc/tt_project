@@ -119,7 +119,7 @@ export async function PUT(
     const supabase = createAdminClient();
 
     // Build update object with only provided fields
-    const updateData: Record<string, any> = {};
+    const updateData: Record<string, unknown> = {};
     if (date !== undefined) updateData.date = date;
     if (title !== undefined) updateData.title = title;
     if (description !== undefined) updateData.description = description;

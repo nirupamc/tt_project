@@ -114,7 +114,7 @@ export default function AdminEmployeeTimesheetPage({ params }: { params: Promise
             No Timesheet Data Yet
           </h3>
           <p className="font-space text-[14px] text-[rgba(10,10,10,0.6)]">
-            This employee's timesheet will appear here from their first working day.
+            This employee&apos;s timesheet will appear here from their first working day.
           </p>
         </div>
       </div>
@@ -352,7 +352,7 @@ function ChartView({ entries, employee }: { entries: TimesheetEntry[]; employee:
                   borderRadius: '8px',
                   color: '#0A0A0A'
                 }}
-                formatter={(value: any) => [`${value}h`, 'Hours']}
+                formatter={(value) => [`${value}h`, 'Hours']}
               />
               <ReferenceLine 
                 y={employee.hours_per_day} 

@@ -61,7 +61,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ message: "Failed to verify notifications" }, { status: 500 });
     }
 
-    const ownedIds = (owned || []).map((r: any) => r.id);
+    const ownedIds = (owned || []).map((r) => r.id);
     if (ownedIds.length === 0) {
       return NextResponse.json({ message: "No matching notifications found" }, { status: 404 });
     }
