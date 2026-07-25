@@ -18,7 +18,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       .from("notifications")
       .select("id, is_read")
       .eq("id", id)
-      .eq("employee_id", employeeId)
+      .eq("recipient_user_id", employeeId)
       .limit(1)
       .maybeSingle();
 

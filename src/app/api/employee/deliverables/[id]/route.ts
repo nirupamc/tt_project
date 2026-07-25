@@ -61,6 +61,24 @@ export async function PUT(
     const { date, title, description, file_url, file_name, external_link, status } =
       body;
 
+    // Once a supervisor has reviewed/closed a deliverable, the employee
+    // can no longer rewrite it (that would silently destroy the review).
+    const lockCheck = await createAdminClient()
+      .from("deliverables")
+      .select("status")
+      .eq("id", id)
+      .eq("user_id", session.user.id)
+      .maybeSingle();
+    if (!lockCheck.data) {
+      return NextResponse.json({ message: "Deliverable not found" }, { status: 404 });
+    }
+    if (["client_reviewed", "completed"].includes(lockCheck.data.status)) {
+      return NextResponse.json(
+        { message: "This deliverable has been reviewed and can no longer be edited" },
+        { status: 409 },
+      );
+    }
+
     // Validation
     if (title && title.length < 10) {
       return NextResponse.json(
@@ -101,7 +119,7 @@ export async function PUT(
     const supabase = createAdminClient();
 
     // Build update object with only provided fields
-    const updateData: Record<string, any> = {};
+    const updateData: Record<string, unknown> = {};
     if (date !== undefined) updateData.date = date;
     if (title !== undefined) updateData.title = title;
     if (description !== undefined) updateData.description = description;
@@ -154,11 +172,13 @@ export async function DELETE(
     const { id } = await params;
     const supabase = createAdminClient();
 
+    // Reviewed/closed deliverables can't be deleted by the employee.
     const { error } = await supabase
       .from("deliverables")
       .delete()
       .eq("id", id)
-      .eq("user_id", session.user.id);
+      .eq("user_id", session.user.id)
+      .not("status", "in", '("client_reviewed","completed")');
 
     if (error) throw error;
 

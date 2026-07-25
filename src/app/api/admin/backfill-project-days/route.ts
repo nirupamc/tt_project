@@ -23,7 +23,7 @@ export async function POST() {
     const supabase = createAdminClient();
     let totalDaysCompleted = 0;
     let totalTasksCompleted = 0;
-    const results: any[] = [];
+    const results: Record<string, unknown>[] = [];
 
     // Fetch all active enrollments with employee and project info
     const { data: enrollments, error } = await supabase
@@ -42,8 +42,10 @@ export async function POST() {
           title,
           total_days
         )
-      `)
-      .eq("status", "active");
+      `);
+    // NOTE: enrollments has no `status` column (no migration ever added
+    // one) — the old .eq("status","active") filter made this route 500
+    // on its first query, always.
 
     if (error || !enrollments) {
       return NextResponse.json(
@@ -58,8 +60,14 @@ export async function POST() {
 
     // Process each enrollment
     for (const enrollment of enrollments) {
-      const employee = (enrollment.users as any) || {};
-      const project = (enrollment.projects as any) || {};
+      // supabase-js types these to-one joins as arrays; at runtime they
+      // are single objects (FK-hinted joins).
+      const employee = (enrollment.users || {}) as unknown as {
+        id?: string; name?: string; joining_date?: string;
+      };
+      const project = (enrollment.projects || {}) as unknown as {
+        id?: string; title?: string; total_days?: number;
+      };
 
       if (!employee.joining_date) {
         console.log(`[backfill-project-days] Skipping enrollment ${enrollment.id}: no joining_date`);

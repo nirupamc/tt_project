@@ -9,7 +9,9 @@ const inngest = new Inngest({
   name: "Archway",
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Guarded like lib/email.ts — an unguarded `new Resend(undefined)` throws
+// at module load and breaks `next build` when the env var isn't set.
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export const dailyReminder = inngest.createFunction(
   { 
@@ -128,6 +130,11 @@ export const dailyReminder = inngest.createFunction(
           if (remainingTasks.length === 0) {
             // Day already completed
             continue;
+          }
+
+          if (!resend) {
+            console.error("RESEND_API_KEY not configured; skipping reminder emails");
+            break;
           }
 
           // Send email

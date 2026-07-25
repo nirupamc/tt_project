@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
+import { parseISO } from "date-fns";
 
 // GET all deliverables for the current user
 export async function GET() {
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
     }
 
     // Validate date is not in future
-    const deliverableDate = new Date(date);
+    const deliverableDate = parseISO(date);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (deliverableDate > today) {

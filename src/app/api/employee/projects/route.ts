@@ -59,11 +59,15 @@ export async function GET() {
           .select("*", { count: "exact", head: true })
           .eq("project_id", project.id);
 
-        // Get completed days (where all required tasks are done)
+        // Get completed days (where all required tasks are done).
+        // Scope to THIS project's days — filtering by user alone counted
+        // completions from every enrolled project, inflating each card's
+        // progress bar.
         const { data: completedTasks } = await supabase
           .from("task_completions")
-          .select("project_day_id")
-          .eq("user_id", session.user.id);
+          .select("project_day_id, project_days!inner(project_id)")
+          .eq("user_id", session.user.id)
+          .eq("project_days.project_id", project.id);
 
         const completedDayIds = new Set(
           completedTasks?.map((t) => t.project_day_id) || [],

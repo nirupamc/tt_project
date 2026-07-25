@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+// NOTE: this function is not registered in /api/inngest and never runs.
 import { Inngest } from "inngest";
 import { createAdminClient } from "@/lib/supabase";
 import { getUnlockedDayCount } from "@/lib/day-unlock";

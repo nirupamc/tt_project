@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
-import { format, isBefore, parseISO } from "date-fns";
+import { format, isBefore, isWeekend, parseISO } from "date-fns";
 
 export async function POST() {
   try {
@@ -13,6 +13,13 @@ export async function POST() {
     }
 
     const userId = session.user.id;
+
+    // No auto-logging on weekends — a Saturday login used to insert a
+    // full workday row per enrollment.
+    if (isWeekend(new Date())) {
+      return NextResponse.json({ success: true, logged: 0, message: "Weekend" });
+    }
+
     const today = format(new Date(), "yyyy-MM-dd");
     const supabase = createAdminClient();
 
@@ -72,15 +79,9 @@ export async function POST() {
         notes: "Auto-logged on login",
       };
 
+      // A row already logged today (e.g. real hours from tasks/complete)
+      // must not be overwritten with the auto-log default.
       if (existing) {
-        const { error: updateError } = await supabase
-          .from("timesheets")
-          .update(payload)
-          .eq("id", existing.id);
-
-        if (!updateError) {
-          loggedCount++;
-        }
         continue;
       }
 

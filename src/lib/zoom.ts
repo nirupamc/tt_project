@@ -16,7 +16,7 @@ async function fetchJson(url: string, opts: RequestInit) {
   const text = await res.text();
   try {
     return JSON.parse(text);
-  } catch (err) {
+  } catch {
     throw new Error(`Invalid JSON response from ${url}: ${text}`);
   }
 }
@@ -66,7 +66,7 @@ export async function createZoomMeeting(
     token = t.access_token;
   }
 
-  const meetingPayload: any = {
+  const meetingPayload: Record<string, unknown> = {
     topic: opts.topic,
     type: 2,
     start_time: opts.start_time,

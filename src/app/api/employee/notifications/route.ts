@@ -14,8 +14,8 @@ export async function GET(request: Request) {
   try {
     const { data, error } = await supabase
       .from("notifications")
-      .select("id, type, title, body, metadata, is_read, created_at")
-      .eq("employee_id", employeeId)
+      .select("id, type, message, related_url, is_read, created_at")
+      .eq("recipient_user_id", employeeId)
       .order("created_at", { ascending: false })
       .limit(200);
 
@@ -54,14 +54,14 @@ export async function PATCH(request: Request) {
       .from("notifications")
       .select("id")
       .in("id", ids)
-      .eq("employee_id", employeeId);
+      .eq("recipient_user_id", employeeId);
 
     if (ownErr) {
       console.error("notifications ownership check error:", ownErr);
       return NextResponse.json({ message: "Failed to verify notifications" }, { status: 500 });
     }
 
-    const ownedIds = (owned || []).map((r: any) => r.id);
+    const ownedIds = (owned || []).map((r) => r.id);
     if (ownedIds.length === 0) {
       return NextResponse.json({ message: "No matching notifications found" }, { status: 404 });
     }

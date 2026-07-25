@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { endOfMonth, startOfMonth } from "date-fns";
+import { endOfMonth, parseISO, startOfMonth } from "date-fns";
 import { toast } from "sonner";
 import {
   Card,
@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { FileText } from "lucide-react";
 import type { Deliverable } from "@/types";
 
@@ -34,7 +33,7 @@ export function MonthlyDeliverablesSummary() {
         const monthEnd = endOfMonth(now);
 
         const thisMonth = deliverables.filter((d) => {
-          const delivDate = new Date(d.date);
+          const delivDate = parseISO(d.date);
           return delivDate >= monthStart && delivDate <= monthEnd;
         });
 
@@ -69,7 +68,7 @@ export function MonthlyDeliverablesSummary() {
       <CardHeader>
         <CardTitle className="font-space text-[16px] text-[#0A0A0A] flex items-center gap-2">
           <FileText className="h-5 w-5 text-[#FFD700]" />
-          This Month's Progress
+          This Month&apos;s Progress
         </CardTitle>
       </CardHeader>
       <CardContent>

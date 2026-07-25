@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     }
 
     // Normalize shape
-    const rows = (data || []).map((row: any) => ({
+    const rows = (data || []).map((row) => ({
       id: row.id,
       employee_id: row.employee_id,
       employee_name: row.users?.name || null,

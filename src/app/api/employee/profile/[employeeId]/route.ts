@@ -142,7 +142,7 @@ export async function GET(
 
     return NextResponse.json({
       employee,
-      supervisor: (employee as any).supervisor || null,
+      supervisor: employee.supervisor || null,
       documents: orderedDocuments,
       documents_uploaded_count: uploadedCount,
       i983_plan: i983Plan || null,

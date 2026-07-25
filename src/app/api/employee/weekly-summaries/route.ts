@@ -24,7 +24,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "Failed to fetch summaries" }, { status: 500 });
     }
 
-    const rows = (data || []).map((row: any) => ({
+    const rows = (data || []).map((row) => ({
       id: row.id,
       project_id: row.project_id,
       project_title: row.projects?.title || null,
