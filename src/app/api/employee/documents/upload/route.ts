@@ -48,8 +48,11 @@ export async function POST(request: Request) {
     let blob;
     try {
       blob = await put(blobPath, file, {
+        // Blob URLs are publicly fetchable, so at minimum make them
+        // unguessable. TODO: move compliance docs to private blobs served
+        // through an authenticated download route.
         access: "public",
-        addRandomSuffix: false,
+        addRandomSuffix: true,
       });
     } catch (error) {
       console.error("Vercel Blob upload error:", error);

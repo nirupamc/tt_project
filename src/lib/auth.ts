@@ -35,11 +35,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log('Auth: Missing credentials');
           return null;
         }
 
-        console.log('Auth: Attempting login for:', credentials.email);
 
         const supabase = createAdminClient();
         const { data: user, error } = await supabase
@@ -49,24 +47,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           .single();
 
         if (error) {
-          console.log('Auth: Supabase error:', error.message);
           return null;
         }
 
         if (!user) {
-          console.log('Auth: User not found');
           return null;
         }
 
-        console.log('Auth: User found, checking password...');
-        console.log('Auth: Hash from DB:', user.password_hash?.substring(0, 20) + '...');
 
         const isValidPassword = await bcrypt.compare(
           credentials.password as string,
           user.password_hash
         );
 
-        console.log('Auth: Password valid:', isValidPassword);
 
         if (!isValidPassword) {
           return null;
