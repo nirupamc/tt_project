@@ -99,6 +99,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Return relative URLs as-is so the browser resolves them against the
+      // current origin — avoids bad redirects (e.g. to localhost) when
+      // NEXTAUTH_URL doesn't match the deployed domain.
+      if (url.startsWith('/')) return url;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
   pages: {
     signIn: '/login',
