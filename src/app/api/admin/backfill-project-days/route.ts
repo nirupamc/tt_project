@@ -42,8 +42,10 @@ export async function POST() {
           title,
           total_days
         )
-      `)
-      .eq("status", "active");
+      `);
+    // NOTE: enrollments has no `status` column (no migration ever added
+    // one) — the old .eq("status","active") filter made this route 500
+    // on its first query, always.
 
     if (error || !enrollments) {
       return NextResponse.json(
